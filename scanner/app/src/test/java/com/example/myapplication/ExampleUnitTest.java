@@ -1,4 +1,4 @@
-package com.example.scanner;
+package com.example.myapplication;
 
 import org.junit.Test;
 
