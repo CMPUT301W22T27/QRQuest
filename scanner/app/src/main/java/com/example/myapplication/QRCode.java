@@ -5,7 +5,7 @@ import com.google.common.hash.Hashing;
 import java.nio.charset.StandardCharsets;
 
 public class QRCode {
-    private  value;
+    private  String value;
     private String hash;
     private int score;
 
