@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this
         );
         intentIntegrator.setPrompt("For flash use volume up key");
-        intentIntegrator.setBeepEnabled(true);
+        intentIntegrator.setBeepEnabled(false);
         intentIntegrator.setOrientationLocked(true);
         intentIntegrator.setCaptureActivity(Capture.class);
         intentIntegrator.initiateScan();
