@@ -11,8 +11,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.common.hash.Hashing;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import java.nio.charset.StandardCharsets;
 
 public class MainActivity extends AppCompatActivity {
     Button btscan;
@@ -48,7 +51,12 @@ public class MainActivity extends AppCompatActivity {
         if (intentResult.getContents() != null){
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setTitle("Result");
-            builder.setMessage(intentResult.getContents());
+
+            QRCode qrCode = new QRCode(intentResult.getContents());
+            builder.setMessage(qrCode.getHash());
+
+
+//            builder.setMessage(intentResult.getContents());
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
