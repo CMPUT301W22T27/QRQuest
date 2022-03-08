@@ -53,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
             builder.setTitle("Result");
 
             QRCode qrCode = new QRCode(intentResult.getContents());
-            builder.setMessage(qrCode.getHash());
+            String score = Integer.toString(qrCode.getScore());
+            builder.setMessage(score);
 
 
 //            builder.setMessage(intentResult.getContents());

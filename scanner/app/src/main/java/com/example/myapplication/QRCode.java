@@ -10,11 +10,12 @@ import java.util.List;
 public class QRCode {
 //    private  String value;
     private String hash;
-    private int score;
+    private Integer score;
     // we should include the location here
 
     public QRCode(String value) {
         computeHash(value);
+        computeScore();
     }
 
     private void computeHash(String value){
@@ -24,18 +25,30 @@ public class QRCode {
         this.hash = sha256hex;
     }
 
-    public String getHash() {
-        getRepetitions();
-        return hash;
+    public int getScore() {
+        return this.score;
     }
 
     private void computeScore() {
-        this.score = 5;
+        int currentScore = 0;
+        String currentHex = "";
+        ArrayList<String> repetitions = getRepetitions();
+        for (String rep : repetitions) {
+            currentHex = "";
+            currentHex += rep.charAt(0);
+            if (Integer.decode("0x" + currentHex) == 0) {
+                currentScore += Math.pow(20, rep.length()-1);
+            } else {
+                currentScore += Math.pow(Integer.decode("0x" + currentHex), rep.length()-1);
+            }
+        }
+        this.score = currentScore;
 
     }
 
     private ArrayList getRepetitions(){
 
+//        This is just a test case that Mikal was using, make sure to remove later
 //        String test = "696ce4dbd7bb57cbfe58b64f530f428b74999cb37e2ee60980490cd9552de3a6";
 //        char[] chars= test.toCharArray();
 
