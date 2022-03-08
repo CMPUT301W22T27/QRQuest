@@ -25,4 +25,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void onClickTestButton(View view){
+
+    }
 }
