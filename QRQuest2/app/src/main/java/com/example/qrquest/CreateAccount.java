@@ -23,6 +23,7 @@ public class CreateAccount extends AppCompatActivity {
 
     public static final String USER_NAME = "com.example.qrquest.USERNAME";
     Button confirmButton;
+    Button backButton;
     EditText usernameEditText;
     EditText emailEditText;
     FirebaseFirestore db;
@@ -36,10 +37,10 @@ public class CreateAccount extends AppCompatActivity {
         confirmButton = findViewById(R.id.confirmAccountButton);
         usernameEditText = findViewById(R.id.editTextTextUserName);
         emailEditText = findViewById(R.id.editTextTextEmailAddress);
-
-        confirmButton.setOnClickListener(new View.OnClickListener(){
+        backButton = findViewById(R.id.backToMainPage);
+        confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 final String username = usernameEditText.getText().toString();
                 final String email = emailEditText.getText().toString();
                 User newUser = new User(username, email);
@@ -52,6 +53,13 @@ public class CreateAccount extends AppCompatActivity {
                 startActivity(intent);
                 usernameEditText.setText("");
                 emailEditText.setText("");
+            }
+        });
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent backIntent = new Intent(CreateAccount.this, MainActivity.class);
+                startActivity(backIntent);
             }
         });
     }
