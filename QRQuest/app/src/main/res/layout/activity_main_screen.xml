@@ -11,7 +11,7 @@
         android:layout_width="377dp"
         android:layout_height="60dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="32dp"
         android:textSize="28sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -20,12 +20,12 @@
         android:id="@+id/submitQRCodeButton"
         android:layout_width="162dp"
         android:layout_height="42dp"
-        android:layout_marginBottom="26dp"
+        android:layout_marginBottom="20dp"
         android:text="Submit QR Code"
         android:onClick="scanner"
         app:layout_constraintBottom_toTopOf="@+id/generateQRCodeButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="TouchTargetSizeCheck" />
 
@@ -33,7 +33,7 @@
         android:id="@+id/generateQRCodeButton"
         android:layout_width="220dp"
         android:layout_height="44dp"
-        android:layout_marginBottom="147dp"
+        android:layout_marginBottom="44dp"
         android:text="Generate QR Code"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,13 +42,13 @@
         tools:ignore="TouchTargetSizeCheck"
         />
 
-    <Button
-        android:id="@+id/viewMapButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="178dp"
-        android:text="View My Location"
-        app:layout_constraintEnd_toEndOf="parent"
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="385dp"
+        android:layout_marginTop="14dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcomeUserEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/welcomeUserEditText"
+        tools:ignore="SpeakableTextPresentCheck" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
