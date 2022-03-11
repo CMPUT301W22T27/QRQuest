@@ -74,7 +74,7 @@ public class MainActivityTest {
         solo.enterText((EditText) solo.getView(R.id.editTextTextEmailAddress), "testEmail@gmail.com");
         solo.clickOnButton("Confirm");
         solo.assertCurrentActivity("Wrong Activity", MainScreen.class);
-        //solo.clickOnView(solo.getView(R.id.viewMapButton));
+        solo.clickOnView(solo.getView(R.id.viewMapButton));
         solo.assertCurrentActivity("Wrong Activity", MainScreenActivity.class);
     }
 
