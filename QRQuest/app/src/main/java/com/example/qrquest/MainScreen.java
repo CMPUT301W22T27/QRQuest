@@ -36,6 +36,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 public class MainScreen extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -81,6 +83,9 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback 
 
 
     }
+
+    // this is handling the qr code scanning and then saving. the actual saving is done within the QR code object. Will
+    // prob need to change this when refactoring to improve cohesion
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
