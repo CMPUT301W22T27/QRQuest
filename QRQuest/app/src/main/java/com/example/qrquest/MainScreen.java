@@ -43,6 +43,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback 
 
     TextView welcomeMessage;
     Button viewLocButton;
+    Button subCode;
     MapView mapView;
     GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -56,6 +57,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback 
         //viewLocButton = findViewById(R.id.viewMapButton);
         welcomeMessage = findViewById(R.id.welcomeUserEditText);
         mapView = findViewById(R.id.mapView);
+        subCode = findViewById(R.id.submitQRCodeButton);
         welcomeMessage.setText("Welcome, " + username + "!");
 
         //an idea
@@ -68,6 +70,17 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback 
 
         mapView.getMapAsync(this);
         mapView.onCreate(savedInstanceState);
+
+
+        // trying to replace the button call in the xml for scanning with a listener
+        subCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                scanner(view);
+            }
+        });
+
+        // end of the new code, this is just a test
     }
 
 
