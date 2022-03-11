@@ -1,6 +1,4 @@
-it's called QRQuest2 because the folder i have intialized for git is called QRQuest
-
-so the project folder = QRQuest2
+an older version of the intro prototype with scanning functionality
 
 In CreateAccount.java there's a link to the firestore db
 
