@@ -80,7 +80,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback 
         IntentIntegrator intentIntegrator = new IntentIntegrator(
                 MainScreen.this
         );
-        intentIntegrator.setPrompt("For flash use volume up key");
+        intentIntegrator.setPrompt("Uses the volume up/down to turn flash on/off");
         intentIntegrator.setBeepEnabled(false);
         intentIntegrator.setOrientationLocked(true);
         intentIntegrator.setCaptureActivity(Capture.class);
@@ -102,7 +102,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback 
             QRCode qrCode = new QRCode(intentResult.getContents());
             String score = Integer.toString(qrCode.getScore());
             builder.setMessage(score);
-            qrCode.saveScore();
+            qrCode.saveScore(); // this should really be a user.saveCode(qrCode)
 
 
 //            builder.setMessage(intentResult.getContents());
