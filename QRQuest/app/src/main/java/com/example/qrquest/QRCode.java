@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QRCode {
-    //    private  String value;
     private String hash;
     private Integer score;
     // we should include the location here
