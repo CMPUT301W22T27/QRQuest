@@ -8,21 +8,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +28,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -43,7 +37,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback 
 
     TextView welcomeMessage;
     Button viewLocButton;
-    Button subCode;
+    Button subCodeButton;
     MapView mapView;
     GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -57,7 +51,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback 
         //viewLocButton = findViewById(R.id.viewMapButton);
         welcomeMessage = findViewById(R.id.welcomeUserEditText);
         mapView = findViewById(R.id.mapView);
-        subCode = findViewById(R.id.submitQRCodeButton);
+        subCodeButton = findViewById(R.id.submitQRCodeButton);
         welcomeMessage.setText("Welcome, " + username + "!");
 
         //an idea
@@ -72,15 +66,13 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback 
         mapView.onCreate(savedInstanceState);
 
 
-        // trying to replace the button call in the xml for scanning with a listener
-        subCode.setOnClickListener(new View.OnClickListener() {
+        // listener for the submit qr code button
+        subCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 scanner(view);
             }
         });
-
-        // end of the new code, this is just a test
     }
 
 
