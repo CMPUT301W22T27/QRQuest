@@ -97,6 +97,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback 
             QRCode qrCode = new QRCode(intentResult.getContents());
             String score = Integer.toString(qrCode.getScore());
             builder.setMessage(score);
+            qrCode.saveScore();
 
 
 //            builder.setMessage(intentResult.getContents());
