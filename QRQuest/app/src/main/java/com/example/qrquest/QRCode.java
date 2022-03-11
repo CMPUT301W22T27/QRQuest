@@ -75,6 +75,9 @@ public class QRCode {
         return allReps;
     }
 
+
+    // this should really be in a user object but for now it is here
+    // noting that firebase does not allow for duplicates by default so each user can scan a code once
     public void saveScore() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final CollectionReference collectionReference = db.collection("QRCodes");
