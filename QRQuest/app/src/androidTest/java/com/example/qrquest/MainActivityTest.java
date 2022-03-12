@@ -78,4 +78,33 @@ public class MainActivityTest {
         solo.assertCurrentActivity("Wrong Activity", MainScreenActivity.class);
     }
 
+    @Test
+    public void checkGenerateLogInQRCode(){
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnView(solo.getView(R.id.createNewAccountButton));
+        solo.assertCurrentActivity("Wrong Activity",CreateAccount.class);
+        solo.enterText((EditText) solo.getView(R.id.editTextTextUserName), "Jay");
+        solo.enterText((EditText) solo.getView(R.id.editTextTextEmailAddress), "testEmail@gmail.com");
+        solo.clickOnButton("Confirm");
+        solo.assertCurrentActivity("Wrong Activity", MainScreen.class);
+        solo.clickOnView(solo.getView(R.id.generateQRCodeButton));
+        solo.assertCurrentActivity("Wrong Activity", ChooseQRCodeType.class);
+        solo.clickOnButton("Login Code");
+        solo.assertCurrentActivity("Wrong ACtivity", LoginQRCode.class);
+    }
+
+    @Test
+    public void checkGenerateGameStatusCode(){
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnView(solo.getView(R.id.createNewAccountButton));
+        solo.assertCurrentActivity("Wrong Activity",CreateAccount.class);
+        solo.enterText((EditText) solo.getView(R.id.editTextTextUserName), "Jay");
+        solo.enterText((EditText) solo.getView(R.id.editTextTextEmailAddress), "testEmail@gmail.com");
+        solo.clickOnButton("Confirm");
+        solo.assertCurrentActivity("Wrong Activity", MainScreen.class);
+        solo.clickOnView(solo.getView(R.id.generateQRCodeButton));
+        solo.assertCurrentActivity("Wrong Activity", ChooseQRCodeType.class);
+        solo.clickOnButton("Game Status Code");
+        solo.assertCurrentActivity("Wrong ACtivity", GameStatusQRCode.class);
+    }
 }
