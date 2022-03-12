@@ -8,6 +8,9 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 
+/**
+ * Represents QRCode and computes its score
+ */
 public class QRCode {
     private String hash;
     private Integer score;
@@ -18,6 +21,12 @@ public class QRCode {
         computeScore();
     }
 
+    /**
+     * Computes hash
+     * @param value
+     *  Value of which hash has to be computed
+     */
+
     private void computeHash(String value){
         String sha256hex = Hashing.sha256()
                 .hashString(value, StandardCharsets.UTF_8)
@@ -25,9 +34,18 @@ public class QRCode {
         this.hash = sha256hex;
     }
 
+    /**
+     * returns score
+     * @return
+     *  score
+     */
+
     public int getScore() {
         return this.score;
     }
+    /**
+     * computes the score of the Qrcode
+     */
 
     private void computeScore() {
         int currentScore = 0;
@@ -78,6 +96,10 @@ public class QRCode {
 
     // this should really be in a user object but for now it is here
     // noting that firebase does not allow for duplicates by default so each user can scan a code once
+
+    /**
+     * saves the score of the Qrcode in the firebase
+     */
     public void saveScore() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final CollectionReference collectionReference = db.collection("QRCodes");

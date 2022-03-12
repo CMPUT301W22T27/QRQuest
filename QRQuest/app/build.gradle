@@ -29,6 +29,12 @@ android {
     buildFeatures {
         viewBinding true
     }
+    testOptions{
+        unitTests.all{
+            useJUnitPlatform()
+        }
+    }
+
 }
 
 dependencies {

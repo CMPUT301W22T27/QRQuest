@@ -75,6 +75,12 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback 
         });
     }
 
+    /**
+     * Accesses camera and scans qrcode
+     * Reference: https://www.youtube.com/watch?v=u2pgSu9RhYo
+     * @param view
+     */
+
 
     public void scanner(View view){
         IntentIntegrator intentIntegrator = new IntentIntegrator(
@@ -89,8 +95,15 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback 
 
     }
 
-    // this is handling the qr code scanning and then saving. the actual saving is done within the QR code object. Will
-    // prob need to change this when refactoring to improve cohesion
+
+    //need to change this when refactoring to improve cohesion
+
+    /**
+     * this is handling the qr code scanning and then saving. the actual saving is done within the QR code object.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
