@@ -65,18 +65,6 @@ public class MainActivityTest {
         solo.clickOnButton("Confirm");
         solo.assertCurrentActivity("Wrong Activity", MainScreen.class);
     }
-    @Test
-    public void checkMainScreenActivity(){
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        solo.clickOnView(solo.getView(R.id.createNewAccountButton));
-        solo.assertCurrentActivity("Wrong Activity",CreateAccount.class);
-        solo.enterText((EditText) solo.getView(R.id.editTextTextUserName), "Jay");
-        solo.enterText((EditText) solo.getView(R.id.editTextTextEmailAddress), "testEmail@gmail.com");
-        solo.clickOnButton("Confirm");
-        solo.assertCurrentActivity("Wrong Activity", MainScreen.class);
-        solo.clickOnView(solo.getView(R.id.viewMapButton));
-        solo.assertCurrentActivity("Wrong Activity", MainScreenActivity.class);
-    }
 
     @Test
     public void checkGenerateLogInQRCode(){
