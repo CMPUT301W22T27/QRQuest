@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.qrquest.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.qrquest.ui.profile.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/nav_search"
+        android:name="com.example.qrquest.ui.search.SearchFragment"
+        android:label="Search for Other Users"
+        tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/nav_logout"
+        android:name="com.example.qrquest.ui.logout.LogoutFragment"
+        android:label="Logout"
+        tools:layout="@layout/fragment_logout" />
+    <fragment
+        android:id="@+id/nav_scoreboard"
+        android:name="com.example.qrquest.ui.scoreboard.ScoreboardFragment"
+        android:label="Scoreboard"
+        tools:layout="@layout/fragment_scoreboard" />
+    <fragment
+        android:id="@+id/nav_viewQR"
+        android:name="com.example.qrquest.ui.viewQR.ViewQRFragment"
+        android:label="View QR Codes"
+        tools:layout="@layout/fragment_qrview"/>
+</navigation>
