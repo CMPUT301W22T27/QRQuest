@@ -18,6 +18,10 @@ public class QRCode {
         computeScore();
     }
 
+    public String getHash() {
+        return hash;
+    }
+
     private void computeHash(String value){
         String sha256hex = Hashing.sha256()
                 .hashString(value, StandardCharsets.UTF_8)

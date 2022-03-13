@@ -66,8 +66,8 @@ public class LoginQRCode extends AppCompatActivity {
         final CollectionReference collectionReference = db.collection("LoginQRCodes:");
         HashMap<String, String> data = new HashMap<>();
         // add tests for invalid usernames and emails later.
-        data.put("QRCode", hash);
-        collectionReference.document(emailAddress).set(data);
+        data.put("Email", emailAddress);
+        collectionReference.document(hash).set(data);
     }
     private String computeHash(String value){
         String sha256hex = Hashing.sha256()

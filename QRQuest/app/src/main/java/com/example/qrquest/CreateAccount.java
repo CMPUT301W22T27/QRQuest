@@ -81,10 +81,20 @@ public class CreateAccount extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.getResult().exists()) {
-                            Toast.makeText(CreateAccount.this, "Code exists", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CreateAccount.this, "Account exists", Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            Toast.makeText(CreateAccount.this, "Code does not exist", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CreateAccount.this, "Account does not exist", Toast.LENGTH_SHORT).show();
+                            HashMap<String, String> data = new HashMap<>();
+                            // add tests for invalid usernames and emails later.
+                            data.put("Username", newUser.getUsername());
+                            collectionReference.document(email).set(data);
+                            Intent intent = new Intent(CreateAccount.this, MainScreen.class);
+                            intent.putExtra(USER_NAME,username);
+                            intent.putExtra(EMAIL_ADDRESS,email);
+                            startActivity(intent);
+                            usernameEditText.setText("");
+                            emailEditText.setText("");
                         }
                     }
                 });
@@ -104,16 +114,6 @@ public class CreateAccount extends AppCompatActivity {
 //
 //                    }
 //                });
-                        //HashMap<String, String> data = new HashMap<>();
-                        // add tests for invalid usernames and emails later.
-                        //data.put("Username", newUser.getUsername());
-                        //collectionReference.document(email).set(data);
-                        //Intent intent = new Intent(CreateAccount.this, MainScreen.class);
-                        //intent.putExtra(USER_NAME,username);
-                        //intent.putExtra(EMAIL_ADDRESS,email);
-                        //startActivity(intent);
-                        //usernameEditText.setText("");
-                        //emailEditText.setText("");
             }
         });
         backButton.setOnClickListener(new View.OnClickListener() {

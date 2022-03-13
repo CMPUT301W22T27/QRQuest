@@ -26,16 +26,25 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.nio.charset.StandardCharsets;
-
+import java.util.HashMap;
+/*
+ * Firestore link -> https://console.firebase.google.com/u/2/project/qrquest-b1e1e/firestore/data/~2F
+ * I think anybody with this link can view and edit? All new users get stored in the db
+ * Still need to implement valid type checking and tests; very naive implementation
+ * */
 public class MainActivity extends AppCompatActivity {
-
+    public static final String USER_NAME = "com.example.qrquest.USERNAME";
+    public static final String EMAIL_ADDRESS = "com.example.qrquest.EMAILADDRESS";
     Button createAccountButton;
     Button logInButton;
-
+    FirebaseFirestore db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,9 +78,32 @@ public class MainActivity extends AppCompatActivity {
         IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (intentResult.getContents() != null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            builder.setTitle("Result");
 
             QRCode qrCode = new QRCode(intentResult.getContents());
+            final CollectionReference collectionReference = db.collection("LoginQRCodes");
+            collectionReference.document(qrCode.getHash()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> taskout) {
+                    if (taskout.getResult().exists()) {
+                        Intent intent = new Intent(MainActivity.this, MainScreen.class);
+                        final CollectionReference collectionReferencein = db.collection("Users");
+                        String email = String.valueOf(taskout.getResult());
+                        collectionReferencein.document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> taskin) {
+                                String username = String.valueOf(taskin.getResult());
+                                intent.putExtra(USER_NAME, username);
+                                intent.putExtra(EMAIL_ADDRESS, email);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "No Existing QR Code", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+            });
         } else {
             Toast.makeText(getApplicationContext(), "OOPS... You did not scan anything", Toast.LENGTH_SHORT).show();
         }
