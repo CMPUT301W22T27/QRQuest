@@ -25,6 +25,20 @@
         <entry key="..\:/Users/nosaj/Uni2021/Winter2022/CMPUT 301/QRQuest/QRQuest2/app/src/main/res/menu/main_screen_menu.xml" value="0.16799999999999998" />
         <entry key="..\:/Users/nosaj/Uni2021/Winter2022/CMPUT 301/QRQuest/QRQuest2/app/src/main/res/menu/side_bar.xml" value="0.2" />
         <entry key="..\:/Users/nosaj/Uni2021/Winter2022/CMPUT 301/QRQuest/QRQuest2/app/src/main/res/menu/side_bar_drawer.xml" value="0.11302083333333333" />
+        <entry key="app/src/main/res/drawable/ic_home.xml" value="0.31145833333333334" />
+        <entry key="app/src/main/res/layout/activity_create_account.xml" value="0.2907692307692308" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.2907692307692308" />
+        <entry key="app/src/main/res/layout/activity_main_screen.xml" value="0.2907692307692308" />
+        <entry key="app/src/main/res/layout/activity_main_screen_map.xml" value="0.2907692307692308" />
+        <entry key="app/src/main/res/layout/activity_side_bar.xml" value="0.2907692307692308" />
+        <entry key="app/src/main/res/layout/app_bar_side_bar.xml" value="0.2907692307692308" />
+        <entry key="app/src/main/res/layout/content_side_bar.xml" value="0.2907692307692308" />
+        <entry key="app/src/main/res/layout/content_sidebar.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.2907692307692308" />
+        <entry key="app/src/main/res/layout/nav_header_side_bar.xml" value="0.2907692307692308" />
+        <entry key="app/src/main/res/menu/activity_side_bar_drawer.xml" value="0.2907692307692308" />
+        <entry key="app/src/main/res/menu/side_bar.xml" value="0.2907692307692308" />
+        <entry key="app/src/main/res/menu/sidebar.xml" value="0.2907692307692308" />
       </map>
     </option>
   </component>
