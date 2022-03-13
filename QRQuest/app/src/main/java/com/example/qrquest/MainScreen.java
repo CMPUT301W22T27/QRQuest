@@ -1,5 +1,6 @@
 package com.example.qrquest;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,15 +25,28 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
     boolean isPermissionGranted;
     MapView mapView;
     Button generateQRCode;
+    String username;
+    String email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
-        Intent intent = getIntent();
-        String username = intent.getStringExtra(CreateAccount.USER_NAME);
-        String email = intent.getStringExtra(CreateAccount.EMAIL_ADDRESS);
-        welcomeMessage = findViewById(R.id.welcomeUserEditText);
-        welcomeMessage.setText("Welcome, " + username + "!");
+        Bundle intent = getIntent().getExtras();
+        if (intent != null){
+            if (intent.containsKey("USER_NAME_MainActivity")){
+                username = intent.getString("USER_NAME_MainActivity");
+                email = intent.getString("EMAIL_ADDRESS_MainActivity");
+                welcomeMessage = findViewById(R.id.welcomeUserEditText);
+                welcomeMessage.setText("Welcome, " + username + "!");
+            }
+            else{
+                username = intent.getString("USER_NAME_CreateAccount");
+                email = intent.getString("EMAIL_ADDRESS_CreateAccount");
+                welcomeMessage = findViewById(R.id.welcomeUserEditText);
+                welcomeMessage.setText("Welcome, " + username + "!!!!");
+            }
+        }
+
         generateQRCode = findViewById(R.id.generateQRCodeButton);
         mapView = (MapView) findViewById(R.id.appMapView);
 
