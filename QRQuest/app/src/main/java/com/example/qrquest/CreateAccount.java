@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseError;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.protobuf.Empty;
+import com.google.protobuf.Value;
 
 import java.util.HashMap;
 
@@ -58,16 +61,45 @@ public class CreateAccount extends AppCompatActivity {
                 final String username = usernameEditText.getText().toString();
                 final String email = emailEditText.getText().toString();
                 User newUser = new User(username, email);
-                HashMap<String, String> data = new HashMap<>();
-                // add tests for invalid usernames and emails later.
-                data.put("Username", newUser.getUsername());
-                collectionReference.document(email).set(data);
-                Intent intent = new Intent(CreateAccount.this, MainScreen.class);
-                intent.putExtra(USER_NAME,username);
-                intent.putExtra(EMAIL_ADDRESS,email);
-                startActivity(intent);
-                usernameEditText.setText("");
-                emailEditText.setText("");
+                DatabaseReference mDatabase;
+                mDatabase = FirebaseDatabase.getInstance().getReference();
+                // mDatabase.child("Users").child(email).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    //     @Override
+                    //      public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        //          if (!task.isSuccessful()) {
+                            //             Log.e("firebase", "Error getting data", task.getException());
+                            //         }
+                        //          else {
+                            //             Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                            //}
+                        //}
+                    //           });
+                final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+                databaseReference.equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists())
+                            Toast.makeText(CreateAccount.this, "Code exists", Toast.LENGTH_SHORT).show();
+                        else
+                            Log.d("firebase", username);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+                        //HashMap<String, String> data = new HashMap<>();
+                        // add tests for invalid usernames and emails later.
+                        //data.put("Username", newUser.getUsername());
+                        //collectionReference.document(email).set(data);
+                        //Intent intent = new Intent(CreateAccount.this, MainScreen.class);
+                        //intent.putExtra(USER_NAME,username);
+                        //intent.putExtra(EMAIL_ADDRESS,email);
+                        //startActivity(intent);
+                        //usernameEditText.setText("");
+                        //emailEditText.setText("");
             }
         });
         backButton.setOnClickListener(new View.OnClickListener() {
