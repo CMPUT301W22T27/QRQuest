@@ -78,7 +78,8 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
             QRCode qrCode = new QRCode(intentResult.getContents());
-            final CollectionReference collectionReference = db.collection("LoginQRCodes");
+            db = FirebaseFirestore.getInstance();
+            final CollectionReference collectionReference = db.collection("LoginQRCodes:");
             collectionReference.document(qrCode.getHash()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> taskout) {

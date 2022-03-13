@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QRCode {
+public class QRCode{
     //    private  String value;
     private String hash;
     private Integer score;
@@ -22,7 +22,7 @@ public class QRCode {
         return hash;
     }
 
-    private void computeHash(String value){
+    public void computeHash(String value){
         String sha256hex = Hashing.sha256()
                 .hashString(value, StandardCharsets.UTF_8)
                 .toString();
@@ -33,7 +33,7 @@ public class QRCode {
         return this.score;
     }
 
-    private void computeScore() {
+    public void computeScore() {
         int currentScore = 0;
         String currentHex = "";
         ArrayList<String> repetitions = getRepetitions();
