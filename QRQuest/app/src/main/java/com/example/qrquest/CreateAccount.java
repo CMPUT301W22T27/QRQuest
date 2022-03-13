@@ -23,7 +23,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.protobuf.Empty;
 import com.google.protobuf.Value;
 
@@ -62,7 +64,7 @@ public class CreateAccount extends AppCompatActivity {
                 final String email = emailEditText.getText().toString();
                 User newUser = new User(username, email);
                 DatabaseReference mDatabase;
-                mDatabase = FirebaseDatabase.getInstance().getReference();
+//                mDatabase = FirebaseDatabase.getInstance().getReference();
                 // mDatabase.child("Users").child(email).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     //     @Override
                     //      public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -74,22 +76,34 @@ public class CreateAccount extends AppCompatActivity {
                             //}
                         //}
                     //           });
-                final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
-                databaseReference.equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+                final CollectionReference collectionReference = db.collection("Users");
+                collectionReference.document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.exists())
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.getResult().exists()) {
                             Toast.makeText(CreateAccount.this, "Code exists", Toast.LENGTH_SHORT).show();
-                        else
-                            Log.d("firebase", username);
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        }
+                        else{
+                            Toast.makeText(CreateAccount.this, "Code does not exist", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
+
+//                databaseReference.equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                        if(dataSnapshot.exists())
+//                            Toast.makeText(CreateAccount.this, "Code exists", Toast.LENGTH_SHORT).show();
+//                        else
+//                            Log.d("firebase", username);
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                    }
+//                });
                         //HashMap<String, String> data = new HashMap<>();
                         // add tests for invalid usernames and emails later.
                         //data.put("Username", newUser.getUsername());
