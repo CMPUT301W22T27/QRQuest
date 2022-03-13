@@ -13,13 +13,19 @@ public class QRCode{
     private Integer score;
     // we should include the location here
 
-    public QRCode(String value) {
-        computeHash(value);
+    public QRCode(String value, Boolean isHashed) {
+        if (!isHashed){
+            computeHash(value);
+        }
+        else {
+            this.hash = value;
+        }
+
         computeScore();
     }
 
     public String getHash() {
-        return hash;
+        return this.hash;
     }
 
     public void computeHash(String value){
