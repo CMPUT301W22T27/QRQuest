@@ -40,8 +40,6 @@ import java.util.HashMap;
  * Still need to implement valid type checking and tests; very naive implementation
  * */
 public class MainActivity extends AppCompatActivity {
-    public static final String USER_NAME = "com.example.qrquest.USERNAME";
-    public static final String EMAIL_ADDRESS = "com.example.qrquest.EMAILADDRESS";
     Button createAccountButton;
     Button logInButton;
     FirebaseFirestore db;
@@ -87,13 +85,13 @@ public class MainActivity extends AppCompatActivity {
                     if (taskout.getResult().exists()) {
                         Intent intent = new Intent(MainActivity.this, MainScreen.class);
                         final CollectionReference collectionReferencein = db.collection("Users");
-                        String email = String.valueOf(taskout.getResult());
+                        String email = taskout.getResult().getString("Email");
                         collectionReferencein.document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> taskin) {
-                                String username = String.valueOf(taskin.getResult());
-                                intent.putExtra(USER_NAME, username);
-                                intent.putExtra(EMAIL_ADDRESS, email);
+                                String username = taskin.getResult().getString("Username");
+                                intent.putExtra("USER_NAME_MainActivity", username);
+                                intent.putExtra("EMAIL_ADDRESS_MainActivity", email);
                                 startActivity(intent);
                             }
                         });

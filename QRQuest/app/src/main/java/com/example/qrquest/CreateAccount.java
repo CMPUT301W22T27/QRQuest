@@ -39,8 +39,6 @@ import java.util.HashMap;
 
 public class CreateAccount extends AppCompatActivity {
 
-    public static final String USER_NAME = "com.example.qrquest.USERNAME";
-    public static final String EMAIL_ADDRESS = "com.example.qrquest.EMAILADDRESS";
     Button confirmButton;
     Button backButton;
     EditText usernameEditText;
@@ -81,6 +79,7 @@ public class CreateAccount extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.getResult().exists()) {
+                            Log.i("1234",task.getResult().getString("Username"));
                             Toast.makeText(CreateAccount.this, "Account exists", Toast.LENGTH_SHORT).show();
                         }
                         else{
@@ -90,8 +89,8 @@ public class CreateAccount extends AppCompatActivity {
                             data.put("Username", newUser.getUsername());
                             collectionReference.document(email).set(data);
                             Intent intent = new Intent(CreateAccount.this, MainScreen.class);
-                            intent.putExtra(USER_NAME,username);
-                            intent.putExtra(EMAIL_ADDRESS,email);
+                            intent.putExtra("USER_NAME_CreateAccount",username);
+                            intent.putExtra("EMAIL_ADDRESS_CreateAccount",email);
                             startActivity(intent);
                             usernameEditText.setText("");
                             emailEditText.setText("");
