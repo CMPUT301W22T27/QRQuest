@@ -7,7 +7,7 @@ import org.junit.Test;
 public class QrTesting {
     private QRCode mockQrCode(){
 
-        QRCode qrCode = new QRCode(value());
+        QRCode qrCode = new QRCode(value(), false);
         return qrCode;
     }
     private String value(){
