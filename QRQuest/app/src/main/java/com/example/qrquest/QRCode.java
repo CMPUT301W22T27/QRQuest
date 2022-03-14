@@ -1,10 +1,13 @@
 package com.example.qrquest;
 
 import com.google.common.hash.Hashing;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class QRCode{
@@ -53,6 +56,22 @@ public class QRCode{
             }
         }
         this.score = currentScore;
+
+    }
+
+    /**
+     * saves the score of the Qrcode in the firebase
+     */
+    public void saveScore() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final CollectionReference collectionReference = db.collection("QRCodes");
+
+        HashMap<String, Integer> data = new HashMap<>();
+        // add tests for invalid usernames and emails later.
+        data.put("Score", this.score);
+
+
+        collectionReference.document(this.hash).set(data);
 
     }
 
