@@ -91,7 +91,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
     /**
      * Accesses camera and scans qrcode
      * Reference: https://www.youtube.com/watch?v=u2pgSu9RhYo
-     * @param view
+     * @param view view
      */
 
 
@@ -113,9 +113,9 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
 
     /**
      * this is handling the qr code scanning and then saving. the actual saving is done within the QR code object.
-     * @param requestCode
-     * @param resultCode
-     * @param data
+     * @param requestCode request Code
+     * @param resultCode result code
+     * @param data data
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -146,6 +146,12 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         }
     }
 
+    /**
+     * makes the menu (the 3 dots in the upper right hand side) appear on the main screen page
+     * @param menu menu
+     * @return true
+     */
+
 
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
@@ -153,7 +159,11 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         return true;
     }
 
-    // method for dummy check
+    /**method for dummy check
+     *
+     */
+
+
     private void checkPermission(){
         isPermissionGranted = true;
         return;

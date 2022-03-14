@@ -26,6 +26,9 @@ import java.util.HashMap;
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 
+/**
+ * Computes login QRCode
+ */
 public class LoginQRCode extends AppCompatActivity {
     public ImageView qrCodeImage;
     Bitmap bitmap;
@@ -69,6 +72,12 @@ public class LoginQRCode extends AppCompatActivity {
         data.put("Email", emailAddress);
         collectionReference.document(hash).set(data);
     }
+
+    /**
+     * Computes the hash of the score
+     * @param value
+     * @return hash of the score
+     */
     private String computeHash(String value){
         String sha256hex = Hashing.sha256()
                 .hashString(value, StandardCharsets.UTF_8)

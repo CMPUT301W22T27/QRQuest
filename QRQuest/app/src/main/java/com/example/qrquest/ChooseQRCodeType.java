@@ -8,6 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+/**
+ * QR code functionality for the log in screen
+ */
+
 public class ChooseQRCodeType extends AppCompatActivity {
     public static final String USER_NAME = "com.example.qrquest.USERNAME";
     public static final String EMAIL_ADDRESS = "com.example.qrquest.EMAILADDRESS";

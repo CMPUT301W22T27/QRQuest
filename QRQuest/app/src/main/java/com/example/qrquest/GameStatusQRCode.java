@@ -23,6 +23,10 @@ import java.util.HashMap;
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 
+/**
+ * GameStatusQRCode
+ * Extends AppCompatActivity
+ */
 public class GameStatusQRCode extends AppCompatActivity {
     public ImageView GameStatusQRCodeImage;
     Bitmap bitmap;
