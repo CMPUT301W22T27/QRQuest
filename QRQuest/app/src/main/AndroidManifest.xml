@@ -16,6 +16,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QRQuest">
         <activity
+            android:name=".SideBarActivity"
+            android:exported="false"
+            android:label="@string/title_activity_side_bar"
+            android:theme="@style/Theme.QRQuest.NoActionBar" />
+        <activity
             android:name=".GameStatusQRCode"
             android:exported="false" />
         <activity
@@ -51,7 +56,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

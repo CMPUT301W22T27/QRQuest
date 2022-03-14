@@ -42,6 +42,7 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
     Button createAccountButton;
     Button logInButton;
+    Button TestButton;
     FirebaseFirestore db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         createAccountButton = findViewById(R.id.createNewAccountButton);
         logInButton = findViewById(R.id.loginButton);
+        TestButton = findViewById(R.id.testButton);
+
+        TestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SideBarActivity.class);
+                startActivity(intent);
+            }
+        });
         createAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
