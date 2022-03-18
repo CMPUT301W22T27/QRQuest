@@ -35,6 +35,7 @@ import com.google.zxing.integration.android.IntentResult;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
@@ -142,24 +143,24 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
             String score = Integer.toString(qrCode.getScore());
             builder.setMessage(score);
             qrCode.saveScore(); // this should really be a user.saveCode(qrCode)
-
+            List<Integer> scoreList = new ArrayList<Integer>();
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             final CollectionReference collectionReference = db.collection("userScore");
             collectionReference.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> taskout) {
                     if (taskout.getResult().exists()) {
-                        Object object = new Object();
-                        object = taskout.getResult().get("Score");
-                        List<Object> scoreList = Arrays.asList(object);
+
                         scoreList.add(parseInt(score));
-                        collectionReference.document(username).set(scoreList);
+                        collectionReference.document(username).delete();
+                        HashMap<String, Object> userScore = new HashMap<>();
+                        userScore.put("Score:", scoreList);
+                        collectionReference.document(username).set(userScore);
                     }
                     else{
-                        List<Integer> scoreList = new ArrayList<Integer>();
                         scoreList.add(parseInt(score));
                         HashMap<String, Object> userScore = new HashMap<>();
-                        userScore.put("Score", scoreList);
+                        userScore.put("Score:", scoreList);
                         collectionReference.document(username).set(userScore);
                     }
                 }

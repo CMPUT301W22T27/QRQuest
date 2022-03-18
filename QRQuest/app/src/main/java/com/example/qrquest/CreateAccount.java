@@ -29,7 +29,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.protobuf.Empty;
 import com.google.protobuf.Value;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /*
 * Firestore link -> https://console.firebase.google.com/u/2/project/qrquest-b1e1e/firestore/data/~2F
@@ -90,6 +92,7 @@ public class CreateAccount extends AppCompatActivity {
                             HashMap<String, String> data = new HashMap<>();
                             // add tests for invalid usernames and emails later.
                             data.put("Username", newUser.getUsername());
+
                             collectionReference.document(email).set(data);
                             Intent intent = new Intent(CreateAccount.this, MainScreen.class);
                             intent.putExtra("USER_NAME_CreateAccount",username);
