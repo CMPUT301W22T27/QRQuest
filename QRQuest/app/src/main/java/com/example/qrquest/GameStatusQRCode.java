@@ -1,5 +1,6 @@
 package com.example.qrquest;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,9 +12,13 @@ import android.view.Display;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.common.hash.Hashing;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.WriterException;
 
@@ -67,8 +72,23 @@ public class GameStatusQRCode extends AppCompatActivity {
         final CollectionReference collectionReference = db.collection("GameStatusQRCodes:");
         HashMap<String, String> data = new HashMap<>();
         // add tests for invalid usernames and emails later.
-        data.put("QRCode", hash);
-        collectionReference.document(username).set(data);
+        data.put("UserName", username);
+        collectionReference.document(hash).set(data);
+
+        db = FirebaseFirestore.getInstance();
+        final CollectionReference collectionReferenceuserScore = db.collection("userScore");
+        collectionReference.document(hash).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> taskout) {
+                if (taskout.getResult().exists()) {
+
+
+                }
+                else{
+                }
+            }
+
+        });
     }
     private String computeHash(String value){
         String sha256hex = Hashing.sha256()

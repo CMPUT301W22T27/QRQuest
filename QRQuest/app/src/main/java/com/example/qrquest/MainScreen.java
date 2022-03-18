@@ -1,6 +1,8 @@
 package com.example.qrquest;
 
 
+import static java.lang.Integer.parseInt;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -9,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -21,8 +24,18 @@ import android.widget.Toast;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
     public static final String USER_NAME = "com.example.qrquest.USERNAME";
@@ -130,6 +143,28 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
             builder.setMessage(score);
             qrCode.saveScore(); // this should really be a user.saveCode(qrCode)
 
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            final CollectionReference collectionReference = db.collection("userScore");
+            collectionReference.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> taskout) {
+                    if (taskout.getResult().exists()) {
+                        Object object = new Object();
+                        object = taskout.getResult().get("Score");
+                        List<Object> scoreList = Arrays.asList(object);
+                        scoreList.add(parseInt(score));
+                        collectionReference.document(username).set(scoreList);
+                    }
+                    else{
+                        List<Integer> scoreList = new ArrayList<Integer>();
+                        scoreList.add(parseInt(score));
+                        HashMap<String, Object> userScore = new HashMap<>();
+                        userScore.put("Score", scoreList);
+                        collectionReference.document(username).set(userScore);
+                    }
+                }
+
+            });
 
 //            builder.setMessage(intentResult.getContents());
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
