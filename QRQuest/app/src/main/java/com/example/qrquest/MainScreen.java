@@ -143,21 +143,29 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
             String score = Integer.toString(qrCode.getScore());
             builder.setMessage(score);
             qrCode.saveScore(); // this should really be a user.saveCode(qrCode)
-            List<Integer> scoreList = new ArrayList<Integer>();
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             final CollectionReference collectionReference = db.collection("userScore");
             collectionReference.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> taskout) {
-                    if (taskout.getResult().exists()) {
-
-                        scoreList.add(parseInt(score));
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.getResult().exists()) {
+                        List<Integer> newScoreList = new ArrayList<Integer>();
+                        String list = task.getResult().get("Score:").toString();
+                        String[] string = list.replaceAll("\\[", "")
+                                .replaceAll("]", "")
+                                .replaceAll(" ","")
+                                .split(",");
+                        for (int i = 0; i < string.length; i++) {
+                            newScoreList.add(Integer.valueOf(string[i]));
+                        }
+                        newScoreList.add(parseInt(score));
                         collectionReference.document(username).delete();
                         HashMap<String, Object> userScore = new HashMap<>();
-                        userScore.put("Score:", scoreList);
+                        userScore.put("Score:", newScoreList);
                         collectionReference.document(username).set(userScore);
                     }
                     else{
+                        List<Integer> scoreList = new ArrayList<Integer>();
                         scoreList.add(parseInt(score));
                         HashMap<String, Object> userScore = new HashMap<>();
                         userScore.put("Score:", scoreList);
