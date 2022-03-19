@@ -82,20 +82,19 @@ public class GameStatusQRCode extends AppCompatActivity {
         data.put("UserName", username);
         collectionReference.document(hash).set(data);
 
-        db = FirebaseFirestore.getInstance();
         final CollectionReference collectionReferenceuserScore = db.collection("userScore");
         collectionReferenceuserScore.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> taskout) {
-                if (taskout.getResult().exists()) {
-                    Object object = new Object();
-                    object = taskout.getResult().get("Score:");
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.getResult().exists()) {
                     List<Integer> newScoreList = new ArrayList<Integer>();
-                    List<Object> scoreList = Arrays.asList(object);
-                    Iterator iterator = scoreList.iterator();
-                    while(iterator.hasNext()) {
-                        int prevScore = parseInt(String.valueOf(iterator.next()));
-                        newScoreList.add(prevScore);
+                    String list = task.getResult().get("Score:").toString();
+                    String[] string = list.replaceAll("\\[", "")
+                            .replaceAll("]", "")
+                            .replaceAll(" ","")
+                            .split(",");
+                    for (int i = 0; i < string.length; i++) {
+                        newScoreList.add(Integer.valueOf(string[i]));
                     }
                     Collections.sort(newScoreList);
                     String min = newScoreList.get(0).toString();
