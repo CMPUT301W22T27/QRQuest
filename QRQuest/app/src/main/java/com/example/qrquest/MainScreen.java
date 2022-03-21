@@ -24,6 +24,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
     public static final String USER_NAME = "com.example.qrquest.USERNAME";
     public static final String EMAIL_ADDRESS = "com.example.qrquest.EMAILADDRESS";
@@ -34,6 +37,11 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
     String username;
     String email;
     Button subCodeButton;
+    ArrayList<Integer> scores = new ArrayList<Integer>();
+    int highestScore;
+    int lowestScore;
+    int sumScore;
+    int numberOfScores;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +137,14 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
             String score = Integer.toString(qrCode.getScore());
             builder.setMessage(score);
             qrCode.saveScore(); // this should really be a user.saveCode(qrCode)
+            //Update maximum score, minimum score, sum of scores
+            scores.add(Integer.parseInt(score));
+            highestScore = Collections.max(scores);
+            lowestScore = Collections.min(scores);
+            sumScore = sumScore + Integer.parseInt(score);
+            numberOfScores = numberOfScores + 1;
+
+
 
 
 //            builder.setMessage(intentResult.getContents());
