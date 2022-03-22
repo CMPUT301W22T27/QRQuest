@@ -28,7 +28,5 @@ public class Scanner {
         intentIntegrator.setCaptureActivity(Capture.class);
         intentIntegrator.initiateScan();
 
-        Toast.makeText(activity.getApplicationContext(), "this is shown when the scan is done", Toast.LENGTH_SHORT).show();
-
     }
 }
