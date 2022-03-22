@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.zxing.client.android.Intents;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -81,32 +82,15 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         subCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                scanner(view);
+//                scanner(view);
+                Scanner scanner = new Scanner(view, MainScreen.this);
+                scanner.startScan();
             }
         });
 
         // sidebar logic
     }
 
-    /**
-     * Accesses camera and scans qrcode
-     * Reference: https://www.youtube.com/watch?v=u2pgSu9RhYo
-     * @param view view
-     */
-
-
-    public void scanner(View view){
-        IntentIntegrator intentIntegrator = new IntentIntegrator(
-                MainScreen.this
-        );
-        intentIntegrator.setPrompt("Uses the volume up/down to turn flash on/off");
-        intentIntegrator.setBeepEnabled(false);
-        intentIntegrator.setOrientationLocked(true);
-        intentIntegrator.setCaptureActivity(Capture.class);
-        intentIntegrator.initiateScan();
-
-
-    }
 
 
     //need to change this when refactoring to improve cohesion
