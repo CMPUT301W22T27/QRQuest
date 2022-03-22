@@ -1,6 +1,8 @@
 package com.example.qrquest;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,12 +11,17 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.common.hash.Hashing;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.WriterException;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -84,5 +91,59 @@ public class LoginQRCode extends AppCompatActivity {
                 .toString();
         return sha256hex;
   }
+
+
+  public void loginPressed(View view){
+      IntentIntegrator intentIntegrator = new IntentIntegrator(
+              LoginQRCode.this
+      );
+      intentIntegrator.setPrompt("For flash use volume up key");
+      intentIntegrator.setBeepEnabled(false);
+      intentIntegrator.setOrientationLocked(true);
+      intentIntegrator.setCaptureActivity(Capture.class);
+      intentIntegrator.initiateScan();
+  }
+
+  @Override
+  protected void onActivityResult ( int requestCode, int resultCode, @Nullable Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (intentResult.getContents() != null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(LoginQRCode.this);
+
+            QRCode qrCode = new QRCode(intentResult.getContents(), true);
+            db = FirebaseFirestore.getInstance();
+            final CollectionReference collectionReference = db.collection("LoginQRCodes:");
+            Log.i("Unhashed:", intentResult.getContents());
+//            Log.i("Hashed:",  qrCode.getHash());
+            collectionReference.document(qrCode.getHash()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> taskout) {
+                    if (taskout.getResult().exists()) {
+                        Intent intent = new Intent(LoginQRCode.this, MainScreen.class);
+                        final CollectionReference collectionReferencein = db.collection("Users");
+                        String email = taskout.getResult().getString("Email");
+                        collectionReferencein.document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> taskin) {
+                                String username = taskin.getResult().getString("Username");
+                                intent.putExtra("USER_NAME_MainActivity", username);
+                                intent.putExtra("EMAIL_ADDRESS_MainActivity", email);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "No Existing QR Code", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            });
+        } else {
+            Toast.makeText(getApplicationContext(), "OOPS... You did not scan anything", Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
 
 }
