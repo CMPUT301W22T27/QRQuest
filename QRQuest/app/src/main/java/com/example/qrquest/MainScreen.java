@@ -82,7 +82,6 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         subCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                scanner(view);
                 Scanner scanner = new Scanner(view, MainScreen.this);
                 scanner.startScan();
             }
