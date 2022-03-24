@@ -114,6 +114,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
             qrCode.saveScore(); // this should really be a user.saveCode(qrCode)
 
 
+
 //            builder.setMessage(intentResult.getContents());
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -123,6 +124,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                 }
             });
             builder.show();
+            openSubmissionActivity(score);
 
         }else {
             Toast.makeText(getApplicationContext(), "OOPS... You did not scan anything", Toast.LENGTH_SHORT).show();
@@ -192,6 +194,12 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
     // logic for how the map pans to device location
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
+
+    }
+    public void openSubmissionActivity(String score){
+       Intent intent = new Intent(this, ScanSuccess.class);
+       intent.putExtra("score", score);
+       startActivity(intent);
 
     }
 }
