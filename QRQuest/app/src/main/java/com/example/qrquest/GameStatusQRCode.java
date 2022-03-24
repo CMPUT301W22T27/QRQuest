@@ -8,7 +8,12 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
+import android.view.Menu;
+import android.view.View;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,11 +28,16 @@ import java.util.HashMap;
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 
+/**
+ * GameStatusQRCode
+ * Extends AppCompatActivity
+ */
 public class GameStatusQRCode extends AppCompatActivity {
     public ImageView GameStatusQRCodeImage;
     Bitmap bitmap;
     QRGEncoder qrgEncoder;
     FirebaseFirestore db;
+    Button privateButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +75,9 @@ public class GameStatusQRCode extends AppCompatActivity {
         // add tests for invalid usernames and emails later.
         data.put("QRCode", hash);
         collectionReference.document(username).set(data);
+
+
+
     }
     private String computeHash(String value){
         String sha256hex = Hashing.sha256()
@@ -72,4 +85,35 @@ public class GameStatusQRCode extends AppCompatActivity {
                 .toString();
         return sha256hex;
     }
+
+
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_screen_menu, menu);
+        return true;
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.profileMenuItem:
+                startActivity(new Intent(this, GameStatusQRCode.class));
+                return true;
+
+        }
+        switch (item.getItemId()) {
+            case R.id.homeMenuItem:
+                startActivity(new Intent(this, MainScreen.class));
+                return true;
+        }
+
+
+
+        return(super.onOptionsItemSelected(item));
+    }
+
+
+    public void next_page(View view) {
+        Intent intent = new Intent(view.getContext(), LoginQRCode.class);
+        startActivity(intent);
+    }
+
 }

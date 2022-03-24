@@ -26,18 +26,30 @@
         <entry key="..\:/Users/15879/AndroidStudioProjects/QRQuest2/app/src/main/res/layout/activity_main_screen.xml" value="0.38697916666666665" />
         <entry key="..\:/Users/15879/AndroidStudioProjects/QRQuest2/app/src/main/res/layout/activity_main_screen_map.xml" value="0.38697916666666665" />
         <entry key="..\:/Users/15879/AndroidStudioProjects/QRQuest2/app/src/main/res/menu/main_screen_menu.xml" value="0.38697916666666665" />
+        <entry key="..\:/Users/nosaj/Uni2021/Winter2022/CMPUT 301/QRQuest/QRQuest/app/src/main/res/layout/activity_login_qrcode.xml" value="0.2" />
+        <entry key="..\:/Users/nosaj/Uni2021/Winter2022/CMPUT 301/QRQuest/QRQuest/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="app/src/main/res/drawable/ic_menu_camera.xml" value="0.30666666666666664" />
         <entry key="app/src/main/res/drawable/ic_scoreboard.xml" value="0.17395833333333333" />
-        <entry key="app/src/main/res/layout/activity_login_qrcode.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_main_screen.xml" value="0.2907692307692308" />
+        <entry key="app/src/main/res/layout/activity_choose_qrcode_type.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/layout/activity_create_account.xml" value="0.2824074074074074" />
+        <entry key="app/src/main/res/layout/activity_game_status_qrcode.xml" value="0.2824074074074074" />
+        <entry key="app/src/main/res/layout/activity_login_qrcode.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.2824074074074074" />
+        <entry key="app/src/main/res/layout/activity_main_screen.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_side_bar.xml" value="0.2907692307692308" />
         <entry key="app/src/main/res/layout/app_bar_side_bar.xml" value="0.2907692307692308" />
+        <entry key="app/src/main/res/layout/choose_profile_view.xml" value="0.16770833333333332" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.2824074074074074" />
         <entry key="app/src/main/res/layout/fragment_logout.xml" value="0.1578125" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.1578125" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_slideshow.xml" value="0.1578125" />
+        <entry key="app/src/main/res/layout/nav_header_side_bar.xml" value="0.2824074074074074" />
+        <entry key="app/src/main/res/layout/profile_view.xml" value="0.1" />
         <entry key="app/src/main/res/menu/activity_side_bar_drawer.xml" value="0.2907692307692308" />
-        <entry key="app/src/main/res/menu/main_screen_menu.xml" value="0.1578125" />
+        <entry key="app/src/main/res/menu/login_menu.xml" value="0.335" />
+        <entry key="app/src/main/res/menu/main_screen_menu.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/profile_menu.xml" value="0.1" />
       </map>
     </option>
   </component>

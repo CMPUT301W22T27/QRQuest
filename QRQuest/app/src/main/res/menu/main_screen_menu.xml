@@ -13,7 +13,6 @@
         android:title="Leaderboard" />
     <item
         android:id="@+id/userSearchItem"
-        android:icon="@drawable/ic_search_black_24dp"
         android:title="Search"
         app:actionViewClass="android.widget.SearchView" />
     <item

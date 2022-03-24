@@ -37,6 +37,9 @@ import java.util.HashMap;
 * Still need to implement valid type checking and tests; very naive implementation
 * */
 
+/**
+ * Allows user to create account
+ */
 public class CreateAccount extends AppCompatActivity {
 
     Button confirmButton;

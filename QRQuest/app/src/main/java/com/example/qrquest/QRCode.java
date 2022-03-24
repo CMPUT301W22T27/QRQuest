@@ -1,4 +1,6 @@
 package com.example.qrquest;
+//Represents the QR code, computes its scoring and hashing, saves the score to the database
+//At this time, the cohesion of this class is high and need to be work upon for the final project.
 
 import com.google.common.hash.Hashing;
 import com.google.firebase.firestore.CollectionReference;
@@ -10,11 +12,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Represents the QR code, computes its scoring and hashing, saves the score to the database
+ */
 public class QRCode{
     //    private  String value;
     private String hash;
     private Integer score;
     // we should include the location here
+
+    /**
+     * Constructor method for the QRCode
+     * Calls the compute hash function if the input value is not already hashed
+     * Computes the score for the value
+     * @param value that need to be hashed
+     * @param isHashed Boolean Value to check if the string is already hashed
+     */
 
     public QRCode(String value, Boolean isHashed) {
         if (!isHashed){
@@ -27,9 +40,19 @@ public class QRCode{
         computeScore();
     }
 
+    /**
+     * returns the hash value
+     * @return hash value
+     */
+
     public String getHash() {
         return this.hash;
     }
+
+    /**
+     * computes the hash for the string
+     * @param value that needs to be hashed
+     */
 
     public void computeHash(String value){
         String sha256hex = Hashing.sha256()
@@ -38,9 +61,18 @@ public class QRCode{
         this.hash = sha256hex;
     }
 
+    /**
+     * returns the score of the QRCode
+     * @return score
+     */
+
     public int getScore() {
         return this.score;
     }
+
+    /**
+     * Computes the score of the QRCode
+     */
 
     public void computeScore() {
         int currentScore = 0;

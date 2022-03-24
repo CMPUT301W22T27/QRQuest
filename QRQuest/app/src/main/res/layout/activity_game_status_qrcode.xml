@@ -69,8 +69,8 @@
 
     <ImageView
         android:id="@+id/GameStatusQRCode"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_centerHorizontal="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -81,9 +81,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="16dp"
         android:text="highestScore:"
-        app:layout_constraintStart_toStartOf="parent"
         android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/GameStatusQRCode" />
+
+    <Button
+        android:id="@+id/privateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Private Login Code"
+        android:onClick="next_page"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/GameStatusQRCode"
+        app:layout_constraintVertical_bias="0.851" />
 </androidx.constraintlayout.widget.ConstraintLayout>

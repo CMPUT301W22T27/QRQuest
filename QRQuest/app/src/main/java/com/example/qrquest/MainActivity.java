@@ -29,11 +29,21 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.UUID;
+
 /*
  * Firestore link -> https://console.firebase.google.com/u/2/project/qrquest-b1e1e/firestore/data/~2F
  * I think anybody with this link can view and edit? All new users get stored in the db
@@ -49,77 +59,73 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         createAccountButton = findViewById(R.id.createNewAccountButton);
-        logInButton = findViewById(R.id.loginButton);
         TestButton = findViewById(R.id.testButton);
+        String username = null;
+        String email = null;
 
-        TestButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SideBarActivity.class);
-                startActivity(intent);
-            }
-        });
-        createAccountButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, CreateAccount.class);
-                startActivity(intent);
-            }
-        });
-        logInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                IntentIntegrator intentIntegrator = new IntentIntegrator(
-                        MainActivity.this
-                );
-                intentIntegrator.setPrompt("For flash use volume up key");
-                intentIntegrator.setBeepEnabled(false);
-                intentIntegrator.setOrientationLocked(true);
-                intentIntegrator.setCaptureActivity(Capture.class);
-                intentIntegrator.initiateScan();
-            }
-        });
-    }
-    @Override
-    protected void onActivityResult ( int requestCode, int resultCode, @Nullable Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (intentResult.getContents() != null) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        File file = new File(this.getFilesDir(), "login.txt"); // REFERENCE [2]
 
-            QRCode qrCode = new QRCode(intentResult.getContents(), true);
-            db = FirebaseFirestore.getInstance();
-            final CollectionReference collectionReference = db.collection("LoginQRCodes:");
-            Log.i("Unhashed:", intentResult.getContents());
-//            Log.i("Hashed:",  qrCode.getHash());
-            collectionReference.document(qrCode.getHash()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> taskout) {
-                    if (taskout.getResult().exists()) {
-                        Intent intent = new Intent(MainActivity.this, MainScreen.class);
-                        final CollectionReference collectionReferencein = db.collection("Users");
-                        String email = taskout.getResult().getString("Email");
-                        collectionReferencein.document(email).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> taskin) {
-                                String username = taskin.getResult().getString("Username");
-                                intent.putExtra("USER_NAME_MainActivity", username);
-                                intent.putExtra("EMAIL_ADDRESS_MainActivity", email);
-                                startActivity(intent);
-                            }
-                        });
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext(), "No Existing QR Code", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+        try {
 
-            });
-        } else {
-            Toast.makeText(getApplicationContext(), "OOPS... You did not scan anything", Toast.LENGTH_SHORT).show();
+            if (file.exists()){
+                FileReader fileReader = new FileReader(file);
+                char[] buffer = new char[100];
+
+                BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+                email = bufferedReader.readLine();
+                Log.i("em", email);
+                username = bufferedReader.readLine();
+                Log.i("un", username);
+            }
+            else{
+
+                FileWriter fileWriter = new FileWriter(file.getPath());
+
+                username = UUID.randomUUID().toString(); // REFERENCE: शु-Bham at https://stackoverflow.com/questions/12116092/android-random-string-generator
+                email = UUID.randomUUID().toString(); // TODO: check if this username or email already exists (unlikely)
+                Log.i("username", username);
+                Log.i("email", email);
+
+                db = FirebaseFirestore.getInstance();
+
+                CollectionReference collectionReference = db.collection("Users");
+                HashMap<String, String> data = new HashMap<>();
+                // add tests for invalid usernames and emails later.
+                data.put("Username", username);
+                collectionReference.document(email).set(data);
+
+                file.createNewFile(); // Create the login file
+                fileWriter.write(email);
+                fileWriter.append("\n"+username);
+                fileWriter.close();
+            }
+
+        } catch (IOException e) {
+            Log.e("Error:", "File error");
+            // TODO: Error occurred when opening raw file for reading.
         }
 
+        Intent intent = new Intent(this, MainScreen.class);
 
+        intent.putExtra("USER_NAME_MainActivity", username);
+        intent.putExtra("EMAIL_ADDRESS_MainActivity", email);
+        startActivity(intent);
+
+//        TestButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(MainActivity.this, SideBarActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//        createAccountButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(MainActivity.this, CreateAccount.class);
+//                startActivity(intent);
+//            }
+//        });
     }
 }
 
