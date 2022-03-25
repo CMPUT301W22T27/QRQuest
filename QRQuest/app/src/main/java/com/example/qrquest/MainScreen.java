@@ -48,7 +48,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
     String username;
     String email;
     Button subCodeButton;
-
+    Button search;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +72,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         subCodeButton = findViewById(R.id.submitQRCodeButton);
         generateQRCode = findViewById(R.id.generateQRCodeButton);
         mapView = (MapView) findViewById(R.id.appMapView);
-
+        search = findViewById(R.id.Search);
         // map logic
         checkPermission();
         // dummy check for permission; need to add more details here
@@ -90,7 +90,12 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                 startActivity(chooseQRCodeType);
             }
         });
-
+        search.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                Intent searchUser = new Intent(MainScreen.this,SearchUser.class);
+                startActivity(searchUser);
+            }
+        });
         // listener for the submit qr code button
         subCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
