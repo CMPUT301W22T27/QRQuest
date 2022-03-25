@@ -16,6 +16,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QRQuest">
         <activity
+            android:name=".OtherUserProfile"
+            android:exported="false" />
+        <activity
+            android:name=".SearchUser"
+            android:exported="false" />
+        <activity
             android:name=".SideBarActivity"
             android:exported="false"
             android:label="@string/title_activity_side_bar"
