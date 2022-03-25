@@ -3,25 +3,20 @@ package com.example.qrquest;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.zxing.client.android.Intents;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -56,7 +51,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
             }
         }
 
-        subCodeButton = findViewById(R.id.submitQRCodeButton);
+        subCodeButton = findViewById(R.id.scanQRCodeButton);
         generateQRCode = findViewById(R.id.generateQRCodeButton);
         mapView = (MapView) findViewById(R.id.appMapView);
 
