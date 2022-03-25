@@ -105,25 +105,10 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         super.onActivityResult(requestCode, resultCode, data);
         IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (intentResult.getContents() != null){
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainScreen.this);
-            builder.setTitle("Result");
-
             QRCode qrCode = new QRCode(intentResult.getContents(), false);
             String score = Integer.toString(qrCode.getScore());
-            builder.setMessage(score);
             qrCode.saveScore(); // this should really be a user.saveCode(qrCode)
 
-
-
-//            builder.setMessage(intentResult.getContents());
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-
-                }
-            });
-            builder.show();
             openSubmissionActivity(score);
 
         }else {
