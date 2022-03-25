@@ -1,5 +1,7 @@
 package com.example.qrquest;
 
+import static java.lang.Integer.parseInt;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +23,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -29,7 +32,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.protobuf.Empty;
 import com.google.protobuf.Value;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Scanner;
 
 /*
 * Firestore link -> https://console.firebase.google.com/u/2/project/qrquest-b1e1e/firestore/data/~2F
@@ -82,7 +90,7 @@ public class CreateAccount extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.getResult().exists()) {
-                            Log.i("1234",task.getResult().getString("Username"));
+                            //Log.i("1234",task.getResult().get("Username").toString());
                             Toast.makeText(CreateAccount.this, "Account exists", Toast.LENGTH_SHORT).show();
                         }
                         else{

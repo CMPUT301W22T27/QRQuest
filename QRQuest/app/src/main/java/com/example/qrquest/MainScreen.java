@@ -1,6 +1,8 @@
 package com.example.qrquest;
 
 
+import static java.lang.Integer.parseInt;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -22,18 +24,19 @@ import android.widget.Toast;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.UUID;
+import java.util.Iterator;
+import java.util.List;
 
 public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
     public static final String USER_NAME = "com.example.qrquest.USERNAME";
@@ -45,33 +48,31 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
     String username;
     String email;
     Button subCodeButton;
-
+    Button search;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
         Bundle intent = getIntent().getExtras();
-        if (intent == null) {
-            loginWithFile();
-        }
-        else{
+        if (intent != null){
             if (intent.containsKey("USER_NAME_MainActivity")){
                 username = intent.getString("USER_NAME_MainActivity");
                 email = intent.getString("EMAIL_ADDRESS_MainActivity");
+                welcomeMessage = findViewById(R.id.welcomeUserEditText);
+                welcomeMessage.setText("Welcome, " + username + "!");
             }
             else{
                 username = intent.getString("USER_NAME_CreateAccount");
                 email = intent.getString("EMAIL_ADDRESS_CreateAccount");
+                welcomeMessage = findViewById(R.id.welcomeUserEditText);
+                welcomeMessage.setText("Welcome, " + username + "!!!!");
             }
         }
-
-        welcomeMessage = findViewById(R.id.welcomeUserEditText);
-        welcomeMessage.setText("Welcome, " + username + "!");
 
         subCodeButton = findViewById(R.id.submitQRCodeButton);
         generateQRCode = findViewById(R.id.generateQRCodeButton);
         mapView = (MapView) findViewById(R.id.appMapView);
-
+        search = findViewById(R.id.Search);
         // map logic
         checkPermission();
         // dummy check for permission; need to add more details here
@@ -89,7 +90,12 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                 startActivity(chooseQRCodeType);
             }
         });
-
+        search.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                Intent searchUser = new Intent(MainScreen.this,SearchUser.class);
+                startActivity(searchUser);
+            }
+        });
         // listener for the submit qr code button
         subCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,64 +107,13 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         // sidebar logic
     }
 
-
-
-    /**
-     * If login file exists, read the username and email from it, else generate username and email and create file.
-     * Reference: शु-Bham at https://stackoverflow.com/questions/12116092/android-random-string-generator
-     */
-    private void loginWithFile(){
-        username = null;
-        email = null;
-
-        File file = new File(this.getFilesDir(), "login.txt");
-        try {
-
-            if (file.exists()){
-                FileReader fileReader = new FileReader(file);
-                char[] buffer = new char[100];
-
-                BufferedReader bufferedReader = new BufferedReader(fileReader);
-
-                email = bufferedReader.readLine();
-                Log.i("em", email);
-                username = bufferedReader.readLine();
-                Log.i("un", username);
-            }
-            else{
-
-                FileWriter fileWriter = new FileWriter(file.getPath());
-
-                username = UUID.randomUUID().toString();
-                email = UUID.randomUUID().toString(); // TODO: check if this username or email already exists (unlikely)
-                Log.i("username", username);
-                Log.i("email", email);
-
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-                CollectionReference collectionReference = db.collection("Users");
-                HashMap<String, String> data = new HashMap<>();
-                // add tests for invalid usernames and emails later.
-                data.put("Username", username);
-                collectionReference.document(email).set(data);
-
-                file.createNewFile(); // Create the login file
-                fileWriter.write(email);
-                fileWriter.append("\n"+username);
-                fileWriter.close();
-            }
-
-        } catch (IOException e) {
-            Log.e("Error:", "File error");
-            // TODO: Error occurred when opening raw file for reading.
-        }
-    }
-
     /**
      * Accesses camera and scans qrcode
      * Reference: https://www.youtube.com/watch?v=u2pgSu9RhYo
      * @param view view
      */
+
+
     public void scanner(View view){
         IntentIntegrator intentIntegrator = new IntentIntegrator(
                 MainScreen.this
@@ -193,7 +148,37 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
             String score = Integer.toString(qrCode.getScore());
             builder.setMessage(score);
             qrCode.saveScore(); // this should really be a user.saveCode(qrCode)
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            final CollectionReference collectionReference = db.collection("userScore");
+            collectionReference.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.getResult().exists()) {
+                        List<Integer> newScoreList = new ArrayList<Integer>();
+                        String list = task.getResult().get("Score:").toString();
+                        String[] string = list.replaceAll("\\[", "")
+                                .replaceAll("]", "")
+                                .replaceAll(" ","")
+                                .split(",");
+                        for (int i = 0; i < string.length; i++) {
+                            newScoreList.add(Integer.valueOf(string[i]));
+                        }
+                        newScoreList.add(parseInt(score));
+                        collectionReference.document(username).delete();
+                        HashMap<String, Object> userScore = new HashMap<>();
+                        userScore.put("Score:", newScoreList);
+                        collectionReference.document(username).set(userScore);
+                    }
+                    else{
+                        List<Integer> scoreList = new ArrayList<Integer>();
+                        scoreList.add(parseInt(score));
+                        HashMap<String, Object> userScore = new HashMap<>();
+                        userScore.put("Score:", scoreList);
+                        collectionReference.document(username).set(userScore);
+                    }
+                }
 
+            });
 
 //            builder.setMessage(intentResult.getContents());
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
