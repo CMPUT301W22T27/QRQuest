@@ -19,9 +19,27 @@ public class LeaderBoardType extends AppCompatActivity {
         highestScoreQRCode = findViewById(R.id.HighestScoringQRCodeButton);
         highestScoreQRCode.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
-                Intent chooseLeaderBoardType = new Intent(LeaderBoardType.this, HighestScoreQRCodeLB.class);
-                chooseLeaderBoardType.putExtra("USER_NAME_LeaderBoardType",username);
-                startActivity(chooseLeaderBoardType);
+                Intent chooseHighestScoreQRCode = new Intent(LeaderBoardType.this, HighestScoreQRCodeLB.class);
+                chooseHighestScoreQRCode.putExtra("USER_NAME_LeaderBoardType",username);
+                startActivity(chooseHighestScoreQRCode);
+            }
+        });
+        Button numberOfQRCodesScanned;
+        numberOfQRCodesScanned = findViewById(R.id.NumberOfQRCodesScannedButton);
+        numberOfQRCodesScanned.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                Intent chooseNumberOfQRCodesScanned = new Intent(LeaderBoardType.this, NumberOfQRCodesScannedLB.class);
+                chooseNumberOfQRCodesScanned.putExtra("USER_NAME_LeaderBoardType",username);
+                startActivity(chooseNumberOfQRCodesScanned);
+            }
+        });
+        Button combineScore;
+        combineScore = findViewById(R.id.CombinedScoreButton);
+        combineScore.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                Intent chooseCombineScore = new Intent(LeaderBoardType.this, CombinedScoreLB.class);
+                chooseCombineScore.putExtra("USER_NAME_LeaderBoardType",username);
+                startActivity(chooseCombineScore);
             }
         });
     }

@@ -32,7 +32,7 @@ import java.util.Map;
  * Still need to implement valid type checking and tests; very naive implementation
  * */
 
-public class HighestScoreQRCodeLB extends AppCompatActivity {
+public class CombinedScoreLB extends AppCompatActivity {
     public ListView qrCodeList;
     public ArrayList<Data> dataList;
     public ArrayAdapter<Data> qrCodeAdapter;
@@ -40,7 +40,7 @@ public class HighestScoreQRCodeLB extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_highest_score_qrcode_lb);
+        setContentView(R.layout.activity_combined_score_lb);
         Bundle intent = getIntent().getExtras();
         String playerUsername = intent.getString("USER_NAME_LeaderBoardType");
         String[] leaderList = {};
@@ -76,11 +76,14 @@ public class HighestScoreQRCodeLB extends AppCompatActivity {
                                     for (int i = 0; i < string.length; i++) {
                                         newScoreList.add(Integer.valueOf(string[i]));
                                     }
-                                    Collections.sort(newScoreList);
-                                    int max = newScoreList.get(newScoreList.size() - 1);
-                                    scoreList.add(max);
+                                    int sum = 0;
+                                    for(int k=0;k<newScoreList.size();k++){
+                                        sum += newScoreList.get(k);
+                                    }
 
-                                    data.put(username.get(index),max);
+                                    scoreList.add(sum);
+
+                                    data.put(username.get(index),sum);
 
                                 } else {
                                     Log.i("test", "fail");
@@ -97,7 +100,7 @@ public class HighestScoreQRCodeLB extends AppCompatActivity {
                                         Integer value = entry.getValue();
 
 
-                                        TextView playerRank = findViewById(R.id.YourRankHighestScore);
+                                        TextView playerRank = findViewById(R.id.YourRankCombinedScore);
                                         if (username.contains(playerUsername)) {
 
                                             if (key.equals(playerUsername)) {
@@ -115,13 +118,13 @@ public class HighestScoreQRCodeLB extends AppCompatActivity {
                                         }
                                         dataList.add(new Data(Integer.toString(index),key,Integer.toString(value)));
                                     }
-                                    qrCodeList = findViewById(R.id.QRcodeHighestScoreList);
-                                    qrCodeAdapter = new CustomList(HighestScoreQRCodeLB.this,dataList);
+                                    qrCodeList = findViewById(R.id.CombinedScoreList);
+                                    qrCodeAdapter = new CustomList(CombinedScoreLB.this,dataList);
                                     qrCodeList.setAdapter(qrCodeAdapter);
 
                                     return;
-                                    }
                                 }
+                            }
 
                         });
                     }

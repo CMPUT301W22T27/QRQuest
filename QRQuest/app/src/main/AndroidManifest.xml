@@ -16,6 +16,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QRQuest">
         <activity
+            android:name=".CombinedScoreLB"
+            android:exported="false" />
+        <activity
+            android:name=".NumberOfQRCodesScannedLB"
+            android:exported="false" />
+        <activity
             android:name=".HighestScoreQRCodeLB"
             android:exported="false" />
         <activity
