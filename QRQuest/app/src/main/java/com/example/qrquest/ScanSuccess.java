@@ -37,8 +37,6 @@ public class ScanSuccess extends AppCompatActivity {
 //        String score = extras.getString("score");
 
         qrCode = (QRCode) getIntent().getSerializableExtra("qrCode");
-        String qrName = qrNameBox.getText().toString();
-        qrCode.setName(qrName);
 
         scoreDisplay = findViewById(R.id.scoreView);
         scoreDisplay.setText("Score: " + qrCode.getScore());
@@ -53,6 +51,8 @@ public class ScanSuccess extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String qrName = qrNameBox.getText().toString();
+                qrCode.setName(qrName);
                 qrCode.save();
                 Toast.makeText(getApplicationContext(), "Submission Successful", Toast.LENGTH_SHORT).show();
                 finish();
