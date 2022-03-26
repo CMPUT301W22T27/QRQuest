@@ -19,15 +19,12 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.zxing.common.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 /*
  * Firestore link -> https://console.firebase.google.com/u/2/project/qrquest-b1e1e/firestore/data/~2F
@@ -37,8 +34,8 @@ import java.util.TreeMap;
 
 public class HighestScoreQRCodeLB extends AppCompatActivity {
     public ListView qrCodeList;
-    public ArrayList<String> dataList;
-    public ArrayAdapter<String> qrCodeAdapter;
+    public ArrayList<Data> dataList;
+    public ArrayAdapter<Data> qrCodeAdapter;
     FirebaseFirestore db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +47,7 @@ public class HighestScoreQRCodeLB extends AppCompatActivity {
         List<String> username = new ArrayList<String>();
         List<Integer> scoreList = new ArrayList<Integer>();
         db = FirebaseFirestore.getInstance();
-        dataList = new ArrayList<String>();
+        dataList = new ArrayList<Data>();
         Map<String, Integer> data = new HashMap<>();
         //Get all the username in the userScore collection
         final CollectionReference collectionReference = db.collection("userScore");
@@ -122,10 +119,11 @@ public class HighestScoreQRCodeLB extends AppCompatActivity {
                                         for (int j=0;j<gap;j++){
                                             whiteSpace+= new String(" ");
                                         }
-                                        dataList.add(Integer.toString(index ) + "                    " + key + whiteSpace +  + value);
+                                        //dataList.add((Integer.toString(index),key ,value));
+                                        dataList.add(new Data(Integer.toString(index),key,Integer.toString(value)));
                                     }
                                     qrCodeList = findViewById(R.id.QRcodeHighestScoreList);
-                                    qrCodeAdapter = new ArrayAdapter<String>(HighestScoreQRCodeLB.this, R.layout.support_simple_spinner_dropdown_item, dataList);
+                                    qrCodeAdapter = new CustomList(HighestScoreQRCodeLB.this,dataList);
                                     qrCodeList.setAdapter(qrCodeAdapter);
 
                                     return;
