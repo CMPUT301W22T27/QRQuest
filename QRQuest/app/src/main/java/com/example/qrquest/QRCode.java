@@ -24,6 +24,7 @@ import java.util.List;
  */
 public class QRCode implements Serializable {
     //    private  String value;
+    private String name;
     private String hash;
     private Integer score;
     private String image;
@@ -46,6 +47,23 @@ public class QRCode implements Serializable {
         }
 
         computeScore();
+    }
+
+    /**
+     * gets the name of the qr code
+     * @return name the name of the code given by user
+     */
+    public String getName() {
+        return name;
+    }
+
+
+    /**
+     * sets the name of the qr code
+     * @param name the name of the code given by user
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -128,6 +146,7 @@ public class QRCode implements Serializable {
         HashMap<String, String> data = new HashMap<>();
         // add tests for invalid usernames and emails later.
         data.put("Score", this.score.toString());
+        data.put("name", this.name);
         data.put("Image", this.image);
 
 

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ public class ScanSuccess extends AppCompatActivity {
     TextView scoreDisplay;
     Button submitButton;
     QRCode qrCode;
+    EditText qrNameBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +30,15 @@ public class ScanSuccess extends AppCompatActivity {
         imageView = findViewById(R.id.pictureView);
         takePictureButton = findViewById(R.id.photoButton);
         submitButton = findViewById(R.id.submitButton);
+        qrNameBox = findViewById(R.id.qrName);
+
 
 //        Bundle extras = getIntent().getExtras();
 //        String score = extras.getString("score");
 
         qrCode = (QRCode) getIntent().getSerializableExtra("qrCode");
+        String qrName = qrNameBox.getText().toString();
+        qrCode.setName(qrName);
 
         scoreDisplay = findViewById(R.id.scoreView);
         scoreDisplay.setText("Score: " + qrCode.getScore());
