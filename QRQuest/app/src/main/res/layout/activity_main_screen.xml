@@ -32,7 +32,7 @@
         android:id="@+id/generateQRCodeButton"
         android:layout_width="220dp"
         android:layout_height="44dp"
-        android:layout_marginBottom="68dp"
+        android:layout_marginBottom="16dp"
         android:text="Generate QR Code"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,5 +57,15 @@
         app:layout_constraintBottom_toTopOf="@+id/submitQRCodeButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/LeaderBoardButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Leader Board"
+        app:layout_constraintBottom_toTopOf="@+id/Search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appMapView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

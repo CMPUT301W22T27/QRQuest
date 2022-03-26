@@ -16,6 +16,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QRQuest">
         <activity
+            android:name=".HighestScoreQRCodeLB"
+            android:exported="false" />
+        <activity
+            android:name=".LeaderBoardType"
+            android:exported="false" />
+        <activity
             android:name=".OtherUserProfile"
             android:exported="false" />
         <activity
