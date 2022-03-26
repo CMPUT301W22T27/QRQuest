@@ -3,8 +3,10 @@ package com.example.qrquest;
 import static java.lang.String.valueOf;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -43,13 +45,13 @@ public class HighestScoreQRCodeLB extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_highest_score_qrcode_lb);
         Bundle intent = getIntent().getExtras();
-        String playerUsername = intent.getString("USER_NAME_MainScreen");
+        String playerUsername = intent.getString("USER_NAME_LeaderBoardType");
         String[] leaderList = {};
         List<String> username = new ArrayList<String>();
         List<Integer> scoreList = new ArrayList<Integer>();
         db = FirebaseFirestore.getInstance();
         dataList = new ArrayList<String>();
-        Map<Integer, String> data = new HashMap<>();
+        Map<String, Integer> data = new HashMap<>();
         //Get all the username in the userScore collection
         final CollectionReference collectionReference = db.collection("userScore");
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -61,7 +63,9 @@ public class HighestScoreQRCodeLB extends AppCompatActivity {
                     for (int i=0;i < documentList.size();i++){
                         int index = i;
                         username.add(documentList.get(i).getId());
+                        //Get the max score for each username
                         collectionReference.document(username.get(i)).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @RequiresApi(api = Build.VERSION_CODES.N)
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> taskin) {
                                 if (taskin.getResult().exists()) {
@@ -79,38 +83,55 @@ public class HighestScoreQRCodeLB extends AppCompatActivity {
                                     int max = newScoreList.get(newScoreList.size() - 1);
                                     scoreList.add(max);
 
-                                    data.put(max, username.get(index));
+                                    data.put(username.get(index),max);
 
                                 } else {
                                     Log.i("test", "fail");
                                 }
-                                //Print our the List
+                                //Print out the List
                                 if (scoreList.size() == maxSize) {
-                                    Collections.sort(scoreList, Collections.reverseOrder());
-                                    for (int i = 0; i < scoreList.size(); i++) {
+                                    List<Map.Entry<String,Integer>> list = new ArrayList<>(data.entrySet());
+                                    list.sort(Collections.reverseOrder(Map.Entry.comparingByValue()));
+                                    int index = 0;
+                                    for (Map.Entry<String, Integer> entry : list) {
+                                        index +=1;
+
+                                        String key = entry.getKey();
+                                        Integer value = entry.getValue();
+
+
                                         TextView playerRank = findViewById(R.id.YourRank);
                                         if (username.contains(playerUsername)) {
-                                            if (data.get(scoreList.get(i)).equals(playerUsername)) {
-                                                playerRank.setText("Your Rank is : " + i + 1);
+
+                                            if (key.equals(playerUsername)) {
+
+                                                playerRank.setText("Your Rank is : " + Integer.toString(index));
                                             }
                                         }
                                         else{
                                             playerRank.setText("You don't have a rank!");
                                         }
-                                        int usernameLength = data.get(scoreList.get(i)).length();
-                                        int gap = 30-usernameLength;
+                                        int usernameLength = key.length();
+                                        if (usernameLength >5){
+                                            usernameLength = 5;
+                                            String shortUsername = key.substring(0,9)+"...";
+                                            key = shortUsername;
+                                        }
+                                        int gap = 40-usernameLength;
                                         String whiteSpace = "";
                                         for (int j=0;j<gap;j++){
                                             whiteSpace+= new String(" ");
                                         }
-                                        dataList.add(Integer.toString(i + 1) + "                    " + data.get(scoreList.get(i)) + whiteSpace +  + scoreList.get(i));
+                                        dataList.add(Integer.toString(index ) + "                    " + key + whiteSpace +  + value);
                                     }
                                     qrCodeList = findViewById(R.id.QRcodeHighestScoreList);
                                     qrCodeAdapter = new ArrayAdapter<String>(HighestScoreQRCodeLB.this, R.layout.support_simple_spinner_dropdown_item, dataList);
                                     qrCodeList.setAdapter(qrCodeAdapter);
+
                                     return;
+                                    }
                                 }
-                            }
+
                         });
                     }
 
