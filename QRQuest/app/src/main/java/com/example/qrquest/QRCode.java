@@ -62,9 +62,9 @@ public class QRCode implements Serializable {
     }
 
     // delete this method, only used in testing
-    public String getImage() {
-        return image;
-    }
+//    public String getImage() {
+//        return image;
+//    }
 
     /**
      * returns the hash value
