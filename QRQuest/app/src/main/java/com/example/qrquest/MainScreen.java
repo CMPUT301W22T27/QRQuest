@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -102,9 +103,10 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         if (intentResult.getContents() != null){
             QRCode qrCode = new QRCode(intentResult.getContents(), false);
             String score = Integer.toString(qrCode.getScore());
-            qrCode.saveScore(); // this should really be a user.saveCode(qrCode)
+//            qrCode.saveScore(); // this should really be a user.saveCode(qrCode)
 
-            openSubmissionActivity(score);
+//            openSubmissionActivity(score);
+            openSubmissionActivity(qrCode);
 
         }else {
             Toast.makeText(getApplicationContext(), "OOPS... You did not scan anything", Toast.LENGTH_SHORT).show();
@@ -176,10 +178,17 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
     public void onMapReady(@NonNull GoogleMap googleMap) {
 
     }
-    public void openSubmissionActivity(String score){
-       Intent intent = new Intent(this, ScanSuccess.class);
-       intent.putExtra("score", score);
-       startActivity(intent);
+//    public void openSubmissionActivity(String score){
+//       Intent intent = new Intent(this, ScanSuccess.class);
+//       intent.putExtra("score", score);
+//       startActivity(intent);
+//
+//    }
+
+    public void openSubmissionActivity(QRCode code){
+        Intent intent = new Intent(this, ScanSuccess.class);
+        intent.putExtra("qrCode", code);
+        startActivity(intent);
 
     }
 }

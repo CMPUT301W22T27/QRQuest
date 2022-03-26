@@ -11,12 +11,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ScanSuccess extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     ImageView imageView;
     Button takePictureButton;
     TextView scoreDisplay;
+    Button submitButton;
+    QRCode qrCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +27,15 @@ public class ScanSuccess extends AppCompatActivity {
         setContentView(R.layout.activity_scan_success);
         imageView = findViewById(R.id.pictureView);
         takePictureButton = findViewById(R.id.photoButton);
+        submitButton = findViewById(R.id.submitButton);
 
-        Bundle extras = getIntent().getExtras();
-        String score = extras.getString("score");
+//        Bundle extras = getIntent().getExtras();
+//        String score = extras.getString("score");
+
+        qrCode = (QRCode) getIntent().getSerializableExtra("qrCode");
+
         scoreDisplay = findViewById(R.id.scoreView);
-        scoreDisplay.setText("Score: " + score);
+        scoreDisplay.setText("Score: " + qrCode.getScore());
 
         takePictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,6 +43,18 @@ public class ScanSuccess extends AppCompatActivity {
                 dispatchTakePictureIntent();
             }
         });
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                qrCode.save();
+                Toast.makeText(getApplicationContext(), "Submission Successful", Toast.LENGTH_SHORT).show();
+                finish();
+
+            }
+        });
+
+
 
     }
 
@@ -46,6 +65,15 @@ public class ScanSuccess extends AppCompatActivity {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             imageView.setImageBitmap(imageBitmap);
+            qrCode.setImage(imageBitmap);
+
+        //this is the code to decode the text that is stored in the database. just retrieve whats in the image field"
+//            String encodedImage = qrCode.getImage();
+//            byte[] decodedArray = Base64.decode(encodedImage, Base64.DEFAULT);
+//            Bitmap image = BitmapFactory.decodeByteArray(decodedArray, 0, decodedArray.length);
+//            imageView.setImageBitmap(image);
+
+
         }
     }
 
