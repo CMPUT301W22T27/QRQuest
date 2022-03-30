@@ -20,13 +20,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/*
- * Firestore link -> https://console.firebase.google.com/u/2/project/qrquest-b1e1e/firestore/data/~2F
- * I think anybody with this link can view and edit? All new users get stored in the db
- * Still need to implement valid type checking and tests; very naive implementation
- * */
 public class OtherUserProfile extends AppCompatActivity {
     FirebaseFirestore db;
+    TextView lowestScore;
+    TextView highestScore;
+    TextView qrCodeCount;
+    TextView combinedScore;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,17 +33,13 @@ public class OtherUserProfile extends AppCompatActivity {
         Bundle intent = getIntent().getExtras();
         String username = intent.getString("OTHER_USER_NAME");
         TextView TitleTextView;
-        TextView UserHighestScoreTextView;
-        TextView UserLowestScoreTextView;
-        TextView UserQRCodeCountTextView;
-        TextView UserCombinedScoreTextView;
         TextView UsernameTextView;
         TitleTextView = findViewById(R.id.OtherUserTitle);
-        UserHighestScoreTextView = findViewById(R.id.otherUserHighestScore);
-        UserLowestScoreTextView = findViewById(R.id.otherUserLowestScore);
-        UserQRCodeCountTextView = findViewById(R.id.otherUserQRCodeCount);
-        UserCombinedScoreTextView = findViewById(R.id.otherUserCombinedScore);
         UsernameTextView = findViewById(R.id.otherUserName);
+        lowestScore = findViewById(R.id.otherUserLowestScore);
+        highestScore = findViewById(R.id.otherUserHighestScore);
+        qrCodeCount = findViewById(R.id.otherUserQRCodeCount);
+        combinedScore =  findViewById(R.id.otherUserCombinedScore);
         TitleTextView.setText(username+"'s Profile:");
         UsernameTextView.setText("UserName: " + username);
         db = FirebaseFirestore.getInstance();
@@ -69,20 +64,17 @@ public class OtherUserProfile extends AppCompatActivity {
                     for(int i = 0; i<newScoreList.size();i++){
                         sum += newScoreList.get(i);
                     }
-                    UserLowestScoreTextView.setText("Lowest Score: "+min);
-                    UserHighestScoreTextView.setText("Highest Score: "+max);
-                    UserQRCodeCountTextView.setText("QR Code Count: "+ newScoreList.size());
-                    UserCombinedScoreTextView.setText("Combined Score: "+sum);
+                    lowestScore.setText("Lowest Score: "+min);
+                    highestScore.setText("Highest Score: "+max);
 
+                    qrCodeCount.setText("QR Code Count: "+ newScoreList.size());
+                    combinedScore.setText("Combined Score: "+sum);
                 }
                 else{
-                    TextView lowestScore = (TextView) findViewById(R.id.textLowestScore);
+
                     lowestScore.setText("Lowest Score: "+0);
-                    TextView highestScore = (TextView) findViewById(R.id.textHighestScore);
                     highestScore.setText("Highest Score: "+0);
-                    TextView qrCodeCount = (TextView) findViewById(R.id.textQRCodeCount);
                     qrCodeCount.setText("QR Code Count: "+ 0);
-                    TextView combinedScore = (TextView) findViewById(R.id.textCombinedScore);
                     combinedScore.setText("Combined Score: "+0);
                 }
             }
@@ -97,5 +89,13 @@ public class OtherUserProfile extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        qrCodeCount.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                Intent otherUserQRCodeCount = new Intent(OtherUserProfile.this,OtherPlayerQRCodeCount.class);
+                otherUserQRCodeCount.putExtra("User_Name_OtherUserProfile",username);
+                startActivity(otherUserQRCodeCount);
+            }
+        });
+
     }
 }

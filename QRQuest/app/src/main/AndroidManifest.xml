@@ -63,6 +63,9 @@
             android:name=".ChooseQRCodeType"
             android:exported="false" />
         <activity
+            android:name=".OtherPlayerQRCodeCount"
+            android:exported="false" />
+        <activity
             android:name=".Capture"
             android:exported="false" />
         <!--

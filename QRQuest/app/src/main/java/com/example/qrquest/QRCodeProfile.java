@@ -23,6 +23,9 @@ public class QRCodeProfile extends AppCompatActivity {
             if (intent.containsKey("QRCode_TotalNumberQRCodeScanned")){
                 QRCode= intent.getString("QRCode_TotalNumberQRCodeScanned");
             }
+            else if(intent.containsKey("QRCode_OtherPlayerQRCodeCount")){
+                QRCode = intent.getString("QRCode_OtherPlayerQRCodeCount");
+            }
             else{
                 QRCode = intent.getString("QRCode_GlobalQRCodeList");
             }
