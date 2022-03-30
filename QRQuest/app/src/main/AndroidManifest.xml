@@ -16,6 +16,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QRQuest">
         <activity
+            android:name=".OtherUserWithSameQRCode"
+            android:exported="false" />
+        <activity
+            android:name=".QRCodeProfile"
+            android:exported="false" />
+        <activity
             android:name=".TotalNumberQRCodeScanned"
             android:exported="false" />
         <activity

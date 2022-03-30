@@ -152,7 +152,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                         String list = task.getResult().get("Score:").toString();
                         String[] string = list.replaceAll("\\[", "")
                                 .replaceAll("]", "")
-                                .replaceAll(" ","")
+                                .replaceAll(" ", "")
                                 .split(",");
                         for (int i = 0; i < string.length; i++) {
                             newScoreList.add(Integer.valueOf(string[i]));
@@ -162,39 +162,70 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                         HashMap<String, Object> userScore = new HashMap<>();
                         userScore.put("Score:", newScoreList);
                         collectionReference.document(username).set(userScore);
-
-                        final CollectionReference collectionReference = db.collection("UserToQRCode");
-                        List<String> newQrcodeList = new ArrayList<String>();
-                        String qrcodelist = task.getResult().get("QRCode").toString();
-                        String[] qrcodestring = qrcodelist.replaceAll("\\[", "")
-                                .replaceAll("]", "")
-                                .replaceAll(" ","")
-                                .split(",");
-                        for (int i = 0; i < string.length; i++) {
-                            newQrcodeList.add(qrcodestring[i]);
-                        }
-                        newQrcodeList.add(qrcode);
-                        collectionReference.document(username).delete();
-                        HashMap<String, Object> userQRCode = new HashMap<>();
-                        userScore.put("QRCode", newQrcodeList);
-                        collectionReference.document(username).set(userQRCode);
-                    }
-                    else{
+                    } else {
                         List<Integer> scoreList = new ArrayList<Integer>();
                         scoreList.add(parseInt(score));
                         HashMap<String, Object> userScore = new HashMap<>();
                         userScore.put("Score:", scoreList);
                         collectionReference.document(username).set(userScore);
-
-                        final CollectionReference collectionReference = db.collection("UserToQRCode");
-                        List<String> qrcodeList = new ArrayList<String>();
-                        qrcodeList.add(qrcode);
-                        HashMap<String, Object> userQRCode = new HashMap<>();
-                        userScore.put("QRCode", qrcodeList);
-                        collectionReference.document(username).set(userQRCode);
                     }
+                    final CollectionReference collectionReferenceUserToQRCode = db.collection("UserToQRCode");
+                    collectionReference.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.getResult().exists()) {
+                                List<String> newUserToQrcodeList = new ArrayList<String>();
+                                String userToQrcodelist = task.getResult().get("QRCode").toString();
+                                String[] userToQrcodestring = userToQrcodelist.replaceAll("\\[", "")
+                                        .replaceAll("]", "")
+                                        .replaceAll(" ", "")
+                                        .split(",");
+                                for (int i = 0; i < userToQrcodestring.length; i++) {
+                                    newUserToQrcodeList.add(userToQrcodestring[i]);
+                                }
+                                newUserToQrcodeList.add(qrcode);
+                                collectionReferenceUserToQRCode.document(username).delete();
+                                HashMap<String, Object> userQRCode = new HashMap<>();
+                                userQRCode.put("QRCode", newUserToQrcodeList);
+                                collectionReferenceUserToQRCode.document(username).set(userQRCode);
+                            } else {
+                                List<String> qrcodeList = new ArrayList<String>();
+                                qrcodeList.add(qrcode);
+                                HashMap<String, Object> userQRCode = new HashMap<>();
+                                userQRCode.put("QRCode", qrcodeList);
+                                collectionReferenceUserToQRCode.document(username).set(userQRCode);
+                            }
+                            final CollectionReference collectionReferenceQRCodetoUser = db.collection("QRCodeToUser");
+                            collectionReference.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.getResult().exists()) {
+                                        List<String> newQrcodeToUserList = new ArrayList<String>();
+                                        String qrcodeToUserlist = task.getResult().get("Username").toString();
+                                        String[] qrcodeToUserstring = qrcodeToUserlist.replaceAll("\\[", "")
+                                                .replaceAll("]", "")
+                                                .replaceAll(" ", "")
+                                                .split(",");
+                                        for (int i = 0; i < qrcodeToUserstring.length; i++) {
+                                            newQrcodeToUserList.add(qrcodeToUserstring[i]);
+                                        }
+                                        newQrcodeToUserList.add(username);
+                                        collectionReference.document(username).delete();
+                                        HashMap<String, Object> QRCodeUser = new HashMap<>();
+                                        QRCodeUser.put("Username", username);
+                                        collectionReferenceQRCodetoUser.document(username).set(QRCodeUser);
+                                    } else {
+                                        List<String> usernameList = new ArrayList<String>();
+                                        usernameList.add(username);
+                                        HashMap<String, Object> QRCodeUser = new HashMap<>();
+                                        QRCodeUser.put("Username", username);
+                                        collectionReferenceQRCodetoUser.document(qrcode).set(QRCodeUser);
+                                    }
+                                }
+                            });
+                        }
+                    });
                 }
-
             });
 
 

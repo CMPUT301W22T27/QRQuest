@@ -4,29 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TotalNumberQRCodeScanned">
-
+    tools:context=".OtherUserWithSameQRCode">
     <ListView
-        android:id="@+id/TotalNumberQRcodeScannedList"
+        android:id="@+id/OtherUserWithSameQRCodeList"
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/totalNumberQRCodeScannedTextView">
+        app:layout_constraintTop_toBottomOf="@+id/OtherUserWithThisQRCodeTitle">
 
 
     </ListView>
-
     <TextView
-        android:id="@+id/totalNumberQRCodeScannedTextView"
+        android:id="@+id/OtherUserWithThisQRCodeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="#of QR Codes"
+        android:text="Users With This  QR Code"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
