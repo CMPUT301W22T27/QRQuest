@@ -139,6 +139,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
 
             QRCode qrCode = new QRCode(intentResult.getContents(), false);
             String score = Integer.toString(qrCode.getScore());
+            String qrcode = qrCode.getHash();
             builder.setMessage(score);
             qrCode.saveScore(); // this should really be a user.saveCode(qrCode)
             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -161,6 +162,22 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                         HashMap<String, Object> userScore = new HashMap<>();
                         userScore.put("Score:", newScoreList);
                         collectionReference.document(username).set(userScore);
+
+                        final CollectionReference collectionReference = db.collection("UserToQRCode");
+                        List<String> newQrcodeList = new ArrayList<String>();
+                        String qrcodelist = task.getResult().get("QRCode").toString();
+                        String[] qrcodestring = qrcodelist.replaceAll("\\[", "")
+                                .replaceAll("]", "")
+                                .replaceAll(" ","")
+                                .split(",");
+                        for (int i = 0; i < string.length; i++) {
+                            newQrcodeList.add(qrcodestring[i]);
+                        }
+                        newQrcodeList.add(qrcode);
+                        collectionReference.document(username).delete();
+                        HashMap<String, Object> userQRCode = new HashMap<>();
+                        userScore.put("QRCode", newQrcodeList);
+                        collectionReference.document(username).set(userQRCode);
                     }
                     else{
                         List<Integer> scoreList = new ArrayList<Integer>();
@@ -168,6 +185,13 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                         HashMap<String, Object> userScore = new HashMap<>();
                         userScore.put("Score:", scoreList);
                         collectionReference.document(username).set(userScore);
+
+                        final CollectionReference collectionReference = db.collection("UserToQRCode");
+                        List<String> qrcodeList = new ArrayList<String>();
+                        qrcodeList.add(qrcode);
+                        HashMap<String, Object> userQRCode = new HashMap<>();
+                        userScore.put("QRCode", qrcodeList);
+                        collectionReference.document(username).set(userQRCode);
                     }
                 }
 
