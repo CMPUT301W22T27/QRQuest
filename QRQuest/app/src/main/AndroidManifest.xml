@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QRQuest">
         <activity
+            android:name=".GlobalQRCodeList"
+            android:exported="false" />
+        <activity
             android:name=".OtherUserWithSameQRCode"
             android:exported="false" />
         <activity

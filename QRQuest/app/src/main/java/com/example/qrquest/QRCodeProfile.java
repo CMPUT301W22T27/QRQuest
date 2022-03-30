@@ -6,18 +6,29 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class QRCodeProfile extends AppCompatActivity {
     Button otherUser;
     String QRCode;
+    TextView qrCodename;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode_profile);
-        Intent intent = getIntent();
-        QRCode = intent.getStringExtra("QRCode_TotalNumberQRCodeScanned");
+        Bundle intent = getIntent().getExtras();
+        if (intent != null){
+            if (intent.containsKey("QRCode_TotalNumberQRCodeScanned")){
+                QRCode= intent.getString("QRCode_TotalNumberQRCodeScanned");
+            }
+            else{
+                QRCode = intent.getString("QRCode_GlobalQRCodeList");
+            }
+        }
+        qrCodename = findViewById(R.id.QRCodeProfileName);
+        qrCodename.setText("Name of the QR Code:"+'\n'+QRCode);
         otherUser = findViewById(R.id.OtherUserButton);
         otherUser.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){

@@ -4,25 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".QRCodeProfile">
-
-    <Button
-        android:id="@+id/OtherUserButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Other Users who have scanned this QR Code"
+    tools:context=".GlobalQRCodeList">
+    <ListView
+        android:id="@+id/GlobalQRCodeList"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/QRCodeProfileName" />
+        app:layout_constraintTop_toBottomOf="@+id/GlobalListTitle">
 
+
+    </ListView>
     <TextView
-        android:id="@+id/QRCodeProfileName"
+        android:id="@+id/GlobalListTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="Global QR Codes List"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -52,6 +52,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
     Button subCodeButton;
     Button search;
     Button leaderBoard;
+    Button globalQRCodeList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +78,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         mapView = (MapView) findViewById(R.id.appMapView);
         leaderBoard = findViewById(R.id.LeaderBoardButton);
         search = findViewById(R.id.Search);
+        globalQRCodeList = findViewById(R.id.GlobalQRCodeListButton);
         // map logic
         checkPermission();
         // dummy check for permission; need to add more details here
@@ -115,7 +117,13 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                 scanner.startScan();
             }
         });
-
+        globalQRCodeList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent golbalList = new Intent(MainScreen.this,GlobalQRCodeList.class);
+                startActivity(golbalList);
+            }
+        });
         // sidebar logic
     }
 
