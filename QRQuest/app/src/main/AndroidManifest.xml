@@ -37,6 +37,9 @@
             android:name=".SearchUser"
             android:exported="false" />
         <activity
+            android:name=".ScanSuccess"
+            android:exported="false" />
+        <activity
             android:name=".SideBarActivity"
             android:exported="false"
             android:label="@string/title_activity_side_bar"

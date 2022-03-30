@@ -47,67 +47,67 @@ import java.util.UUID;
  * Still need to implement valid type checking and tests; very naive implementation
  * */
 public class MainActivity extends AppCompatActivity {
-    Button createAccountButton;
-    Button logInButton;
-    Button TestButton;
-    FirebaseFirestore db;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        createAccountButton = findViewById(R.id.createNewAccountButton);
-        TestButton = findViewById(R.id.testButton);
-        String username = null;
-        String email = null;
+        Button createAccountButton;
+        Button logInButton;
+        Button TestButton;
+        FirebaseFirestore db;
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+            createAccountButton = findViewById(R.id.createNewAccountButton);
+            TestButton = findViewById(R.id.testButton);
+            String username = null;
+            String email = null;
 
-        File file = new File(this.getFilesDir(), "login.txt"); // REFERENCE [2]
+            File file = new File(this.getFilesDir(), "login.txt"); // REFERENCE [2]
 
-        try {
+            try {
 
-            if (file.exists()){
-                FileReader fileReader = new FileReader(file);
-                char[] buffer = new char[100];
+                if (file.exists()){
+                    FileReader fileReader = new FileReader(file);
+                    char[] buffer = new char[100];
 
-                BufferedReader bufferedReader = new BufferedReader(fileReader);
+                    BufferedReader bufferedReader = new BufferedReader(fileReader);
 
-                email = bufferedReader.readLine();
-                Log.i("em", email);
-                username = bufferedReader.readLine();
-                Log.i("un", username);
+                    email = bufferedReader.readLine();
+                    Log.i("em", email);
+                    username = bufferedReader.readLine();
+                    Log.i("un", username);
+                }
+                else{
+
+                    FileWriter fileWriter = new FileWriter(file.getPath());
+
+                    username = UUID.randomUUID().toString(); // REFERENCE: शु-Bham at https://stackoverflow.com/questions/12116092/android-random-string-generator
+                    email = UUID.randomUUID().toString(); // TODO: check if this username or email already exists (unlikely)
+                    Log.i("username", username);
+                    Log.i("email", email);
+
+                    db = FirebaseFirestore.getInstance();
+
+                    CollectionReference collectionReference = db.collection("Users");
+                    HashMap<String, String> data = new HashMap<>();
+                    // add tests for invalid usernames and emails later.
+                    data.put("Username", username);
+                    collectionReference.document(email).set(data);
+
+                    file.createNewFile(); // Create the login file
+                    fileWriter.write(email);
+                    fileWriter.append("\n"+username);
+                    fileWriter.close();
+                }
+
+            } catch (IOException e) {
+                Log.e("Error:", "File error");
+                // TODO: Error occurred when opening raw file for reading.
             }
-            else{
 
-                FileWriter fileWriter = new FileWriter(file.getPath());
+            Intent intent = new Intent(this, MainScreen.class);
 
-                username = UUID.randomUUID().toString(); // REFERENCE: शु-Bham at https://stackoverflow.com/questions/12116092/android-random-string-generator
-                email = UUID.randomUUID().toString(); // TODO: check if this username or email already exists (unlikely)
-                Log.i("username", username);
-                Log.i("email", email);
-
-                db = FirebaseFirestore.getInstance();
-
-                CollectionReference collectionReference = db.collection("Users");
-                HashMap<String, String> data = new HashMap<>();
-                // add tests for invalid usernames and emails later.
-                data.put("Username", username);
-                collectionReference.document(email).set(data);
-
-                file.createNewFile(); // Create the login file
-                fileWriter.write(email);
-                fileWriter.append("\n"+username);
-                fileWriter.close();
-            }
-
-        } catch (IOException e) {
-            Log.e("Error:", "File error");
-            // TODO: Error occurred when opening raw file for reading.
-        }
-
-        Intent intent = new Intent(this, MainScreen.class);
-
-        intent.putExtra("USER_NAME_MainActivity", username);
-        intent.putExtra("EMAIL_ADDRESS_MainActivity", email);
-        startActivity(intent);
+            intent.putExtra("USER_NAME_MainActivity", username);
+            intent.putExtra("EMAIL_ADDRESS_MainActivity", email);
+            startActivity(intent);
 
 //        TestButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -123,5 +123,5 @@ public class MainActivity extends AppCompatActivity {
 //                startActivity(intent);
 //            }
 //        });
+        }
     }
-}
