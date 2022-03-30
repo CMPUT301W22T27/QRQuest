@@ -11,6 +11,7 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -44,6 +45,10 @@ public class GameStatusQRCode extends AppCompatActivity {
     Bitmap bitmap;
     QRGEncoder qrgEncoder;
     FirebaseFirestore db;
+    TextView lowestScore;
+    TextView highestScore;
+    TextView qrCodeCount;
+    TextView combinedScore;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,26 +108,33 @@ public class GameStatusQRCode extends AppCompatActivity {
                     for(int i = 0; i<newScoreList.size();i++){
                         sum += newScoreList.get(i);
                     }
-                    TextView lowestScore = (TextView) findViewById(R.id.textLowestScore);
+                    lowestScore = (TextView) findViewById(R.id.textLowestScore);
                     lowestScore.setText("Lowest Score: "+min);
-                    TextView highestScore = (TextView) findViewById(R.id.textHighestScore);
+                    highestScore = (TextView) findViewById(R.id.textHighestScore);
                     highestScore.setText("Highest Score: "+max);
-                    TextView qrCodeCount = (TextView) findViewById(R.id.textQRCodeCount);
+                    qrCodeCount = (TextView) findViewById(R.id.textQRCodeCount);
                     qrCodeCount.setText("QR Code Count: "+ newScoreList.size());
-                    TextView combinedScore = (TextView) findViewById(R.id.textCombinedScore);
+                    combinedScore = (TextView) findViewById(R.id.textCombinedScore);
                     combinedScore.setText("Combined Score: "+sum);
 
                 }
                 else{
-                    TextView lowestScore = (TextView) findViewById(R.id.textLowestScore);
+                    lowestScore = (TextView) findViewById(R.id.textLowestScore);
                     lowestScore.setText("Lowest Score: "+0);
-                    TextView highestScore = (TextView) findViewById(R.id.textHighestScore);
+                    highestScore = (TextView) findViewById(R.id.textHighestScore);
                     highestScore.setText("Highest Score: "+0);
-                    TextView qrCodeCount = (TextView) findViewById(R.id.textQRCodeCount);
+                    qrCodeCount = (TextView) findViewById(R.id.textQRCodeCount);
                     qrCodeCount.setText("QR Code Count: "+ 0);
-                    TextView combinedScore = (TextView) findViewById(R.id.textCombinedScore);
+                    combinedScore = (TextView) findViewById(R.id.textCombinedScore);
                     combinedScore.setText("Combined Score: "+0);
                 }
+                qrCodeCount.setOnClickListener(new View.OnClickListener(){
+                    public void onClick(View view){
+                        Intent totalNumberQRCodeScanned = new Intent(GameStatusQRCode.this,TotalNumberQRCodeScanned.class);
+                        totalNumberQRCodeScanned.putExtra("User_Name_GameStatusCode",username);
+                        startActivity(totalNumberQRCodeScanned);
+                    }
+                });
             }
 
         });
@@ -132,5 +144,9 @@ public class GameStatusQRCode extends AppCompatActivity {
                 .hashString(value, StandardCharsets.UTF_8)
                 .toString();
         return sha256hex;
+    }
+    public void onClick(View view){
+        TextView lowestScore = findViewById(R.id.textLowestScore);
+        lowestScore.setText("123456789");
     }
 }

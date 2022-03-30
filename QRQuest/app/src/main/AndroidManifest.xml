@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QRQuest">
         <activity
+            android:name=".TotalNumberQRCodeScanned"
+            android:exported="false" />
+        <activity
             android:name=".CombinedScoreLB"
             android:exported="false" />
         <activity
