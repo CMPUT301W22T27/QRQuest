@@ -8,12 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.firebase.firestore.FirebaseFirestore;
-
 public class QRCodeProfile extends AppCompatActivity {
     Button otherUser;
     String QRCode;
-    TextView qrCodename;
+    TextView qrCodeNameBox;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,8 +28,8 @@ public class QRCodeProfile extends AppCompatActivity {
                 QRCode = intent.getString("QRCode_GlobalQRCodeList");
             }
         }
-        qrCodename = findViewById(R.id.QRCodeProfileName);
-        qrCodename.setText("Name of the QR Code:"+'\n'+QRCode);
+        qrCodeNameBox = findViewById(R.id.QRCodeProfileName);
+        qrCodeNameBox.setText("Name of the QR Code:"+'\n'+QRCode);
         otherUser = findViewById(R.id.OtherUserButton);
         otherUser.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
