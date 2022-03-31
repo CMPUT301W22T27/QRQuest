@@ -177,7 +177,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                         userScore.put("Score:", scoreList);
                         collectionReference.document(username).set(userScore);
                     }
-                    final CollectionReference collectionReferenceUserToQRCode = db.collection("UserToQRCode");
+                    /*final CollectionReference collectionReferenceUserToQRCode = db.collection("UserToQRCode");
                     collectionReference.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -232,7 +232,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                                 }
                             });
                         }
-                    });
+                    });*/
                 }
             });
 
