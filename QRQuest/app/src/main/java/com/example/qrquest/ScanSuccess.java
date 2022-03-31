@@ -36,7 +36,7 @@ public class ScanSuccess extends AppCompatActivity {
 //        Bundle extras = getIntent().getExtras();
 //        String score = extras.getString("score");
 
-        qrCode = (QRCode) getIntent().getSerializableExtra("qrCode");
+        qrCode = (QRCode) getIntent().getSerializableExtra("QRCODE");
 
         scoreDisplay = findViewById(R.id.scoreView);
         scoreDisplay.setText("Score: " + qrCode.getScore());
