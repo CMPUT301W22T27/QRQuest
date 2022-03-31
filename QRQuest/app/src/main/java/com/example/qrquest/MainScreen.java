@@ -120,8 +120,8 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         globalQRCodeList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent golbalList = new Intent(MainScreen.this,GlobalQRCodeList.class);
-                startActivity(golbalList);
+                Intent globalList = new Intent(MainScreen.this,GlobalQRCodeList.class);
+                startActivity(globalList);
             }
         });
         // sidebar logic
@@ -142,14 +142,10 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         super.onActivityResult(requestCode, resultCode, data);
         IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (intentResult.getContents() != null){
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainScreen.this);
-            builder.setTitle("Result");
 
             QRCode qrCode = new QRCode(intentResult.getContents(), false);
             String score = Integer.toString(qrCode.getScore());
-            String qrcode = qrCode.getHash();
-            builder.setMessage(score);
-            qrCode.save(); // this should really be a user.saveCode(qrCode)
+            String qrCodeHash = qrCode.getHash();
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             final CollectionReference collectionReference = db.collection("userScore");
             collectionReference.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -191,14 +187,14 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                                 for (int i = 0; i < userToQrcodestring.length; i++) {
                                     newUserToQrcodeList.add(userToQrcodestring[i]);
                                 }
-                                newUserToQrcodeList.add(qrcode);
+                                newUserToQrcodeList.add(qrCodeHash);
                                 collectionReferenceUserToQRCode.document(username).delete();
                                 HashMap<String, Object> userQRCode = new HashMap<>();
                                 userQRCode.put("QRCode", newUserToQrcodeList);
                                 collectionReferenceUserToQRCode.document(username).set(userQRCode);
                             } else {
                                 List<String> qrcodeList = new ArrayList<String>();
-                                qrcodeList.add(qrcode);
+                                qrcodeList.add(qrCodeHash);
                                 HashMap<String, Object> userQRCode = new HashMap<>();
                                 userQRCode.put("QRCode", qrcodeList);
                                 collectionReferenceUserToQRCode.document(username).set(userQRCode);
@@ -227,7 +223,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                                         usernameList.add(username);
                                         HashMap<String, Object> QRCodeUser = new HashMap<>();
                                         QRCodeUser.put("Username", username);
-                                        collectionReferenceQRCodetoUser.document(qrcode).set(QRCodeUser);
+                                        collectionReferenceQRCodetoUser.document(qrCodeHash).set(QRCodeUser);
                                     }
                                 }
                             });
@@ -235,18 +231,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                     });*/
                 }
             });
-
-
-//            builder.setMessage(intentResult.getContents());
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-
-                }
-            });
-            builder.show();
-            openSubmissionActivity(score);
+            openSubmissionActivity(qrCode);
 
         }else {
             Toast.makeText(getApplicationContext(), "OOPS... You did not scan anything", Toast.LENGTH_SHORT).show();
@@ -318,9 +303,9 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
     public void onMapReady(@NonNull GoogleMap googleMap) {
 
     }
-    public void openSubmissionActivity(String score){
+    public void openSubmissionActivity(QRCode qrCode){
        Intent intent = new Intent(this, ScanSuccess.class);
-       intent.putExtra("score", score);
+       intent.putExtra("QRCODE", qrCode);
        startActivity(intent);
 
     }
