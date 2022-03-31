@@ -149,7 +149,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
             String score = Integer.toString(qrCode.getScore());
             String qrcode = qrCode.getHash();
             builder.setMessage(score);
-            qrCode.saveScore(); // this should really be a user.saveCode(qrCode)
+            qrCode.save(); // this should really be a user.saveCode(qrCode)
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             final CollectionReference collectionReference = db.collection("userScore");
             collectionReference.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
