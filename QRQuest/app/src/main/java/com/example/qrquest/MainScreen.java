@@ -173,8 +173,8 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                         userScore.put("Score:", scoreList);
                         collectionReference.document(username).set(userScore);
                     }
-                    /*final CollectionReference collectionReferenceUserToQRCode = db.collection("UserToQRCode");
-                    collectionReference.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    final CollectionReference collectionReferenceUserToQRCode = db.collection("UserToQRCode");
+                    collectionReferenceUserToQRCode.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if (task.getResult().exists()) {
@@ -200,7 +200,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                                 collectionReferenceUserToQRCode.document(username).set(userQRCode);
                             }
                             final CollectionReference collectionReferenceQRCodetoUser = db.collection("QRCodeToUser");
-                            collectionReference.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            collectionReferenceQRCodetoUser.document(qrCodeHash).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     if (task.getResult().exists()) {
@@ -214,10 +214,10 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                                             newQrcodeToUserList.add(qrcodeToUserstring[i]);
                                         }
                                         newQrcodeToUserList.add(username);
-                                        collectionReference.document(username).delete();
+                                        collectionReferenceQRCodetoUser.document(qrCodeHash).delete();
                                         HashMap<String, Object> QRCodeUser = new HashMap<>();
                                         QRCodeUser.put("Username", username);
-                                        collectionReferenceQRCodetoUser.document(username).set(QRCodeUser);
+                                        collectionReferenceQRCodetoUser.document(qrCodeHash).set(QRCodeUser);
                                     } else {
                                         List<String> usernameList = new ArrayList<String>();
                                         usernameList.add(username);
@@ -228,7 +228,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                                 }
                             });
                         }
-                    });*/
+                    });
                 }
             });
             openSubmissionActivity(qrCode);
