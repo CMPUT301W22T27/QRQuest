@@ -58,15 +58,17 @@ public class OtherPlayerQRCodeCount extends AppCompatActivity {
                     otherPlayerUsername.setText(username + "'s QRCodes");
                     for (int i = 0; i < string.length; i++) {
                         CollectionReference qrCodeCollection = db.collection("QRCodes");
+                        String currentQrHash = string[i];
                         qrCodeCollection.document(string[i]).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 if (task.getResult().exists()) {
                                     currentQRrCodeName = task.getResult().get("name").toString();
-                                    qrDataList.add(currentQRrCodeName);
+                                    qrNameList.add(currentQRrCodeName);
+                                    qrDataList.add(currentQrHash);
                                 }
                                 qrCodeList = findViewById(R.id.OtherPlayQRCodeList);
-                                qrCodeAdapter = new ArrayAdapter<String>(OtherPlayerQRCodeCount.this,android.R.layout.simple_list_item_1, qrDataList);
+                                qrCodeAdapter = new ArrayAdapter<String>(OtherPlayerQRCodeCount.this,android.R.layout.simple_list_item_1, qrNameList);
                                 qrCodeList.setAdapter(qrCodeAdapter);
                                 qrCodeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
