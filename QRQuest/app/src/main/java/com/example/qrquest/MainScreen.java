@@ -162,8 +162,28 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         deletePlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent globalList = new Intent(MainScreen.this,GlobalQRCodeList.class);
-                startActivity(globalList);
+                dbOwner = FirebaseFirestore.getInstance();
+                CollectionReference collectionReferenceOwner = dbOwner.collection("Owner");
+                collectionReferenceOwner.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<DocumentSnapshot> documentList = task.getResult().getDocuments();
+                            for (int i = 0; i < documentList.size(); i++) {
+                                int index = i;
+                                if ((documentList.get(i).getId().toString().equals(username))) {
+                                    Intent ownerPlayerList = new Intent(MainScreen.this, OwnerGlobalPlayerList.class);
+                                    startActivity(ownerPlayerList);
+                                    return;
+                                }
+                                else{
+                                    Toast.makeText(MainScreen.this,"You are not an owner",Toast.LENGTH_LONG).show();
+
+                                }
+                            }
+                        }
+                    }
+                });
             }
         });
         // sidebar logic

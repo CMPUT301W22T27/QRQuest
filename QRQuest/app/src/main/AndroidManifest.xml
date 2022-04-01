@@ -18,6 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QRQuest">
         <activity
+            android:name=".OwnerGlobalPlayerList"
+            android:exported="false" />
+        <activity
             android:name=".OwnerGlobalQRCodeList"
             android:exported="false" />
         <activity

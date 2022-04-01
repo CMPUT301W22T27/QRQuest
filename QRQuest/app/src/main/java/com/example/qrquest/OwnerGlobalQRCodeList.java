@@ -30,7 +30,6 @@ public class OwnerGlobalQRCodeList extends AppCompatActivity {
     public ArrayList<String> qrDataList = new ArrayList<String>();
     public ArrayList<String> qrNameList = new ArrayList<String>();
     public ArrayAdapter<String> qrCodeAdapter;
-    public ArrayList<String> usernameList = new ArrayList<String>();
     public String qrHash;
     public String qrScore;
     public String qrname;
@@ -39,7 +38,7 @@ public class OwnerGlobalQRCodeList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_global_qrcode_list);
+        setContentView(R.layout.activity_owner_global_qrcode_list);
         db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("QRCodes");
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -54,7 +53,7 @@ public class OwnerGlobalQRCodeList extends AppCompatActivity {
                         qrDataList.add(qrHash);
                         qrNameList.add(qrname);
                     }
-                    qrCodeList = findViewById(R.id.GlobalQRCodeList);
+                    qrCodeList = findViewById(R.id.OwnerGlobalQRCodeList);
 //                    qrCodeAdapter = new ArrayAdapter<String>(GlobalQRCodeList.this,android.R.layout.simple_list_item_1, qrDataList);
                     qrCodeAdapter = new ArrayAdapter<String>(OwnerGlobalQRCodeList.this, android.R.layout.simple_list_item_1, qrNameList);
                     qrCodeList.setAdapter(qrCodeAdapter);
@@ -96,7 +95,7 @@ public class OwnerGlobalQRCodeList extends AppCompatActivity {
                                                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                                     if (task.isSuccessful()) {
                                                                         List<DocumentSnapshot> documentList = task.getResult().getDocuments();
-
+                                                                        ArrayList<String> usernameList = new ArrayList<String>();
                                                                         for (int i = 0; i < documentList.size(); i++) {
                                                                             username = documentList.get(i).getId();
                                                                             List<String> qrCodeListAfterDelete = new ArrayList<String>();
