@@ -53,6 +53,7 @@ public class GlobalQRCodeList extends AppCompatActivity {
                             String qrCodeName = qrNameList.get(i);
                             Intent qrCodeProfile = new Intent (GlobalQRCodeList.this,QRCodeProfile.class);
                             qrCodeProfile.putExtra("QRCode_GlobalQRCodeList",qrCodeHash);
+                            qrCodeProfile.putExtra("QRCodeName_GlobalQRCodeList",qrNameList.get(i));
                             startActivity(qrCodeProfile);
                         }
                     });
