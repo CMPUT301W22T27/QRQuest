@@ -29,6 +29,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.client.android.Intents;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -53,8 +54,11 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
     Button search;
     Button leaderBoard;
     Button globalQRCodeList;
+    Button deleteCode;
+    Button deletePlayer;
     String score;
     String qrCodeHash;
+    FirebaseFirestore dbOwner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +85,8 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         leaderBoard = findViewById(R.id.LeaderBoardButton);
         search = findViewById(R.id.Search);
         globalQRCodeList = findViewById(R.id.GlobalQRCodeListButton);
+        deleteCode = findViewById(R.id.DeleteQRCodeButton);
+        deletePlayer = findViewById(R.id.DeletePlayerButton);
         // map logic
         checkPermission();
         // dummy check for permission; need to add more details here
@@ -120,6 +126,40 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
             }
         });
         globalQRCodeList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent globalList = new Intent(MainScreen.this,GlobalQRCodeList.class);
+                startActivity(globalList);
+            }
+        });
+        deleteCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dbOwner = FirebaseFirestore.getInstance();
+                CollectionReference collectionReferenceOwner = dbOwner.collection("Owner");
+                collectionReferenceOwner.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<DocumentSnapshot> documentList = task.getResult().getDocuments();
+                            for (int i = 0; i < documentList.size(); i++) {
+                                int index = i;
+                                if ((documentList.get(i).getId().toString().equals(username))) {
+                                    Intent ownerGlobalList = new Intent(MainScreen.this, OwnerGlobalQRCodeList.class);
+                                    startActivity(ownerGlobalList);
+                                    return;
+                                }
+                                else{
+                                    Toast.makeText(MainScreen.this,"You are not an owner",Toast.LENGTH_LONG).show();
+
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+        deletePlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent globalList = new Intent(MainScreen.this,GlobalQRCodeList.class);
