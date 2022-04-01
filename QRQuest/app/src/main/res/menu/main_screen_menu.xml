@@ -13,9 +13,7 @@
         android:title="Leaderboard" />
     <item
         android:id="@+id/userSearchItem"
-        android:icon="@drawable/ic_search_black_24dp"
-        android:title="Search"
-        app:actionViewClass="android.widget.SearchView" />
+        android:title="Search" />
     <item
         android:id="@+id/viewQrCodesItem"
         android:title="View All QR Codes" />
