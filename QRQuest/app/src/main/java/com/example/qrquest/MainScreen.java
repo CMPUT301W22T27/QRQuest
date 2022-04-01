@@ -123,6 +123,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
             @Override
             public void onClick(View view) {
                 Intent globalList = new Intent(MainScreen.this,GlobalQRCodeList.class);
+                globalList.putExtra("USER_NAME_MainScreen",username);
                 startActivity(globalList);
             }
         });
