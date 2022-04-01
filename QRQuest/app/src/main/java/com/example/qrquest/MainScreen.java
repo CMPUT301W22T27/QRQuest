@@ -56,6 +56,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
     Button globalQRCodeList;
     Button deleteCode;
     Button deletePlayer;
+    Button logout;
     String score;
     String qrCodeHash;
     FirebaseFirestore dbOwner;
@@ -87,6 +88,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         globalQRCodeList = findViewById(R.id.GlobalQRCodeListButton);
         deleteCode = findViewById(R.id.DeleteQRCodeButton);
         deletePlayer = findViewById(R.id.DeletePlayerButton);
+        logout = findViewById(R.id.LogoutButton);
         // map logic
         checkPermission();
         // dummy check for permission; need to add more details here
@@ -184,6 +186,14 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                         }
                     }
                 });
+            }
+        });
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent logout = new Intent(MainScreen.this, ReLogin.class);
+                startActivity(logout);
             }
         });
         // sidebar logic

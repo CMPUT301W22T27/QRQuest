@@ -98,6 +98,9 @@
             android:name=".Capture"
             android:exported="false" />
         <activity
+            android:name=".ReLogin"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
