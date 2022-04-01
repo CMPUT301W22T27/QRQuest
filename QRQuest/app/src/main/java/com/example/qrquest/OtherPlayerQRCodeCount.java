@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Debug;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -33,6 +34,7 @@ public class OtherPlayerQRCodeCount extends AppCompatActivity {
     public ArrayList<String> qrNameList = new ArrayList<String>();
     public ArrayAdapter<String> qrCodeAdapter;
     TextView otherPlayerUsername;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,46 +52,37 @@ public class OtherPlayerQRCodeCount extends AppCompatActivity {
                     String list = task.getResult().get("QRCode").toString();
                     String[] string = list.replaceAll("\\[", "")
                             .replaceAll("]", "")
-                            .replaceAll(" ","")
+                            .replaceAll(" ", "")
                             .split(",");
 
-
-                    otherPlayerUsername.setText(username+"'s QRCodes");
+                    otherPlayerUsername.setText(username + "'s QRCodes");
                     for (int i = 0; i < string.length; i++) {
-//                        getQRCodeName(string[i]);
-//                        qrNameList.add(currentQRrCodeName);
-                        qrDataList.add(string[i]);
-
+                        CollectionReference qrCodeCollection = db.collection("QRCodes");
+                        qrCodeCollection.document(string[i]).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.getResult().exists()) {
+                                    currentQRrCodeName = task.getResult().get("name").toString();
+                                    qrDataList.add(currentQRrCodeName);
+                                }
+                                qrCodeList = findViewById(R.id.OtherPlayQRCodeList);
+                                qrCodeAdapter = new ArrayAdapter<String>(OtherPlayerQRCodeCount.this,android.R.layout.simple_list_item_1, qrDataList);
+                                qrCodeList.setAdapter(qrCodeAdapter);
+                                qrCodeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                        Intent information = new Intent(OtherPlayerQRCodeCount.this, QRCodeProfile.class);
+                                        information.putExtra("QRCode_OtherPlayerQRCodeCount", qrDataList.get(i));
+                                        startActivity(information);
+                                    }
+                                });
+                            }
+                        });
                     }
-                    qrCodeList = findViewById(R.id.OtherPlayQRCodeList);
-                    qrCodeAdapter = new ArrayAdapter<String>(OtherPlayerQRCodeCount.this,android.R.layout.simple_list_item_1, qrDataList);
-//                    qrCodeAdapter = new ArrayAdapter<String>(OtherPlayerQRCodeCount.this,android.R.layout.simple_list_item_1, qrNameList);
-                    qrCodeList.setAdapter(qrCodeAdapter);
-                    qrCodeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Intent information = new Intent(OtherPlayerQRCodeCount.this,QRCodeProfile.class);
-                            information.putExtra("QRCode_OtherPlayerQRCodeCount", qrDataList.get(i));
-                            startActivity(information);
-                        }
-                    });
 
                 }
             }
         });
     }
 
-//    public void getQRCodeName(String hashValue) {
-//        CollectionReference qrCodeCollection = db.collection("QRCodes");
-//        qrCodeCollection.document(hashValue).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                currentQRrCodeName = (String) task.getResult().get("name");
-//            }
-//        });
-//        return;
-////        qrCodeDocument.get().getResult();
-////        String testing = qrCodeDocument.get().getResult().getString("name");
-////        return qrCodeDocument.get().getResult().getString("name");
-//    }
 }
