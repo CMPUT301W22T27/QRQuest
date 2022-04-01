@@ -215,23 +215,24 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
             collectionReference.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    collectionReferenceQRCodetoUser.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    collectionReferenceUserToQRCode.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if (task.getResult().exists()) {
-                                List<String> checkScoreList = new ArrayList<String>();
+                                List<String> checkQRCodeList = new ArrayList<String>();
                                 String list = task.getResult().get("QRCode").toString();
                                 String[] string = list.replaceAll("\\[", "")
                                         .replaceAll("]", "")
-                                        .replaceAll(" ", "")
+                                        .replaceAll(" ",     "")
                                         .split(",");
                                 for (int i = 0; i < string.length; i++) {
-                                    checkScoreList.add(string[i]);
+                                    checkQRCodeList.add(string[i]);
                                 }
-                                if (checkScoreList.contains(qrCodeHash)) {
+                                if (checkQRCodeList.contains(qrCodeHash)) {
                                     Toast.makeText(MainScreen.this, "You have already scanned this QR Code", Toast.LENGTH_LONG);
                                     return;
-                                } else {
+                                }
+                                else {
                                     setUserScore(task, collectionReference);
 
                                     collectionReferenceUserToQRCode.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -243,17 +244,36 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                                                 @Override
                                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                     setQrUserRelation(task, collectionReferenceQRCodetoUser);
+                                                    openSubmissionActivity(qrCode);
                                                 }
                                             });
                                         }
                                     });
                                 }
                             }
+                            else {
+                                setUserScore(task, collectionReference);
+
+                                collectionReferenceUserToQRCode.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        setUserQrRelation(task, collectionReferenceUserToQRCode);
+
+                                        collectionReferenceQRCodetoUser.document(qrCodeHash).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                setQrUserRelation(task, collectionReferenceQRCodetoUser);
+                                                openSubmissionActivity(qrCode);
+                                            }
+                                        });
+                                    }
+                                });
+                            }
                         }
                     });
                 }
             });
-            openSubmissionActivity(qrCode);
+
 
         }else {
             Toast.makeText(getApplicationContext(), "OOPS... You did not scan anything", Toast.LENGTH_SHORT).show();
