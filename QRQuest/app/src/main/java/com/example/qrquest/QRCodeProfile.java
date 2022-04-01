@@ -4,9 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,6 +25,7 @@ public class QRCodeProfile extends AppCompatActivity {
     String QRCode;
     TextView qrCodeNameBox;
     FirebaseFirestore db;
+    ImageView qrItemImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +43,7 @@ public class QRCodeProfile extends AppCompatActivity {
             }
         }
         qrCodeNameBox = findViewById(R.id.QRCodeProfileName);
+        qrItemImage = findViewById(R.id.ItemImageView);
         //qrCodeNameBox.setText("Name of the QR Code:"+'\n'+QRCode);
         otherUser = findViewById(R.id.OtherUserButton);
         otherUser.setOnClickListener(new View.OnClickListener(){
@@ -54,9 +60,19 @@ public class QRCodeProfile extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.getResult().exists()) {
                     String qrCodeName =  task.getResult().get("name").toString();
+                    String encodedImage = task.getResult().get("Image").toString();
+                    // converting the image back to a bitmap from a string
+                    byte[] decodedArray = Base64.decode(encodedImage, Base64.DEFAULT);
+                    Bitmap image = BitmapFactory.decodeByteArray(decodedArray, 0, decodedArray.length);
+                    qrItemImage.setImageBitmap(image);
+
+
                     qrCodeNameBox.setText("Name of the QR Code:"+'\n'+qrCodeName);
+
                 }
             }
             });
     }
+
+
 }
