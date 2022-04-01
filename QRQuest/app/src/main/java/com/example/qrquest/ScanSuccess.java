@@ -52,11 +52,14 @@ public class ScanSuccess extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String qrName = qrNameBox.getText().toString();
-                qrCode.setName(qrName);
-                qrCode.save();
-                Toast.makeText(getApplicationContext(), "Submission Successful", Toast.LENGTH_SHORT).show();
-                finish();
-
+                if(qrName.length() == 0) {
+                    Toast.makeText(getApplicationContext(), "QR Code needs to be named.", Toast.LENGTH_SHORT).show();
+                } else {
+                    qrCode.setName(qrName);
+                    qrCode.save();
+                    Toast.makeText(getApplicationContext(), "Submission Successful", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
             }
         });
 

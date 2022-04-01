@@ -27,7 +27,7 @@ public class QRCode implements Serializable {
     private String name;
     private String hash;
     private Integer score;
-    private String image;
+    private String image = "";
     // we should include the location here
 
     /**

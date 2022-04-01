@@ -62,10 +62,12 @@ public class QRCodeProfile extends AppCompatActivity {
                     String qrCodeName =  task.getResult().get("name").toString();
                     String encodedImage = task.getResult().get("Image").toString();
                     // converting the image back to a bitmap from a string
-                    byte[] decodedArray = Base64.decode(encodedImage, Base64.DEFAULT);
-                    Bitmap image = BitmapFactory.decodeByteArray(decodedArray, 0, decodedArray.length);
-                    qrItemImage.setImageBitmap(image);
 
+                    if (encodedImage != "") {
+                        byte[] decodedArray = Base64.decode(encodedImage, Base64.DEFAULT);
+                        Bitmap image = BitmapFactory.decodeByteArray(decodedArray, 0, decodedArray.length);
+                        qrItemImage.setImageBitmap(image);
+                    }
 
                     qrCodeNameBox.setText("Name of the QR Code:"+'\n'+qrCodeName);
 
