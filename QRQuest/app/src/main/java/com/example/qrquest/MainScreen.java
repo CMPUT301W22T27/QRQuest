@@ -375,13 +375,13 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
             newQrcodeToUserList.add(username);
             collectionReferenceQRCodetoUser.document(qrCodeHash).delete();
             HashMap<String, Object> QRCodeUser = new HashMap<>();
-            QRCodeUser.put("Username", username);
+            QRCodeUser.put("Username", newQrcodeToUserList);
             collectionReferenceQRCodetoUser.document(qrCodeHash).set(QRCodeUser);
         } else {
             List<String> usernameList = new ArrayList<String>();
             usernameList.add(username);
             HashMap<String, Object> QRCodeUser = new HashMap<>();
-            QRCodeUser.put("Username", username);
+            QRCodeUser.put("Username", usernameList);
             collectionReferenceQRCodetoUser.document(qrCodeHash).set(QRCodeUser);
         }
     }
