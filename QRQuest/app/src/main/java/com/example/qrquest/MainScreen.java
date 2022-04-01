@@ -229,7 +229,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                                     checkQRCodeList.add(string[i]);
                                 }
                                 if (checkQRCodeList.contains(qrCodeHash)) {
-                                    Toast.makeText(MainScreen.this, "You have already scanned this QR Code", Toast.LENGTH_LONG);
+                                    Toast.makeText(getApplicationContext(), "You have already scanned this QR Code", Toast.LENGTH_LONG).show();
                                     return;
                                 }
                                 else {
