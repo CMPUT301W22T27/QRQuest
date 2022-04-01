@@ -215,19 +215,40 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
             collectionReference.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    setUserScore(task, collectionReference);
-
-                    collectionReferenceUserToQRCode.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    collectionReferenceQRCodetoUser.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            setUserQrRelation(task, collectionReferenceUserToQRCode);
-
-                            collectionReferenceQRCodetoUser.document(qrCodeHash).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    setQrUserRelation(task, collectionReferenceQRCodetoUser);
+                            if (task.getResult().exists()) {
+                                List<String> checkScoreList = new ArrayList<String>();
+                                String list = task.getResult().get("QRCode").toString();
+                                String[] string = list.replaceAll("\\[", "")
+                                        .replaceAll("]", "")
+                                        .replaceAll(" ", "")
+                                        .split(",");
+                                for (int i = 0; i < string.length; i++) {
+                                    checkScoreList.add(string[i]);
                                 }
-                            });
+                                if (checkScoreList.contains(qrCodeHash)) {
+                                    Toast.makeText(MainScreen.this, "You have already scanned this QR Code", Toast.LENGTH_LONG);
+                                    return;
+                                } else {
+                                    setUserScore(task, collectionReference);
+
+                                    collectionReferenceUserToQRCode.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            setUserQrRelation(task, collectionReferenceUserToQRCode);
+
+                                            collectionReferenceQRCodetoUser.document(qrCodeHash).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    setQrUserRelation(task, collectionReferenceQRCodetoUser);
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            }
                         }
                     });
                 }
