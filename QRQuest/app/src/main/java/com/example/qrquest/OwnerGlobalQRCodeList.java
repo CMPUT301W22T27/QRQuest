@@ -30,6 +30,7 @@ public class OwnerGlobalQRCodeList extends AppCompatActivity {
     public ArrayList<String> qrDataList = new ArrayList<String>();
     public ArrayList<String> qrNameList = new ArrayList<String>();
     public ArrayAdapter<String> qrCodeAdapter;
+    public ArrayList<String> usernameList = new ArrayList<String>();
     public String qrHash;
     public String qrScore;
     public String qrname;
@@ -67,7 +68,7 @@ public class OwnerGlobalQRCodeList extends AppCompatActivity {
                                     .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int j) {
                                             selectedQRCode = qrDataList.get(i);
-                                            qrDataList.remove(i);
+                                            qrNameList.remove(i);
                                             Log.i("selected",selectedQRCode);
                                             //Remove from QRCodestoUser collection
                                             CollectionReference collectionReferenceQRCodeToUser = db.collection("QRCodeToUser");
@@ -75,7 +76,7 @@ public class OwnerGlobalQRCodeList extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                     if (task.getResult().exists()) {
-                                                        //collectionReferenceQRCodeToUser.document(selectedQRCode).delete();
+                                                        collectionReferenceQRCodeToUser.document(selectedQRCode).delete();
                                                     }
 
                                                     // Remove From QRCodes collection
@@ -85,7 +86,7 @@ public class OwnerGlobalQRCodeList extends AppCompatActivity {
                                                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                             if (task.getResult().exists()) {
                                                                 qrScore = task.getResult().get("Score").toString();
-                                                                //collectionReferenceQRCodes.document(selectedQRCode).delete();
+                                                                collectionReferenceQRCodes.document(selectedQRCode).delete();
                                                             }
 
                                                             // Remove from UserToQRCodes
@@ -97,44 +98,76 @@ public class OwnerGlobalQRCodeList extends AppCompatActivity {
                                                                         List<DocumentSnapshot> documentList = task.getResult().getDocuments();
 
                                                                         for (int i = 0; i < documentList.size(); i++) {
-                                                                            String usernameInUserToQRCode = documentList.get(i).getId();
-                                                                            Log.i("username",usernameInUserToQRCode);
+                                                                            username = documentList.get(i).getId();
                                                                             List<String> qrCodeListAfterDelete = new ArrayList<String>();
                                                                             String list = documentList.get(i).get("QRCode").toString();
-                                                                            Log.i("test",list);
                                                                             String[] string = list.replaceAll("\\[", "")
                                                                                     .replaceAll("]", "")
                                                                                     .replaceAll(" ", "")
                                                                                     .split(",");
                                                                             for (int j = 0; j < string.length; j++) {
                                                                                 if (string[j].equals(selectedQRCode)) {
+                                                                                    usernameList.add(username);
                                                                                     continue;
-                                                                                }
-                                                                                else{
+                                                                                } else {
                                                                                     qrCodeListAfterDelete.add(string[j]);
-                                                                                    Log.i("test",Integer.toString(qrCodeListAfterDelete.size()));
+                                                                                    Log.i("test", Integer.toString(qrCodeListAfterDelete.size()));
                                                                                 }
                                                                             }
-                                                                            Log.i("test",qrCodeListAfterDelete.get(0));
-                                                                            collectionReferenceUserToQRCode.document(usernameInUserToQRCode).delete();
+                                                                            //Log.i("test", qrCodeListAfterDelete.get(0));
+                                                                            collectionReferenceUserToQRCode.document(username).delete();
                                                                             HashMap<String, Object> userQRCode = new HashMap<>();
                                                                             userQRCode.put("QRCode", qrCodeListAfterDelete);
-                                                                            collectionReferenceUserToQRCode.document(usernameInUserToQRCode).set(userQRCode);
+                                                                            collectionReferenceUserToQRCode.document(username).set(userQRCode);
+                                                                            Log.i("testsize",Integer.toString(usernameList.size()));
+
+                                                                            // Remove score from userScore
+                                                                            for (int k=0;k<usernameList.size();k++) {
+                                                                                int usernameListIndex = k;
+                                                                                CollectionReference collectionReferenceUserScore = db.collection("userScore");
+                                                                                collectionReferenceUserScore.document(usernameList.get(k)).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                                    @Override
+                                                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                                        if (task.getResult().exists()) {
+                                                                                            List<Integer> ScoreListAfterDelete = new ArrayList<Integer>();
+                                                                                            String list = task.getResult().get("Score:").toString();
+                                                                                            String[] string = list.replaceAll("\\[", "")
+                                                                                                    .replaceAll("]", "")
+                                                                                                    .replaceAll(" ", "")
+                                                                                                    .split(",");
+                                                                                            int appear = 0;
+                                                                                            for (int i = 0; i < string.length; i++) {
+                                                                                                if (string[i].equals(qrScore) && appear == 0) {
+                                                                                                    appear += 1;
+                                                                                                    continue;
+                                                                                                } else if (string[i].equals(qrScore) && appear != 0) {
+                                                                                                    ScoreListAfterDelete.add(Integer.valueOf(string[i]));
+                                                                                                } else {
+                                                                                                    ScoreListAfterDelete.add(Integer.valueOf(string[i]));
+                                                                                                }
+                                                                                            }
+                                                                                            collectionReferenceUserScore.document(usernameList.get(usernameListIndex)).delete();
+                                                                                            HashMap<String, Object> userScore = new HashMap<>();
+                                                                                            userScore.put("Score:", ScoreListAfterDelete);
+                                                                                            collectionReferenceUserScore.document(usernameList.get(usernameListIndex)).set(userScore);
+                                                                                        }
+                                                                                    }
+                                                                                });
                                                                             }
                                                                         }
+                                                                    }
                                                                 }
                                                             });
                                                         }
                                                     });
+                                                    qrCodeAdapter = new ArrayAdapter<String>(OwnerGlobalQRCodeList.this,android.R.layout.simple_list_item_1,qrNameList);
+                                                    qrCodeList.setAdapter(qrCodeAdapter);
                                                 }
                                             });
                                         }
                                     })
 
                                     // Remove from userScore
-
-                                    //qrCodeAdapter = new ArrayAdapter<String>(OwnerGlobalQRCodeList.this,android.R.layout.simple_list_item_1,qrDataList);
-                                    //qrCodeList.setAdapter(qrCodeAdapter);
 
                                     // A null listener allows the button to dismiss the dialog and take no further action.
                                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
