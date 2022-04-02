@@ -6,20 +6,27 @@ import static java.lang.Integer.parseInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.preference.PreferenceManager;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -29,23 +36,31 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.osmdroid.api.IMapController;
+import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
+import org.osmdroid.views.overlay.OverlayItem;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
+public class MainScreen extends AppCompatActivity {
     public static final String USER_NAME = "com.example.qrquest.USERNAME";
     public static final String EMAIL_ADDRESS = "com.example.qrquest.EMAILADDRESS";
     TextView welcomeMessage;
-    boolean isPermissionGranted;
-    MapView mapView;
+    private MapView map;
+    IMapController mapController;
+    ArrayList<OverlayItem> items;
+    private FusedLocationProviderClient fusedLocationProviderClient;
     Button generateQRCode;
     String username;
     String email;
     Button subCodeButton;
-    Button search;
-    Button leaderBoard;
-    Button globalQRCodeList;
     Button deleteCode;
     Button deletePlayer;
     Button logout;
@@ -56,6 +71,57 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
+        Configuration.getInstance().load(getApplicationContext(),
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
+        setContentView(R.layout.activity_main_screen);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION}, PackageManager.PERMISSION_GRANTED);
+        map = findViewById(R.id.map);
+        map.setTileSource(TileSourceFactory.MAPNIK); // render map
+        map.setBuiltInZoomControls(true); // zoomable
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null){
+                    GeoPoint startPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+                    mapController = map.getController();
+                    mapController.setZoom(18.0);
+                    mapController.setCenter(startPoint);
+                    OverlayItem home = new OverlayItem("MY HOME", "MY SCHOOL",
+                            new GeoPoint(location.getLatitude(), location.getLongitude()));
+                    items = new ArrayList<>();
+                    Drawable m = home.getMarker(0);
+                    items.add(home);
+
+                    ItemizedOverlayWithFocus<OverlayItem> mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(getApplicationContext(),
+                            items, new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
+                        @Override
+                        public boolean onItemSingleTapUp(int index, OverlayItem item) {
+                            return true;
+                        }
+
+                        @Override
+                        public boolean onItemLongPress(int index, OverlayItem item) {
+                            return false;
+                        }
+                    });
+
+                    mOverlay.setFocusItemsOnTap(true);
+                    map.getOverlays().add(mOverlay);
+                }
+            }
+        });
         Bundle intent = getIntent().getExtras();
         if (intent != null){
             if (intent.containsKey("USER_NAME_MainActivity")){
@@ -74,20 +140,9 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
 
         subCodeButton = findViewById(R.id.submitQRCodeButton);
         generateQRCode = findViewById(R.id.generateQRCodeButton);
-        mapView = (MapView) findViewById(R.id.appMapView);
-        leaderBoard = findViewById(R.id.LeaderBoardButton);
-        search = findViewById(R.id.Search);
-        globalQRCodeList = findViewById(R.id.GlobalQRCodeListButton);
         deleteCode = findViewById(R.id.DeleteQRCodeButton);
         deletePlayer = findViewById(R.id.DeletePlayerButton);
         logout = findViewById(R.id.LogoutButton);
-        // map logic
-        checkPermission();
-        // dummy check for permission; need to add more details here
-        if (isPermissionGranted){
-            mapView.getMapAsync(this);
-            mapView.onCreate(savedInstanceState);
-        }
 
         // qrcode logic
         generateQRCode.setOnClickListener(new View.OnClickListener(){
@@ -98,32 +153,12 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                 startActivity(chooseQRCodeType);
             }
         });
-        search.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
-                Intent searchUser = new Intent(MainScreen.this,SearchUser.class);
-                startActivity(searchUser);
-            }
-        });
-        leaderBoard.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
-                Intent chooseLeaderBoardType = new Intent(MainScreen.this, LeaderBoardType.class);
-                chooseLeaderBoardType.putExtra("USER_NAME_MainScreen",username);
-                startActivity(chooseLeaderBoardType);
-            }
-        });
         // listener for the submit qr code button
         subCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Scanner scanner = new Scanner(view, MainScreen.this);
                 scanner.startScan();
-            }
-        });
-        globalQRCodeList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent globalList = new Intent(MainScreen.this,GlobalQRCodeList.class);
-                startActivity(globalList);
             }
         });
         deleteCode.setOnClickListener(new View.OnClickListener() {
@@ -243,58 +278,43 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         return true;
     }
 
-    /**method for dummy check
-     *
-     */
-
-
-    private void checkPermission(){
-        isPermissionGranted = true;
-        return;
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.leaderboardMenuItem:{
+                Intent chooseLeaderBoardType = new Intent(MainScreen.this, LeaderBoardType.class);
+                chooseLeaderBoardType.putExtra("USER_NAME_MainScreen",username);
+                startActivity(chooseLeaderBoardType);
+                return true;
+            }
+            case R.id.userSearchItem:{
+                Intent searchUser = new Intent(MainScreen.this,SearchUser.class);
+                startActivity(searchUser);
+                return true;
+            }
+            case R.id.viewQrCodesItem:{
+                Intent globalList = new Intent(MainScreen.this,GlobalQRCodeList.class);
+                startActivity(globalList);
+                return true;
+            }
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     // MAP LIFE CYCLE METHODS
     @Override
     protected void onResume() {
         super.onResume();
-        mapView.onResume();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mapView.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mapView.onStop();
+        map.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mapView.onPause();
+        map.onPause();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mapView.onDestroy();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mapView.onLowMemory();
-    }
-
-    // logic for how the map pans to device location
-    @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-
-    }
     private void openSubmissionActivity(QRCode qrCode){
        Intent intent = new Intent(this, ScanSuccess.class);
        intent.putExtra("QRCODE", qrCode);
