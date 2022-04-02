@@ -222,24 +222,8 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                                     });
                                 }
                             }
-                            else {
-                                setUserScore(task, collectionReference);
-
-                                collectionReferenceUserToQRCode.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                        setUserQrRelation(task, collectionReferenceUserToQRCode);
-
-                                        collectionReferenceQRCodetoUser.document(qrCodeHash).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                setQrUserRelation(task, collectionReferenceQRCodetoUser);
-                                                openSubmissionActivity(qrCode);
-                                            }
-                                        });
-                                    }
-                                });
-                            }
+                            // inside the check for the code
+                            openSubmissionActivity(qrCode);
                         }
                     });
                 }
