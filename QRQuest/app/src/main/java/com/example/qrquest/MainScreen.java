@@ -215,6 +215,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                                                 @Override
                                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                     setQrUserRelation(task, collectionReferenceQRCodetoUser);
+                                                    openSubmissionActivity(qrCode);
                                                 }
                                             });
                                         }
@@ -233,6 +234,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                                             @Override
                                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                 setQrUserRelation(task, collectionReferenceQRCodetoUser);
+                                                openSubmissionActivity(qrCode);
                                             }
                                         });
                                     }
@@ -240,7 +242,6 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                             }
                         }
                     });
-                    openSubmissionActivity(qrCode);
                 }
             });
 
