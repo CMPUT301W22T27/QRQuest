@@ -137,13 +137,13 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         deleteCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                runOwnerActivity();
+                runOwnerQRCodeActivity();
             }
         });
         deletePlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                runOwnerActivity();
+                runOwnerPlayerActivity();
             }
         });
 
@@ -394,7 +394,31 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         }
     }
 
-    private void runOwnerActivity() {
+    private void runOwnerQRCodeActivity() {
+        dbOwner = FirebaseFirestore.getInstance();
+        CollectionReference collectionReferenceOwner = dbOwner.collection("Owner");
+        collectionReferenceOwner.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    List<DocumentSnapshot> documentList = task.getResult().getDocuments();
+                    for (int i = 0; i < documentList.size(); i++) {
+                        int index = i;
+                        if ((documentList.get(i).getId().toString().equals(username))) {
+                            Intent ownerPlayerList = new Intent(MainScreen.this, OwnerGlobalQRCodeList.class);
+                            startActivity(ownerPlayerList);
+                            return;
+                        }
+                        else{
+                            Toast.makeText(MainScreen.this,"You are not an owner",Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                }
+            }
+        });
+    }
+    private void runOwnerPlayerActivity() {
         dbOwner = FirebaseFirestore.getInstance();
         CollectionReference collectionReferenceOwner = dbOwner.collection("Owner");
         collectionReferenceOwner.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
