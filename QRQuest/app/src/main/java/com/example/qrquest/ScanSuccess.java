@@ -1,10 +1,14 @@
 package com.example.qrquest;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -14,6 +18,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.osmdroid.util.GeoPoint;
+
+import java.util.HashMap;
+
 public class ScanSuccess extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     ImageView imageView;
@@ -22,6 +36,7 @@ public class ScanSuccess extends AppCompatActivity {
     Button submitButton;
     QRCode qrCode;
     EditText qrNameBox;
+    private FusedLocationProviderClient fusedLocationProviderClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +46,32 @@ public class ScanSuccess extends AppCompatActivity {
         takePictureButton = findViewById(R.id.photoButton);
         submitButton = findViewById(R.id.submitButton);
         qrNameBox = findViewById(R.id.qrName);
-
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                final CollectionReference collection = db.collection("QRCodeLocs");
+                if (location != null) {
+                    String hash = qrCode.getHash();
+                    HashMap<String, String> data = new HashMap<>();
+                    // add tests for invalid usernames and emails later.
+                    data.put("Latitude", Double.toString(location.getLatitude()));
+                    data.put("Longitude", Double.toString(location.getLongitude()));
+                    collection.document(hash).set(data);
+                }
+            }
+        });
 
 //        Bundle extras = getIntent().getExtras();
 //        String score = extras.getString("score");
