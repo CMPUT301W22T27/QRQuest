@@ -206,26 +206,13 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                                     Toast.makeText(getApplicationContext(), "You have never scanned this QR Code", Toast.LENGTH_LONG).show();
                                     //setUserScore(task, collectionReference);
                                     if (task.getResult().exists()) {
-                                        List<Integer> newScoreList = new ArrayList<Integer>();
-                                        String listscore = task.getResult().get("Score:").toString();
-                                        String[] stringscore = listscore.replaceAll("\\[", "")
-                                                .replaceAll("]", "")
-                                                .replaceAll(" ", "")
-                                                .split(",");
-                                        for (int i = 0; i < stringscore.length; i++) {
-                                            newScoreList.add(Integer.valueOf(stringscore[i]));
+                                        collectionReference.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                setUserScore(task,collectionReference);
+                                            }
+                                        });
                                         }
-                                        newScoreList.add(parseInt(score));
-                                        collectionReference.document(username).delete();
-                                        HashMap<String, Object> userScore = new HashMap<>();
-                                        userScore.put("Score:", newScoreList);
-                                        collectionReference.document(username).set(userScore);
-                                    } else {
-                                        List<Integer> scoreList = new ArrayList<Integer>();
-                                        scoreList.add(parseInt(score));
-                                        HashMap<String, Object> userScore = new HashMap<>();
-                                        userScore.put("Score:", scoreList);
-                                        collectionReference.document(username).set(userScore);
                                     }
                                     /*collectionReferenceUserToQRCode.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                         @Override
@@ -249,7 +236,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                                 }*/
                                 // inside the check for the code
                                 //openSubmissionActivity(qrCode);
-                            }
+
                     });
                 }
             });
@@ -378,7 +365,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
 
     }
 
-    /*private void setUserScore(@NonNull Task<DocumentSnapshot> task, CollectionReference collectionReference){
+    private void setUserScore(@NonNull Task<DocumentSnapshot> task, CollectionReference collectionReference){
         if (task.getResult().exists()) {
             List<Integer> newScoreList = new ArrayList<Integer>();
             String list = task.getResult().get("Score:").toString();
@@ -401,7 +388,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
             userScore.put("Score:", scoreList);
             collectionReference.document(username).set(userScore);
         }
-    }*/
+    }
 
     private void setUserQrRelation(Task<DocumentSnapshot> task, CollectionReference collectionReferenceUserToQRCode) {
         if (task.getResult().exists()) {
