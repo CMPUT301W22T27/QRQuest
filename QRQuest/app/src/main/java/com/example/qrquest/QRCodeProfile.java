@@ -20,12 +20,18 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.osmdroid.api.IMapController;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+
 public class QRCodeProfile extends AppCompatActivity {
     Button otherUser;
     String QRCode;
     TextView qrCodeNameBox;
     FirebaseFirestore db;
     ImageView qrItemImage;
+    private MapView map;
+    IMapController mapController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +49,7 @@ public class QRCodeProfile extends AppCompatActivity {
             }
         }
 
+        map = findViewById(R.id.map);
         qrCodeNameBox = findViewById(R.id.QRCodeProfileName);
         qrItemImage = findViewById(R.id.ItemImageView);
         //qrCodeNameBox.setText("Name of the QR Code:"+'\n'+QRCode);
@@ -56,6 +63,7 @@ public class QRCodeProfile extends AppCompatActivity {
         });
         db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("QRCodes");
+        CollectionReference collectionLocReference = db.collection("QRCodeLocs");
         collectionReference.document(QRCode).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -75,6 +83,20 @@ public class QRCodeProfile extends AppCompatActivity {
                 }
             }
             });
+
+        collectionLocReference.document(QRCode).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.getResult().exists()){
+                    double qrCodeLat = Double.parseDouble(task.getResult().get("Latitude").toString());
+                    double qrCodeLong = Double.parseDouble(task.getResult().get("Longitude").toString());
+                    GeoPoint qrCodeLocation = new GeoPoint(qrCodeLat, qrCodeLong);
+                    mapController = map.getController();
+                    mapController.setZoom(18.0);
+                    mapController.setCenter(qrCodeLocation);
+                }
+            }
+        });
     }
 
 
