@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -16,15 +17,26 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.osmdroid.api.IMapController;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+
 public class QRCodeProfile extends AppCompatActivity {
     Button otherUser;
     String QRCode;
     TextView qrCodeNameBox;
     FirebaseFirestore db;
+    private MapView map;
+    IMapController mapController;
+    private FusedLocationProviderClient fusedLocationProviderClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode_profile);
+        map = findViewById(R.id.map);
+        map.setTileSource(TileSourceFactory.MAPNIK); // render map
+        map.setBuiltInZoomControls(true); // zoomable
         Bundle intent = getIntent().getExtras();
         if (intent != null){
             if (intent.containsKey("QRCode_TotalNumberQRCodeScanned")){
@@ -54,7 +66,13 @@ public class QRCodeProfile extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.getResult().exists()) {
                     String qrCodeName =  task.getResult().get("name").toString();
+                    double qrCodeLat = Double.parseDouble(task.getResult().get("Latitude").toString());
+                    double qrCodeLong = Double.parseDouble(task.getResult().get("Longitude").toString());
                     qrCodeNameBox.setText("Name of the QR Code:"+'\n'+qrCodeName);
+                    GeoPoint startPoint = new GeoPoint(qrCodeLat, qrCodeLong);
+                    mapController = map.getController();
+                    mapController.setZoom(18.0);
+                    mapController.setCenter(startPoint);
                 }
             }
             });

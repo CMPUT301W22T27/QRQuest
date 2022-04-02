@@ -2,13 +2,30 @@ package com.example.qrquest;
 //Represents the QR code, computes its scoring and hashing, saves the score to the database
 //At this time, the cohesion of this class is high and need to be work upon for the final project.
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.util.Base64;
 
+import androidx.core.app.ActivityCompat;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.common.hash.Hashing;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
+import org.osmdroid.views.overlay.OverlayItem;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -22,12 +39,13 @@ import java.util.List;
 /**
  * Represents the QR code, computes its scoring and hashing, saves the score to the database
  */
-public class QRCode implements Serializable {
+public class QRCode extends Activity implements Serializable {
     //    private  String value;
     private String name;
     private String hash;
     private Integer score;
     private String image;
+    private FusedLocationProviderClient fusedLocationProviderClient;
     // we should include the location here
 
     /**
@@ -138,6 +156,33 @@ public class QRCode implements Serializable {
     /**
      * saves the score of the Qrcode in the firebase
      */
+
+    public void saveLoc(){
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null){
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    final CollectionReference collection = db.collection("QRCodes");
+                    HashMap<String, String> data = new HashMap<>();
+                    data.put("Latitude", Double.toString(location.getLatitude()));
+                    data.put("Longitude", Double.toString(location.getLongitude()));
+                    collection.document(hash).set(data);
+                }
+            }
+        });
+    }
     public void save() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final CollectionReference collection = db.collection("QRCodes");
@@ -148,10 +193,7 @@ public class QRCode implements Serializable {
         data.put("Score", this.score.toString());
         data.put("name", this.name);
         data.put("Image", this.image);
-
-
         collection.document(this.hash).set(data);
-
     }
 
     private ArrayList getRepetitions(){

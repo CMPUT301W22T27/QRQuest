@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.common.hash.Hashing;
@@ -49,6 +50,7 @@ public class GameStatusQRCode extends AppCompatActivity {
     TextView highestScore;
     TextView qrCodeCount;
     TextView combinedScore;
+    private FusedLocationProviderClient fusedLocationProviderClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
