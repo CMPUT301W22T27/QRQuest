@@ -419,7 +419,6 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         isNewCode = false;
-                        Toast.makeText(MainScreen.this,"this code has been found",Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -427,6 +426,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
     }
 
     private void launchCodeProfile(QRCode qrCode){
+        Toast.makeText(MainScreen.this,"You found a code worth " + qrCode.getScore() + " points!",Toast.LENGTH_SHORT).show();
         String qrCodeHash = qrCode.getHash();
         String qrCodeName = qrCode.getName();
         Intent qrCodeProfile = new Intent (this,QRCodeProfile.class);
