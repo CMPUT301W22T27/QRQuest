@@ -137,55 +137,13 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         deleteCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dbOwner = FirebaseFirestore.getInstance();
-                CollectionReference collectionReferenceOwner = dbOwner.collection("Owner");
-                collectionReferenceOwner.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            List<DocumentSnapshot> documentList = task.getResult().getDocuments();
-                            for (int i = 0; i < documentList.size(); i++) {
-                                int index = i;
-                                if ((documentList.get(i).getId().toString().equals(username))) {
-                                    Intent ownerGlobalList = new Intent(MainScreen.this, OwnerGlobalQRCodeList.class);
-                                    startActivity(ownerGlobalList);
-                                    return;
-                                }
-                                else{
-                                    Toast.makeText(MainScreen.this,"You are not an owner",Toast.LENGTH_LONG).show();
-
-                                }
-                            }
-                        }
-                    }
-                });
+                runOwnerActivity();
             }
         });
         deletePlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dbOwner = FirebaseFirestore.getInstance();
-                CollectionReference collectionReferenceOwner = dbOwner.collection("Owner");
-                collectionReferenceOwner.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            List<DocumentSnapshot> documentList = task.getResult().getDocuments();
-                            for (int i = 0; i < documentList.size(); i++) {
-                                int index = i;
-                                if ((documentList.get(i).getId().toString().equals(username))) {
-                                    Intent ownerPlayerList = new Intent(MainScreen.this, OwnerGlobalPlayerList.class);
-                                    startActivity(ownerPlayerList);
-                                    return;
-                                }
-                                else{
-                                    Toast.makeText(MainScreen.this,"You are not an owner",Toast.LENGTH_LONG).show();
-
-                                }
-                            }
-                        }
-                    }
-                });
+                runOwnerActivity();
             }
         });
 
@@ -354,14 +312,14 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
     public void onMapReady(@NonNull GoogleMap googleMap) {
 
     }
-    public void openSubmissionActivity(QRCode qrCode){
+    private void openSubmissionActivity(QRCode qrCode){
        Intent intent = new Intent(this, ScanSuccess.class);
        intent.putExtra("QRCODE", qrCode);
        startActivity(intent);
 
     }
 
-    public void setUserScore(Task<DocumentSnapshot> task, CollectionReference collectionReference){
+    private void setUserScore(Task<DocumentSnapshot> task, CollectionReference collectionReference){
         if (task.getResult().exists()) {
             List<Integer> newScoreList = new ArrayList<Integer>();
             String list = task.getResult().get("Score:").toString();
@@ -386,7 +344,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         }
     }
 
-    public void setUserQrRelation(Task<DocumentSnapshot> task, CollectionReference collectionReferenceUserToQRCode) {
+    private void setUserQrRelation(Task<DocumentSnapshot> task, CollectionReference collectionReferenceUserToQRCode) {
         if (task.getResult().exists()) {
             List<String> newUserToQrcodeList = new ArrayList<String>();
             String userToQrcodelist = task.getResult().get("QRCode").toString();
@@ -411,7 +369,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         }
     }
 
-    public void setQrUserRelation(Task<DocumentSnapshot> task, CollectionReference collectionReferenceQRCodetoUser) {
+    private void setQrUserRelation(Task<DocumentSnapshot> task, CollectionReference collectionReferenceQRCodetoUser) {
         if (task.getResult().exists()) {
             List<String> newQrcodeToUserList = new ArrayList<String>();
             String qrcodeToUserlist = task.getResult().get("Username").toString();
@@ -434,5 +392,30 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
             QRCodeUser.put("Username", usernameList);
             collectionReferenceQRCodetoUser.document(qrCodeHash).set(QRCodeUser);
         }
+    }
+
+    private void runOwnerActivity() {
+        dbOwner = FirebaseFirestore.getInstance();
+        CollectionReference collectionReferenceOwner = dbOwner.collection("Owner");
+        collectionReferenceOwner.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    List<DocumentSnapshot> documentList = task.getResult().getDocuments();
+                    for (int i = 0; i < documentList.size(); i++) {
+                        int index = i;
+                        if ((documentList.get(i).getId().toString().equals(username))) {
+                            Intent ownerPlayerList = new Intent(MainScreen.this, OwnerGlobalPlayerList.class);
+                            startActivity(ownerPlayerList);
+                            return;
+                        }
+                        else{
+                            Toast.makeText(MainScreen.this,"You are not an owner",Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                }
+            }
+        });
     }
 }
