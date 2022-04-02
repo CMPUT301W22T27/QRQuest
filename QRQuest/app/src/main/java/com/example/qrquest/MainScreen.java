@@ -180,7 +180,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
             QRCode qrCode = new QRCode(intentResult.getContents(), false);
             score = Integer.toString(qrCode.getScore());
             qrCodeHash = qrCode.getHash();
-
+            //qrCodeHash = "696ce4dbd7bb57cbfe58b64f530f428b74999cb37e2ee60980490cd9552de3a6";
 
 
             collectionReference.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -204,9 +204,30 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                                     return;
                                 } else {
                                     Toast.makeText(getApplicationContext(), "You have never scanned this QR Code", Toast.LENGTH_LONG).show();
-                                    /*setUserScore(task, collectionReference);
-
-                                    collectionReferenceUserToQRCode.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    //setUserScore(task, collectionReference);
+                                    if (task.getResult().exists()) {
+                                        List<Integer> newScoreList = new ArrayList<Integer>();
+                                        String listscore = task.getResult().get("Score:").toString();
+                                        String[] stringscore = listscore.replaceAll("\\[", "")
+                                                .replaceAll("]", "")
+                                                .replaceAll(" ", "")
+                                                .split(",");
+                                        for (int i = 0; i < stringscore.length; i++) {
+                                            newScoreList.add(Integer.valueOf(stringscore[i]));
+                                        }
+                                        newScoreList.add(parseInt(score));
+                                        collectionReference.document(username).delete();
+                                        HashMap<String, Object> userScore = new HashMap<>();
+                                        userScore.put("Score:", newScoreList);
+                                        collectionReference.document(username).set(userScore);
+                                    } else {
+                                        List<Integer> scoreList = new ArrayList<Integer>();
+                                        scoreList.add(parseInt(score));
+                                        HashMap<String, Object> userScore = new HashMap<>();
+                                        userScore.put("Score:", scoreList);
+                                        collectionReference.document(username).set(userScore);
+                                    }
+                                    /*collectionReferenceUserToQRCode.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                         @Override
                                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                             setUserQrRelation(task, collectionReferenceUserToQRCode);
@@ -223,9 +244,9 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                                 }*/
                                 }
                             }
-                            else{
+                           /* else{
                                     Toast.makeText(getApplicationContext(), "You have never scanned any QR Code", Toast.LENGTH_LONG).show();
-                                }
+                                }*/
                                 // inside the check for the code
                                 //openSubmissionActivity(qrCode);
                             }
@@ -357,7 +378,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
 
     }
 
-    private void setUserScore(Task<DocumentSnapshot> task, CollectionReference collectionReference){
+    /*private void setUserScore(@NonNull Task<DocumentSnapshot> task, CollectionReference collectionReference){
         if (task.getResult().exists()) {
             List<Integer> newScoreList = new ArrayList<Integer>();
             String list = task.getResult().get("Score:").toString();
@@ -380,7 +401,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
             userScore.put("Score:", scoreList);
             collectionReference.document(username).set(userScore);
         }
-    }
+    }*/
 
     private void setUserQrRelation(Task<DocumentSnapshot> task, CollectionReference collectionReferenceUserToQRCode) {
         if (task.getResult().exists()) {
