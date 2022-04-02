@@ -5,19 +5,14 @@ import static java.lang.Integer.parseInt;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,15 +25,12 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.zxing.client.android.Intents;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
@@ -137,13 +129,13 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         deleteCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                runOwnerQRCodeActivity();
+                runOwnerActivity(OwnerGlobalQRCodeList.class);
             }
         });
         deletePlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                runOwnerPlayerActivity();
+                runOwnerActivity(OwnerGlobalPlayerList.class);
             }
         });
 
@@ -386,7 +378,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         }
     }
 
-    private void runOwnerQRCodeActivity() {
+    private void runOwnerActivity(Class activity) {
         dbOwner = FirebaseFirestore.getInstance();
         CollectionReference collectionReferenceOwner = dbOwner.collection("Owner");
         collectionReferenceOwner.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -397,7 +389,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                     for (int i = 0; i < documentList.size(); i++) {
                         int index = i;
                         if ((documentList.get(i).getId().toString().equals(username))) {
-                            Intent ownerPlayerList = new Intent(MainScreen.this, OwnerGlobalQRCodeList.class);
+                            Intent ownerPlayerList = new Intent(MainScreen.this, activity);
                             startActivity(ownerPlayerList);
                             return;
                         }
@@ -410,28 +402,5 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
             }
         });
     }
-    private void runOwnerPlayerActivity() {
-        dbOwner = FirebaseFirestore.getInstance();
-        CollectionReference collectionReferenceOwner = dbOwner.collection("Owner");
-        collectionReferenceOwner.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    List<DocumentSnapshot> documentList = task.getResult().getDocuments();
-                    for (int i = 0; i < documentList.size(); i++) {
-                        int index = i;
-                        if ((documentList.get(i).getId().toString().equals(username))) {
-                            Intent ownerPlayerList = new Intent(MainScreen.this, OwnerGlobalPlayerList.class);
-                            startActivity(ownerPlayerList);
-                            return;
-                        }
-                        else{
-                            Toast.makeText(MainScreen.this,"You are not an owner",Toast.LENGTH_SHORT).show();
 
-                        }
-                    }
-                }
-            }
-        });
-    }
 }
