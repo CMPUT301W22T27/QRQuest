@@ -50,7 +50,6 @@ public class GlobalQRCodeList extends AppCompatActivity {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                             String qrCodeHash = qrDataList.get(i);
-                            String qrCodeName = qrNameList.get(i);
                             Intent qrCodeProfile = new Intent (GlobalQRCodeList.this,QRCodeProfile.class);
                             qrCodeProfile.putExtra("QRCode_GlobalQRCodeList",qrCodeHash);
                             qrCodeProfile.putExtra("QRCodeName_GlobalQRCodeList",qrNameList.get(i));

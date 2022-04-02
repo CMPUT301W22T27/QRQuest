@@ -28,7 +28,6 @@ public class QRCode implements Serializable {
     private String hash;
     private Integer score;
     private String image = "";
-    private String foundBy;
     // we should include the location here
 
     /**
@@ -80,10 +79,6 @@ public class QRCode implements Serializable {
 
     }
 
-    // delete this method, only used in testing
-//    public String getImage() {
-//        return image;
-//    }
 
     /**
      * returns the hash value
@@ -135,6 +130,7 @@ public class QRCode implements Serializable {
         this.score = currentScore;
 
     }
+
 
     /**
      * saves the score of the Qrcode in the firebase

@@ -22,6 +22,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -52,6 +53,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
     String score;
     String qrCodeHash;
     FirebaseFirestore dbOwner;
+    boolean isNewCode = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -172,7 +174,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
             QRCode qrCode = new QRCode(intentResult.getContents(), false);
             score = Integer.toString(qrCode.getScore());
             qrCodeHash = qrCode.getHash();
-
+            setIsNewCode(db, qrCodeHash);
 
             collectionReference.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -194,7 +196,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                                     Toast.makeText(getApplicationContext(), "You have already scanned this QR Code", Toast.LENGTH_SHORT).show();
                                     return;
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "You have never scanned this QR Code", Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(getApplicationContext(), "You have never scanned this QR Code", Toast.LENGTH_SHORT).show();
                                     //setUserScore(task, collectionReference);
                                     if (task.getResult().exists()) {
                                         collectionReference.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -210,7 +212,11 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                                                             @Override
                                                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                                 setQrUserRelation(task, collectionReferenceQRCodetoUser);
-                                                                openSubmissionActivity(qrCode);
+                                                                if(isNewCode) {
+                                                                    openSubmissionActivity(qrCode);
+                                                                } else {
+                                                                    launchCodeProfile(qrCode);
+                                                                }
                                                             }
                                                         });
                                                     }
@@ -404,11 +410,28 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
 
     }
 
-    private void checkIfFound(FirebaseFirestore db){
-        final CollectionReference collectionReference = db.collection("QRCodes");
-        if (collectionReference.document("testDoc") == null) {
-            Toast.makeText(MainScreen.this,"the doc does not exist",Toast.LENGTH_SHORT).show();
-        }
+    private void setIsNewCode(FirebaseFirestore db, String qrCodeHash){
+        DocumentReference docIdRef = db.collection("QRCodes").document(qrCodeHash);
+        docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        isNewCode = false;
+                        Toast.makeText(MainScreen.this,"this code has been found",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
     }
 
+    private void launchCodeProfile(QRCode qrCode){
+        String qrCodeHash = qrCode.getHash();
+        String qrCodeName = qrCode.getName();
+        Intent qrCodeProfile = new Intent (this,QRCodeProfile.class);
+        qrCodeProfile.putExtra("QRCode_GlobalQRCodeList",qrCodeHash);
+        qrCodeProfile.putExtra("QRCodeName_GlobalQRCodeList",qrCodeName);
+        startActivity(qrCodeProfile);
+    }
 }
