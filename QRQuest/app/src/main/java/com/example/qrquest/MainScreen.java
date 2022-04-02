@@ -204,6 +204,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                                     return;
                                 }
                                 else {
+                                    Toast.makeText(getApplicationContext(), "You have never scanned this QR Code", Toast.LENGTH_LONG).show();
                                     setUserScore(task, collectionReference);
 
                                     collectionReferenceUserToQRCode.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -222,8 +223,11 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                                     });
                                 }
                             }
+                            else{
+                                Toast.makeText(getApplicationContext(), "You have never scanned any QR Code", Toast.LENGTH_LONG).show();
+                            }
                             // inside the check for the code
-                            openSubmissionActivity(qrCode);
+                            //openSubmissionActivity(qrCode);
                         }
                     });
                 }
