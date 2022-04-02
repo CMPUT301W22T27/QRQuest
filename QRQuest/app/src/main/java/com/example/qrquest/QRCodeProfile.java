@@ -66,13 +66,13 @@ public class QRCodeProfile extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.getResult().exists()) {
                     String qrCodeName =  task.getResult().get("name").toString();
-                    double qrCodeLat = Double.parseDouble(task.getResult().get("Latitude").toString());
-                    double qrCodeLong = Double.parseDouble(task.getResult().get("Longitude").toString());
+                    //double qrCodeLat = Double.parseDouble(task.getResult().get("Latitude").toString());
+                    //double qrCodeLong = Double.parseDouble(task.getResult().get("Longitude").toString());
                     qrCodeNameBox.setText("Name of the QR Code:"+'\n'+qrCodeName);
-                    GeoPoint startPoint = new GeoPoint(qrCodeLat, qrCodeLong);
+                    //GeoPoint startPoint = new GeoPoint(qrCodeLat, qrCodeLong);
                     mapController = map.getController();
                     mapController.setZoom(18.0);
-                    mapController.setCenter(startPoint);
+                    //mapController.setCenter(startPoint);
                 }
             }
             });
