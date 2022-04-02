@@ -45,6 +45,8 @@ public class QRCode extends Activity implements Serializable {
     private String hash;
     private Integer score;
     private String image;
+    private String latitude;
+    private String longitude;
     private FusedLocationProviderClient fusedLocationProviderClient;
     // we should include the location here
 
@@ -156,8 +158,7 @@ public class QRCode extends Activity implements Serializable {
     /**
      * saves the score of the Qrcode in the firebase
      */
-
-    public void saveLoc(){
+    public void save() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -173,17 +174,11 @@ public class QRCode extends Activity implements Serializable {
             @Override
             public void onSuccess(Location location) {
                 if (location != null){
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    final CollectionReference collection = db.collection("QRCodes");
-                    HashMap<String, String> data = new HashMap<>();
-                    data.put("Latitude", Double.toString(location.getLatitude()));
-                    data.put("Longitude", Double.toString(location.getLongitude()));
-                   // collection.document(hash).set(data);
+                    latitude = Double.toString(location.getLatitude());
+                    longitude = Double.toString(location.getLongitude());
                 }
             }
         });
-    }
-    public void save() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         final CollectionReference collection = db.collection("QRCodes");
 //        final CollectionReference imagesCollection = db.collection("Images");
@@ -193,6 +188,8 @@ public class QRCode extends Activity implements Serializable {
         data.put("Score", this.score.toString());
         data.put("name", this.name);
         data.put("Image", this.image);
+        data.put("Latitude", this.latitude);
+        data.put("Longitude", this.longitude);
         collection.document(this.hash).set(data);
     }
 

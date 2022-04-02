@@ -54,7 +54,6 @@ public class ScanSuccess extends AppCompatActivity {
                 String qrName = qrNameBox.getText().toString();
                 qrCode.setName(qrName);
                 qrCode.save();
-                qrCode.saveLoc();
                 Toast.makeText(getApplicationContext(), "Submission Successful", Toast.LENGTH_SHORT).show();
                 finish();
 
