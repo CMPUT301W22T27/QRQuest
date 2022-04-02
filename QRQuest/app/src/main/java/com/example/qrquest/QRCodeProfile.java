@@ -42,6 +42,7 @@ public class QRCodeProfile extends AppCompatActivity {
                 QRCode = intent.getString("QRCode_GlobalQRCodeList");
             }
         }
+
         qrCodeNameBox = findViewById(R.id.QRCodeProfileName);
         qrItemImage = findViewById(R.id.ItemImageView);
         //qrCodeNameBox.setText("Name of the QR Code:"+'\n'+QRCode);
