@@ -210,6 +210,20 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                                             @Override
                                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                 setUserScore(task,collectionReference);
+                                                collectionReferenceUserToQRCode.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                        setUserQrRelation(task, collectionReferenceUserToQRCode);
+
+                                                        collectionReferenceQRCodetoUser.document(qrCodeHash).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                setQrUserRelation(task, collectionReferenceQRCodetoUser);
+                                                                openSubmissionActivity(qrCode);
+                                                            }
+                                                        });
+                                                    }
+                                                });
                                             }
                                         });
                                         }
@@ -390,7 +404,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         }
     }
 
-    private void setUserQrRelation(Task<DocumentSnapshot> task, CollectionReference collectionReferenceUserToQRCode) {
+    private void setUserQrRelation(@NonNull Task<DocumentSnapshot> task, CollectionReference collectionReferenceUserToQRCode) {
         if (task.getResult().exists()) {
             List<String> newUserToQrcodeList = new ArrayList<String>();
             String userToQrcodelist = task.getResult().get("QRCode").toString();
@@ -415,7 +429,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         }
     }
 
-    private void setQrUserRelation(Task<DocumentSnapshot> task, CollectionReference collectionReferenceQRCodetoUser) {
+    private void setQrUserRelation(@NonNull Task<DocumentSnapshot> task, CollectionReference collectionReferenceQRCodetoUser) {
         if (task.getResult().exists()) {
             List<String> newQrcodeToUserList = new ArrayList<String>();
             String qrcodeToUserlist = task.getResult().get("Username").toString();
