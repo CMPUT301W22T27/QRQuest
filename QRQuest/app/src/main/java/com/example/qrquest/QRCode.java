@@ -178,7 +178,7 @@ public class QRCode extends Activity implements Serializable {
                     HashMap<String, String> data = new HashMap<>();
                     data.put("Latitude", Double.toString(location.getLatitude()));
                     data.put("Longitude", Double.toString(location.getLongitude()));
-                    collection.document(hash).set(data);
+                   // collection.document(hash).set(data);
                 }
             }
         });
