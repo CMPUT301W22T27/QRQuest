@@ -61,7 +61,7 @@ public class ScanSuccess extends AppCompatActivity {
             @Override
             public void onSuccess(Location location) {
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                final CollectionReference collection = db.collection("QRCodes");
+                final CollectionReference collection = db.collection("QRCodeLocs");
                 if (location != null) {
                     String hash = qrCode.getHash();
                     HashMap<String, String> data = new HashMap<>();
