@@ -172,14 +172,17 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         super.onActivityResult(requestCode, resultCode, data);
         IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (intentResult.getContents() != null){
-
-            QRCode qrCode = new QRCode(intentResult.getContents(), false);
-            score = Integer.toString(qrCode.getScore());
-            qrCodeHash = qrCode.getHash();
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             final CollectionReference collectionReference = db.collection("userScore");
             final CollectionReference collectionReferenceUserToQRCode = db.collection("UserToQRCode");
             final CollectionReference collectionReferenceQRCodetoUser = db.collection("QRCodeToUser");
+
+            QRCode qrCode = new QRCode(intentResult.getContents(), false);
+            score = Integer.toString(qrCode.getScore());
+            qrCodeHash = qrCode.getHash();
+
+
+
             collectionReference.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -394,6 +397,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
         }
     }
 
+    // checks if user is an owner and provides access to options if so
     private void runOwnerActivity() {
         dbOwner = FirebaseFirestore.getInstance();
         CollectionReference collectionReferenceOwner = dbOwner.collection("Owner");
