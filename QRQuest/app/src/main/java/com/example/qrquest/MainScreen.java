@@ -172,7 +172,6 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
             QRCode qrCode = new QRCode(intentResult.getContents(), false);
             score = Integer.toString(qrCode.getScore());
             qrCodeHash = qrCode.getHash();
-            //qrCodeHash = "696ce4dbd7bb57cbfe58b64f530f428b74999cb37e2ee60980490cd9552de3a6";
 
 
             collectionReference.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -192,10 +191,10 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
                                     checkQRCodeList.add(string[i]);
                                 }
                                 if (checkQRCodeList.contains(qrCodeHash)) {
-                                    Toast.makeText(getApplicationContext(), "You have already scanned this QR Code", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), "You have already scanned this QR Code", Toast.LENGTH_SHORT).show();
                                     return;
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "You have never scanned this QR Code", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), "You have never scanned this QR Code", Toast.LENGTH_SHORT).show();
                                     //setUserScore(task, collectionReference);
                                     if (task.getResult().exists()) {
                                         collectionReference.document(username).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -227,7 +226,7 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
             });
 
         }else {
-            Toast.makeText(getApplicationContext(), "OOPS... You did not scan anything", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Nothing was scanned.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -380,27 +379,36 @@ public class MainScreen extends AppCompatActivity implements OnMapReadyCallback{
 
     private void runOwnerActivity(Class activity) {
         dbOwner = FirebaseFirestore.getInstance();
+        final boolean[] isOwner = new boolean[1];
         CollectionReference collectionReferenceOwner = dbOwner.collection("Owner");
         collectionReferenceOwner.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                boolean isOwner = false;
                 if (task.isSuccessful()) {
                     List<DocumentSnapshot> documentList = task.getResult().getDocuments();
                     for (int i = 0; i < documentList.size(); i++) {
                         int index = i;
                         if ((documentList.get(i).getId().toString().equals(username))) {
+                            isOwner = true;
                             Intent ownerPlayerList = new Intent(MainScreen.this, activity);
                             startActivity(ownerPlayerList);
-                            return;
                         }
-                        else{
-                            Toast.makeText(MainScreen.this,"You are not an owner",Toast.LENGTH_SHORT).show();
-
-                        }
+                    }
+                    if(!isOwner) {
+                        Toast.makeText(MainScreen.this,"You are not an owner",Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
+
+    }
+
+    private void checkIfFound(FirebaseFirestore db){
+        final CollectionReference collectionReference = db.collection("QRCodes");
+        if (collectionReference.document("testDoc") == null) {
+            Toast.makeText(MainScreen.this,"the doc does not exist",Toast.LENGTH_SHORT).show();
+        }
     }
 
 }
