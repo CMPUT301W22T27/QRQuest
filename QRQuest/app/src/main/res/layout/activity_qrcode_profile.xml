@@ -10,12 +10,25 @@
         android:id="@+id/OtherUserButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="20dp"
         android:text="Other Users who have scanned this QR Code"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ItemImageView" />
+        app:layout_constraintTop_toBottomOf="@+id/map" />
+
+    <Button
+        android:id="@+id/seeComments"
+        android:layout_width="183dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="5dp"
+        android:text="See comments"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/OtherUserButton"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/QRCodeProfileName"
@@ -31,10 +44,20 @@
         android:id="@+id/ItemImageView"
         android:layout_width="239dp"
         android:layout_height="253dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/QRCodeProfileName"
         app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+    <org.osmdroid.views.MapView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ItemImageView"
+        tools:ignore="SpeakableTextPresentCheck" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

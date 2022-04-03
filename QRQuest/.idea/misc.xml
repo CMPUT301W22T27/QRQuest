@@ -46,6 +46,7 @@
         <entry key="..\:/Users/nosaj/Uni2021/Winter2022/CMPUT 301/QRQuest/QRQuest/app/src/main/res/menu/main_screen_menu.xml" value="0.18697916666666667" />
         <entry key="app/src/main/res/drawable/ic_menu_camera.xml" value="0.30666666666666664" />
         <entry key="app/src/main/res/drawable/ic_scoreboard.xml" value="0.17395833333333333" />
+        <entry key="app/src/main/res/layout/activity_global_qrcode_list.xml" value="0.2081492042593461" />
         <entry key="app/src/main/res/layout/activity_login_qrcode.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.30371865964343253" />
         <entry key="app/src/main/res/layout/activity_main_screen.xml" value="0.2907692307692308" />

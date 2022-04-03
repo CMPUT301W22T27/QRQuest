@@ -30,6 +30,7 @@ public class GlobalQRCodeList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_global_qrcode_list);
+        //Bundle intent = getIntent().getExtras();
         db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("QRCodes");
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -50,7 +51,6 @@ public class GlobalQRCodeList extends AppCompatActivity {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                             String qrCodeHash = qrDataList.get(i);
-                            String qrCodeName = qrNameList.get(i);
                             Intent qrCodeProfile = new Intent (GlobalQRCodeList.this,QRCodeProfile.class);
                             qrCodeProfile.putExtra("QRCode_GlobalQRCodeList",qrCodeHash);
                             qrCodeProfile.putExtra("QRCodeName_GlobalQRCodeList",qrNameList.get(i));
