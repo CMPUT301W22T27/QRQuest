@@ -40,7 +40,7 @@ public class QRCodeProfile extends AppCompatActivity {
             public void onClick(View view) {
                 Intent seeComments = new Intent(QRCodeProfile.this, SeeComments.class);
                 seeComments.putExtra("QRCode_QRCodeProfile",QRCode);
-                seeComments.putExtra("USER_NAME_LeaderBoardType",username);
+                seeComments.putExtra("USER_NAME_MainScreen",username);
                 startActivity(seeComments);
             }
         });
