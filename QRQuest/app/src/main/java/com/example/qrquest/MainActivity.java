@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             String username = null;
             String email = null;
 
-            File file = new File(this.getFilesDir(), "login.txt"); // REFERENCE [2]
+            File file = new File(this.getFilesDir(), "login.txt");
 
             try {
 
