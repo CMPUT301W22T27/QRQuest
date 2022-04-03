@@ -44,7 +44,10 @@
         <entry key="app/src/main/res/drawable/ic_menu_camera.xml" value="0.30666666666666664" />
         <entry key="app/src/main/res/drawable/ic_scoreboard.xml" value="0.17395833333333333" />
         <entry key="app/src/main/res/layout/activity_login_qrcode.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.30371865964343253" />
         <entry key="app/src/main/res/layout/activity_main_screen.xml" value="0.2907692307692308" />
+        <entry key="app/src/main/res/layout/activity_qrcode_profile.xml" value="0.5075808895842898" />
+        <entry key="app/src/main/res/layout/activity_seecomments.xml" value="0.3434292903731563" />
         <entry key="app/src/main/res/layout/activity_side_bar.xml" value="0.2907692307692308" />
         <entry key="app/src/main/res/layout/app_bar_side_bar.xml" value="0.2907692307692308" />
         <entry key="app/src/main/res/layout/fragment_logout.xml" value="0.1578125" />

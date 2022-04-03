@@ -17,6 +17,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/map" />
 
+    <Button
+        android:id="@+id/seeComments"
+        android:layout_width="183dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="5dp"
+        android:text="See comments"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/OtherUserButton"
+        app:layout_constraintVertical_bias="1.0" />
+
     <TextView
         android:id="@+id/QRCodeProfileName"
         android:layout_width="wrap_content"
