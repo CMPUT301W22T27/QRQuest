@@ -32,7 +32,6 @@ import java.util.ArrayList;
 
 public class QRCodeProfile extends AppCompatActivity {
     Button otherUser;
-    String username;
     String QRCode;
     TextView qrCodeNameBox;
     FirebaseFirestore db;
@@ -46,7 +45,6 @@ public class QRCodeProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode_profile);
         Bundle intent = getIntent().getExtras();
-        username = intent.getString("USER_NAME_MainScreen");
         if (intent != null){
             if (intent.containsKey("QRCode_TotalNumberQRCodeScanned")){
                 QRCode= intent.getString("QRCode_TotalNumberQRCodeScanned");
@@ -69,7 +67,6 @@ public class QRCodeProfile extends AppCompatActivity {
             public void onClick(View view) {
                 Intent seeComments = new Intent(QRCodeProfile.this, Seecomments.class);
                 seeComments.putExtra("QRCode_QRCodeProfile",QRCode);
-                seeComments.putExtra("USER_NAME_MainScreen",username);
                 startActivity(seeComments);
             }
         });

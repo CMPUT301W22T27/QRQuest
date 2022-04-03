@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,8 +22,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.w3c.dom.Text;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class Seecomments extends AppCompatActivity {
     String QRCode;
@@ -36,6 +43,7 @@ public class Seecomments extends AppCompatActivity {
     ArrayList<String> commentList;
     ArrayAdapter<String> commentAdapter;
     String username;
+    String email;
     FirebaseFirestore db;
     CollectionReference collectionReference;
 
@@ -46,11 +54,41 @@ public class Seecomments extends AppCompatActivity {
         Intent intent = getIntent();
         db = FirebaseFirestore.getInstance();
         QRCode = intent.getStringExtra("QRCode_QRCodeProfile");
-        username = intent.getStringExtra("USER_NAME_MainScreen");
+        //username = intent.getStringExtra("USER_NAME_MainScreen");
         qrCode = findViewById(R.id.qrCodeName);
         qrCode.setText(QRCode);
 
-        collectionReference = db.collection("QRCodes");
+        File file = new File(this.getFilesDir(), "login.txt"); // REFERENCE [2]
+
+        try {
+
+            if (file.exists()) {
+                FileReader fileReader = new FileReader(file);
+                char[] buffer = new char[100];
+
+                BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+                email = bufferedReader.readLine();
+                Log.i("em", email);
+                username = bufferedReader.readLine();
+                Log.i("un", username);
+            } else {
+
+                FileWriter fileWriter = new FileWriter(file.getPath());
+
+                username = UUID.randomUUID().toString(); // REFERENCE: शु-Bham at https://stackoverflow.com/questions/12116092/android-random-string-generator
+                email = UUID.randomUUID().toString(); // TODO: check if this username or email already exists (unlikely)
+                Log.i("username", username);
+                Log.i("email", email);
+            }
+
+        } catch (IOException e) {
+            Log.e("Error:", "File error");
+            // TODO: Error occurred when opening raw file for reading.
+        }
+
+
+                collectionReference = db.collection("QRCodes");
         collectionReference.document(QRCode).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

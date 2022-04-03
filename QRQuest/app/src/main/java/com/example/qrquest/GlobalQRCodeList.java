@@ -23,7 +23,6 @@ import java.util.List;
 public class GlobalQRCodeList extends AppCompatActivity {
     FirebaseFirestore db;
     public ListView qrCodeList;
-    String username;
     public ArrayList<String> qrDataList = new ArrayList<String>();
     public ArrayList<String> qrNameList = new ArrayList<String>();
     public ArrayAdapter<String> qrCodeAdapter;
@@ -32,7 +31,6 @@ public class GlobalQRCodeList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_global_qrcode_list);
         //Bundle intent = getIntent().getExtras();
-        username = "test";
         db = FirebaseFirestore.getInstance();
         CollectionReference collectionReference = db.collection("QRCodes");
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -56,7 +54,6 @@ public class GlobalQRCodeList extends AppCompatActivity {
                             Intent qrCodeProfile = new Intent (GlobalQRCodeList.this,QRCodeProfile.class);
                             qrCodeProfile.putExtra("QRCode_GlobalQRCodeList",qrCodeHash);
                             qrCodeProfile.putExtra("QRCodeName_GlobalQRCodeList",qrNameList.get(i));
-                            qrCodeProfile.putExtra("USER_NAME_MainScreen",username);
                             startActivity(qrCodeProfile);
                         }
                     });
