@@ -50,14 +50,12 @@ import java.util.UUID;
 public class MainActivity extends AppCompatActivity {
         Button createAccountButton;
         Button logInButton;
-        Button TestButton;
         FirebaseFirestore db;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             createAccountButton = findViewById(R.id.createNewAccountButton);
-            TestButton = findViewById(R.id.testButton);
             String username = null;
             String email = null;
 
