@@ -128,7 +128,13 @@ public class MainScreen extends AppCompatActivity {
                 username = intent.getString("USER_NAME_MainActivity");
                 email = intent.getString("EMAIL_ADDRESS_MainActivity");
                 welcomeMessage = findViewById(R.id.welcomeUserEditText);
-                welcomeMessage.setText("Welcome, " + username.substring(0, 8) + "!");
+                if (username.length() > 8){
+                    welcomeMessage.setText("Welcome, " + username.substring(0, 8) + "!");
+                }
+                else{
+                    welcomeMessage.setText("Welcome, " + username + "!");
+                }
+
             }
             else{
                 username = intent.getString("USER_NAME_CreateAccount");
