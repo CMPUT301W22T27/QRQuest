@@ -7,6 +7,12 @@
          location permissions for the "MyLocation" functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature android:name="android.hardware.camera" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +21,48 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.QRQuest">
+        <activity
+            android:name=".Seecomments"
+            android:exported="false" />
+        <activity
+            android:name=".OwnerGlobalPlayerList"
+            android:exported="false" />
+        <activity
+            android:name=".OwnerGlobalQRCodeList"
+            android:exported="false" />
+        <activity
+            android:name=".GlobalQRCodeList"
+            android:exported="false" />
+        <activity
+            android:name=".OtherUserWithSameQRCode"
+            android:exported="false" />
+        <activity
+            android:name=".QRCodeProfile"
+            android:exported="false" />
+        <activity
+            android:name=".TotalNumberQRCodeScanned"
+            android:exported="false" />
+        <activity
+            android:name=".CombinedScoreLB"
+            android:exported="false" />
+        <activity
+            android:name=".NumberOfQRCodesScannedLB"
+            android:exported="false" />
+        <activity
+            android:name=".HighestScoreQRCodeLB"
+            android:exported="false" />
+        <activity
+            android:name=".LeaderBoardType"
+            android:exported="false" />
+        <activity
+            android:name=".OtherUserProfile"
+            android:exported="false" />
+        <activity
+            android:name=".SearchUser"
+            android:exported="false" />
+        <activity
+            android:name=".ScanSuccess"
+            android:exported="false" />
         <activity
             android:name=".SideBarActivity"
             android:exported="false"
@@ -28,6 +76,9 @@
             android:exported="false" />
         <activity
             android:name=".ChooseQRCodeType"
+            android:exported="false" />
+        <activity
+            android:name=".OtherPlayerQRCodeCount"
             android:exported="false" />
         <activity
             android:name=".Capture"
@@ -52,6 +103,9 @@
             android:exported="false" />
         <activity
             android:name=".Capture"
+            android:exported="false" />
+        <activity
+            android:name=".ReLogin"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

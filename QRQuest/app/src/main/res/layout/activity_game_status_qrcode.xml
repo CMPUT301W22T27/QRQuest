@@ -25,6 +25,7 @@
         android:layout_marginTop="10dp"
         android:text="Lowest"
         android:textSize="20sp"
+        android:clickable="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textHighestScore" />
 
@@ -34,6 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="10dp"
+        android:clickable="true"
         android:text="QRCode Count"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"

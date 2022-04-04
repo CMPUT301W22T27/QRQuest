@@ -2,10 +2,17 @@ package com.example.qrquest;
 //Represents the QR code, computes its scoring and hashing, saves the score to the database
 //At this time, the cohesion of this class is high and need to be work upon for the final project.
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+
 import com.google.common.hash.Hashing;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -15,10 +22,12 @@ import java.util.List;
 /**
  * Represents the QR code, computes its scoring and hashing, saves the score to the database
  */
-public class QRCode{
+public class QRCode implements Serializable {
     //    private  String value;
+    private String name;
     private String hash;
     private Integer score;
+    private String image = "";
     // we should include the location here
 
     /**
@@ -39,6 +48,37 @@ public class QRCode{
 
         computeScore();
     }
+
+    /**
+     * gets the name of the qr code
+     * @return name the name of the code given by user
+     */
+    public String getName() {
+        return name;
+    }
+
+
+    /**
+     * sets the name of the qr code
+     * @param name the name of the code given by user
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * stores the encoded value of the image
+     * @param image the picture optionally taken by the user
+     */
+    public void setImage(Bitmap image) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        String encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        this.image = encodedImage;
+
+    }
+
 
     /**
      * returns the hash value
@@ -91,28 +131,27 @@ public class QRCode{
 
     }
 
+
     /**
      * saves the score of the Qrcode in the firebase
      */
-    public void saveScore() {
+    public void save() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        final CollectionReference collectionReference = db.collection("QRCodes");
+        final CollectionReference collection = db.collection("QRCodes");
+//        final CollectionReference imagesCollection = db.collection("Images");
 
-        HashMap<String, Integer> data = new HashMap<>();
+        HashMap<String, String> data = new HashMap<>();
         // add tests for invalid usernames and emails later.
-        data.put("Score", this.score);
+        data.put("Score", this.score.toString());
+        data.put("name", this.name);
+        data.put("Image", this.image);
 
 
-        collectionReference.document(this.hash).set(data);
+        collection.document(this.hash).set(data);
 
     }
 
     private ArrayList getRepetitions(){
-
-//        This is just a test case that Mikal was using, make sure to remove later
-//        String test = "696ce4dbd7bb57cbfe58b64f530f428b74999cb37e2ee60980490cd9552de3a6";
-//        char[] chars= test.toCharArray();
-
 
         ArrayList<String> allReps = new ArrayList<>();
         char[] chars= this.hash.toCharArray();
