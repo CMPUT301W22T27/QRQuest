@@ -97,6 +97,33 @@ public class UpdateInfo extends AppCompatActivity {
                                 }
                             });
 
+                            // Update the user's username in the UserToQRCode collection
+                            CollectionReference userReference = db.collection("UserToQRCode");
+                            userReference.document(oldUsername).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    HashMap<String, ArrayList<String>> data = new HashMap<>();
+                                    data.put("QRCode", (ArrayList<String>)task.getResult().get("QRCode"));
+                                    userReference.document(newUsername).set(data);
+
+                                    userReference.document(oldUsername).delete();
+
+                                }
+                            });
+
+                            // Update the user's username in the userScore collection
+                            CollectionReference userScoreReference = db.collection("userScore");
+                            userScoreReference.document(oldUsername).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    HashMap<String, ArrayList<Integer>> data = new HashMap<>();
+                                    data.put("Score:", (ArrayList<Integer>)task.getResult().get("Score:"));
+                                    userScoreReference.document(newUsername).set(data);
+
+                                    userScoreReference.document(oldUsername).delete();
+
+                                }
+                            });
 
                             File file = new File(UpdateInfo.this.getFilesDir(), "login.txt");
 

@@ -38,6 +38,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -91,6 +92,18 @@ public class MainActivity extends AppCompatActivity {
                     // add tests for invalid usernames and emails later.
                     data.put("Username", username);
                     collectionReference.document(email).set(data);
+
+                    collectionReference = db.collection("UserToQRCode");
+                    HashMap<String, ArrayList<String>> userToQRCodeData = new HashMap<>();
+                    // add tests for invalid usernames and emails later.
+                    userToQRCodeData.put("QRCode", new ArrayList<String>());
+                    collectionReference.document(username).set(userToQRCodeData);
+
+//                    collectionReference = db.collection("userScore");
+//                    HashMap<String, ArrayList<Integer>> userScoreData = new HashMap<>();
+//                    // add tests for invalid usernames and emails later.
+//                    userScoreData.put("Score:", new ArrayList<Integer>());
+//                    collectionReference.document(username).set(userScoreData);
 
                     file.createNewFile(); // Create the login file
                     fileWriter.write(email);
