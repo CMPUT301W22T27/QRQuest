@@ -31,6 +31,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -67,6 +68,7 @@ public class MainScreen extends AppCompatActivity {
     String score;
     String qrCodeHash;
     FirebaseFirestore dbOwner;
+    FirebaseFirestore db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,27 +100,42 @@ public class MainScreen extends AppCompatActivity {
                     mapController = map.getController();
                     mapController.setZoom(18.0);
                     mapController.setCenter(startPoint);
-                    OverlayItem home = new OverlayItem("YOUR LOCATION", "Location",
-                            new GeoPoint(location.getLatitude(), location.getLongitude()));
-                    items = new ArrayList<>();
-                    Drawable m = home.getMarker(0);
-                    items.add(home);
-
-                    ItemizedOverlayWithFocus<OverlayItem> mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(getApplicationContext(),
-                            items, new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
+                    db = FirebaseFirestore.getInstance();
+                    final CollectionReference collection = db.collection("QRCodeLocs");
+                    collection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
-                        public boolean onItemSingleTapUp(int index, OverlayItem item) {
-                            return true;
-                        }
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()){
+                                OverlayItem home = new OverlayItem("YOUR LOCATION", "Location",
+                                        new GeoPoint(location.getLatitude(), location.getLongitude()));
+                                items = new ArrayList<>();
+                                items.add(home);
+                                for (QueryDocumentSnapshot doc: task.getResult()){
+                                    double qrCodeLat = Double.parseDouble(doc.getData().get("Latitude").toString());
+                                    double qrCodeLong = Double.parseDouble(doc.getData().get("Longitude").toString());
+                                    String qrScore = doc.getData().get("Score").toString();
+                                    GeoPoint qrLoc = new GeoPoint(qrCodeLat, qrCodeLong);
+                                    OverlayItem qrCodeLoc = new OverlayItem("QRCode", qrScore, qrLoc);
+                                    items.add(qrCodeLoc);
+                                }
+                                ItemizedOverlayWithFocus<OverlayItem> mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(getApplicationContext(),
+                                        items, new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
+                                    @Override
+                                    public boolean onItemSingleTapUp(int index, OverlayItem item) {
+                                        return true;
+                                    }
 
-                        @Override
-                        public boolean onItemLongPress(int index, OverlayItem item) {
-                            return false;
+                                    @Override
+                                    public boolean onItemLongPress(int index, OverlayItem item) {
+                                        return false;
+                                    }
+                                });
+
+                                mOverlay.setFocusItemsOnTap(true);
+                                map.getOverlays().add(mOverlay);
+                            }
                         }
                     });
-
-                    mOverlay.setFocusItemsOnTap(true);
-                    map.getOverlays().add(mOverlay);
                 }
             }
         });
