@@ -113,7 +113,7 @@ public class QRCodeProfile extends AppCompatActivity {
                     mapController.setZoom(18.0);
                     mapController.setCenter(qrCodeLocation);
                     String displayName = qrCodeNameBox.getText().toString();
-                    OverlayItem home = new OverlayItem(displayName.substring(21, displayName.length()),
+                    OverlayItem home = new OverlayItem(displayName.substring(21),
                             qrCodeScore,
                             qrCodeLocation);
                     items = new ArrayList<>();
