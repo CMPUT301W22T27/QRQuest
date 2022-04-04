@@ -56,7 +56,7 @@ public class Seecomments extends AppCompatActivity {
         QRCode = intent.getStringExtra("QRCode_QRCodeProfile");
         //username = intent.getStringExtra("USER_NAME_MainScreen");
         qrCode = findViewById(R.id.qrCodeName);
-        qrCode.setText(QRCode);
+        qrCode.setText(QRCode.substring(0, 12));
 
         File file = new File(this.getFilesDir(), "login.txt"); // REFERENCE [2]
 
@@ -138,7 +138,7 @@ public class Seecomments extends AppCompatActivity {
     public void confirm(View view){
         comment = findViewById(R.id.comment);
         finalComment = comment.getText().toString();
-        finalComment = username + ": " + finalComment;
+        finalComment = username.substring(0, 8) + ": " + finalComment;
         commentList.add(finalComment);
         commentAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, commentList);
         commentsTable.setAdapter(commentAdapter);

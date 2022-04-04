@@ -10,33 +10,33 @@
         android:id="@+id/qrCodeName"
         android:layout_width="201dp"
         android:layout_height="59dp"
+        android:layout_marginTop="27dp"
         android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.053" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/addComment"
         android:layout_width="170dp"
         android:layout_height="56dp"
+        android:layout_marginBottom="48dp"
         android:text="Add Comment"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/qrCodeName"
-        app:layout_constraintVertical_bias="0.889" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="201dp"
         android:layout_height="40dp"
-        android:layout_marginBottom="452dp"
-        android:text="Comments"
+        android:layout_marginBottom="472dp"
+        android:text="Comments:"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/addComment"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.242"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
@@ -45,7 +45,6 @@
         android:layout_height="56dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Comment:"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/addComment"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,5 +73,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8"
-        app:layout_constraintVertical_bias="0.214" />
+        app:layout_constraintVertical_bias="0.381" />
 </androidx.constraintlayout.widget.ConstraintLayout>

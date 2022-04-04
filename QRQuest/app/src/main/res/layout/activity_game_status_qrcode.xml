@@ -55,6 +55,7 @@
         android:id="@+id/gameStatusUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
         android:text="Username"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -64,6 +65,8 @@
         android:id="@+id/PublicGameStatusCode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="28dp"
         android:text="Public Game Status Code: "
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +77,9 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/PublicGameStatusCode" />
 

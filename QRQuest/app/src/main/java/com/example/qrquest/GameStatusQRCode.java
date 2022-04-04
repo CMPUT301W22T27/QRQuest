@@ -57,7 +57,7 @@ public class GameStatusQRCode extends AppCompatActivity {
         String username = intent.getStringExtra(ChooseQRCodeType.USER_NAME);
         String emailAddress = intent.getStringExtra(ChooseQRCodeType.EMAIL_ADDRESS);
         TextView textUsername = findViewById(R.id.gameStatusUsername);
-        textUsername.setText("Username: "+ username);
+        textUsername.setText("Username: "+ username.substring(0, 8));
 
         //Create QR Code
         GameStatusQRCodeImage = findViewById(R.id.GameStatusQRCode);
