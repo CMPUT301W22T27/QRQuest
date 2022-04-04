@@ -138,7 +138,12 @@ public class Seecomments extends AppCompatActivity {
     public void confirm(View view){
         comment = findViewById(R.id.comment);
         finalComment = comment.getText().toString();
-        finalComment = username.substring(0, 8) + ": " + finalComment;
+        if (username.length() > 8){
+            finalComment = username.substring(0, 8) + ": " + finalComment;
+        }
+        else {
+            finalComment = username + ": " + finalComment;
+        }
         commentList.add(finalComment);
         commentAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, commentList);
         commentsTable.setAdapter(commentAdapter);
