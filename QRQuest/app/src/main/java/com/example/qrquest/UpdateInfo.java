@@ -71,7 +71,7 @@ public class UpdateInfo extends AppCompatActivity {
                 collectionReference.document(newEmail).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.getResult().exists()) {
+                        if (task.getResult().exists() && !newEmail.equals(oldEmail)) {
                             Toast.makeText(UpdateInfo.this, "This email account is already in use.", Toast.LENGTH_SHORT).show();
                         }
                         else {
