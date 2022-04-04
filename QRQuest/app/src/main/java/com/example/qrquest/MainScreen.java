@@ -298,6 +298,13 @@ public class MainScreen extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
+            case R.id.profileMenuItem:{
+                Intent gameStatusQrCode = new Intent(MainScreen.this, GameStatusQRCode.class);
+                gameStatusQrCode.putExtra(USER_NAME, username);
+                gameStatusQrCode.putExtra(EMAIL_ADDRESS,email);
+                startActivity(gameStatusQrCode);
+                return true;
+            }
             case R.id.leaderboardMenuItem:{
                 Intent chooseLeaderBoardType = new Intent(MainScreen.this, LeaderBoardType.class);
                 chooseLeaderBoardType.putExtra("USER_NAME_MainScreen",username);
