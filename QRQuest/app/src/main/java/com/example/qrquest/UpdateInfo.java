@@ -116,12 +116,12 @@ public class UpdateInfo extends AppCompatActivity {
                             userScoreReference.document(oldUsername).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    HashMap<String, ArrayList<Integer>> data = new HashMap<>();
-                                    data.put("Score:", (ArrayList<Integer>)task.getResult().get("Score:"));
-                                    userScoreReference.document(newUsername).set(data);
-
-                                    userScoreReference.document(oldUsername).delete();
-
+                                    if (task.getResult().exists()) {
+                                        HashMap<String, ArrayList<Integer>> data = new HashMap<>();
+                                        data.put("Score:", (ArrayList<Integer>) task.getResult().get("Score:"));
+                                        userScoreReference.document(newUsername).set(data);
+                                        userScoreReference.document(oldUsername).delete();
+                                    }
                                 }
                             });
 
