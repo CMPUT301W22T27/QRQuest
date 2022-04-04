@@ -99,6 +99,9 @@
             android:name=".MainScreen"
             android:exported="false" />
         <activity
+            android:name=".UpdateInfo"
+            android:exported="false" />
+        <activity
             android:name=".CreateAccount"
             android:exported="false" />
         <activity

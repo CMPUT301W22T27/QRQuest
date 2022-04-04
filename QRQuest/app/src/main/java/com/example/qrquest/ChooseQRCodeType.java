@@ -17,6 +17,7 @@ public class ChooseQRCodeType extends AppCompatActivity {
     public static final String EMAIL_ADDRESS = "com.example.qrquest.EMAILADDRESS";
     Button generateLoginCode;
     Button generateGameStatusCode;
+    Button updateInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +26,7 @@ public class ChooseQRCodeType extends AppCompatActivity {
         Intent intent = getIntent();
         generateLoginCode = findViewById(R.id.loginCodeButton);
         generateGameStatusCode = findViewById(R.id.gameStatusCodeButton);
+        updateInfo = findViewById(R.id.updateProfile);
         String username = intent.getStringExtra(MainScreen.USER_NAME);
         String email = intent.getStringExtra(MainScreen.EMAIL_ADDRESS);
 
@@ -43,6 +45,15 @@ public class ChooseQRCodeType extends AppCompatActivity {
                 gameStatusQrCode.putExtra(USER_NAME, username);
                 gameStatusQrCode.putExtra(EMAIL_ADDRESS,email);
                 startActivity(gameStatusQrCode);
+            }
+        });
+
+        updateInfo.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                Intent updateInfoIntent = new Intent(ChooseQRCodeType.this, UpdateInfo.class);
+                updateInfoIntent.putExtra(USER_NAME, username);
+                updateInfoIntent.putExtra(EMAIL_ADDRESS,email);
+                startActivity(updateInfoIntent);
             }
         });
     }

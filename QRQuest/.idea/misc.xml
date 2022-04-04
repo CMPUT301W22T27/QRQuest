@@ -30,17 +30,21 @@
         <entry key="..\:/Users/15879/AndroidStudioProjects/QRQuest2/app/src/main/res/layout/activity_main_screen_map.xml" value="0.38697916666666665" />
         <entry key="..\:/Users/15879/AndroidStudioProjects/QRQuest2/app/src/main/res/menu/main_screen_menu.xml" value="0.38697916666666665" />
         <entry key="..\:/Users/nosaj/Uni2021/Winter2022/CMPUT 301/QRQuest/QRQuest/app/src/main/res/drawable/side_nav_bar.xml" value="0.124" />
-        <entry key="..\:/Users/nosaj/Uni2021/Winter2022/CMPUT 301/QRQuest/QRQuest/app/src/main/res/layout/activity_choose_qrcode_type.xml" value="0.11302083333333333" />
+        <entry key="..\:/Users/nosaj/Uni2021/Winter2022/CMPUT 301/QRQuest/QRQuest/app/src/main/res/layout/activity_choose_qrcode_type.xml" value="0.264" />
+        <entry key="..\:/Users/nosaj/Uni2021/Winter2022/CMPUT 301/QRQuest/QRQuest/app/src/main/res/layout/activity_game_status_qrcode.xml" value="0.18645833333333334" />
         <entry key="..\:/Users/nosaj/Uni2021/Winter2022/CMPUT 301/QRQuest/QRQuest/app/src/main/res/layout/activity_login_qrcode.xml" value="0.2" />
         <entry key="..\:/Users/nosaj/Uni2021/Winter2022/CMPUT 301/QRQuest/QRQuest/app/src/main/res/layout/activity_main.xml" value="0.2" />
-        <entry key="..\:/Users/nosaj/Uni2021/Winter2022/CMPUT 301/QRQuest/QRQuest/app/src/main/res/layout/activity_main_screen.xml" value="0.4" />
+        <entry key="..\:/Users/nosaj/Uni2021/Winter2022/CMPUT 301/QRQuest/QRQuest/app/src/main/res/layout/activity_main_screen.xml" value="0.176" />
         <entry key="..\:/Users/nosaj/Uni2021/Winter2022/CMPUT 301/QRQuest/QRQuest/app/src/main/res/layout/activity_number_of_qrcodes_scanned_lb.xml" value="0.17889492753623187" />
+        <entry key="..\:/Users/nosaj/Uni2021/Winter2022/CMPUT 301/QRQuest/QRQuest/app/src/main/res/layout/activity_qrcode_profile.xml" value="0.18297101449275363" />
+        <entry key="..\:/Users/nosaj/Uni2021/Winter2022/CMPUT 301/QRQuest/QRQuest/app/src/main/res/layout/activity_update_info.xml" value="0.176" />
         <entry key="..\:/Users/nosaj/Uni2021/Winter2022/CMPUT 301/QRQuest/QRQuest/app/src/main/res/layout/app_bar_side_bar.xml" value="0.11302083333333333" />
         <entry key="..\:/Users/nosaj/Uni2021/Winter2022/CMPUT 301/QRQuest/QRQuest/app/src/main/res/layout/content_side_bar.xml" value="0.11302083333333333" />
         <entry key="..\:/Users/nosaj/Uni2021/Winter2022/CMPUT 301/QRQuest/QRQuest/app/src/main/res/layout/fragment_profile.xml" value="0.11302083333333333" />
         <entry key="..\:/Users/nosaj/Uni2021/Winter2022/CMPUT 301/QRQuest/QRQuest/app/src/main/res/layout/nav_header_side_bar.xml" value="0.11302083333333333" />
         <entry key="..\:/Users/nosaj/Uni2021/Winter2022/CMPUT 301/QRQuest/QRQuest/app/src/main/res/layout/re_login.xml" value="0.23854166666666668" />
         <entry key="..\:/Users/nosaj/Uni2021/Winter2022/CMPUT 301/QRQuest/QRQuest/app/src/main/res/menu/activity_side_bar_drawer.xml" value="0.11302083333333333" />
+        <entry key="..\:/Users/nosaj/Uni2021/Winter2022/CMPUT 301/QRQuest/QRQuest/app/src/main/res/menu/main_screen_menu.xml" value="0.18697916666666667" />
         <entry key="app/src/main/res/drawable/ic_menu_camera.xml" value="0.30666666666666664" />
         <entry key="app/src/main/res/drawable/ic_scoreboard.xml" value="0.17395833333333333" />
         <entry key="app/src/main/res/layout/activity_global_qrcode_list.xml" value="0.2081492042593461" />
