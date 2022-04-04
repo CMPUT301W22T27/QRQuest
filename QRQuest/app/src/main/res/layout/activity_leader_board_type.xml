@@ -8,11 +8,13 @@
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="347dp"
+        android:layout_width="273dp"
         android:layout_height="65dp"
-        android:text="Which type of Leader Board do you want to see?"
-        android:textSize="20sp"
+        android:layout_marginTop="48dp"
+        android:text="Which Leaderboard?"
+        android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.521"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

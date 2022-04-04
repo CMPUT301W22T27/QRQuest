@@ -29,51 +29,56 @@
         android:id="@+id/DeletePlayerButton"
         android:layout_width="184dp"
         android:layout_height="46dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="13dp"
         android:text="Delete Player"
-        app:layout_constraintStart_toEndOf="@+id/DeleteQRCodeButton"
-        app:layout_constraintTop_toBottomOf="@+id/submitQRCodeButton" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LogoutButton" />
 
     <Button
         android:id="@+id/LogoutButton"
         android:layout_width="184dp"
         android:layout_height="46dp"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="19dp"
+        android:layout_marginTop="12dp"
         android:text="LOGOUT"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DeleteQRCodeButton" />
+        app:layout_constraintTop_toBottomOf="@+id/submitQRCodeButton" />
 
     <Button
         android:id="@+id/DeleteQRCodeButton"
-        android:layout_width="186dp"
-        android:layout_height="41dp"
+        android:layout_width="184dp"
+        android:layout_height="46dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="14dp"
         android:text="Delete QR Code"
+        app:layout_constraintEnd_toStartOf="@+id/DeletePlayerButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/generateQRCodeButton" />
+        app:layout_constraintTop_toBottomOf="@+id/LogoutButton" />
 
     <Button
         android:id="@+id/generateQRCodeButton"
         android:layout_width="194dp"
         android:layout_height="43dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="36dp"
         android:text="Generate QR Code"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/map"
-        tools:ignore="TouchTargetSizeCheck"
-        tools:layout_editor_absoluteX="8dp" />
+        tools:ignore="TouchTargetSizeCheck" />
 
     <Button
         android:id="@+id/submitQRCodeButton"
         android:layout_width="197dp"
         android:layout_height="44dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="27dp"
         android:text="Submit QR Code"
-        app:layout_constraintStart_toEndOf="@+id/generateQRCodeButton"
-        app:layout_constraintTop_toBottomOf="@+id/map"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/generateQRCodeButton"
         tools:ignore="TouchTargetSizeCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

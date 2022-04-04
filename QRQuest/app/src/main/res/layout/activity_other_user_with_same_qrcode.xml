@@ -16,11 +16,12 @@
 
 
     </ListView>
+
     <TextView
         android:id="@+id/OtherUserWithThisQRCodeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Users With This  QR Code"
+        android:text="Users With This QR Code"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
