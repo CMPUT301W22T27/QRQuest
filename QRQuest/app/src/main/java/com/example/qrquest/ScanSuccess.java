@@ -68,6 +68,7 @@ public class ScanSuccess extends AppCompatActivity {
                     // add tests for invalid usernames and emails later.
                     data.put("Latitude", Double.toString(location.getLatitude()));
                     data.put("Longitude", Double.toString(location.getLongitude()));
+                    data.put("Score", Integer.toString(qrCode.getScore()));
                     collection.document(hash).set(data);
                 }
             }

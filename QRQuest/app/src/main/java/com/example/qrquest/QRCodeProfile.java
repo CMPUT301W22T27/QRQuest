@@ -107,11 +107,14 @@ public class QRCodeProfile extends AppCompatActivity {
                 if (task.getResult().exists()){
                     double qrCodeLat = Double.parseDouble(task.getResult().get("Latitude").toString());
                     double qrCodeLong = Double.parseDouble(task.getResult().get("Longitude").toString());
+                    String qrCodeScore = task.getResult().get("Score").toString();
                     GeoPoint qrCodeLocation = new GeoPoint(qrCodeLat, qrCodeLong);
                     mapController = map.getController();
                     mapController.setZoom(18.0);
                     mapController.setCenter(qrCodeLocation);
-                    OverlayItem home = new OverlayItem("LOCATION", "Location",
+                    String displayName = qrCodeNameBox.getText().toString();
+                    OverlayItem home = new OverlayItem(displayName.substring(21, displayName.length()),
+                            qrCodeScore,
                             qrCodeLocation);
                     items = new ArrayList<>();
                     Drawable m = home.getMarker(0);
